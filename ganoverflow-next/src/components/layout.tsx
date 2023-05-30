@@ -47,7 +47,7 @@ const CapsulizedHead = (): JSX.Element => {
       />
       <meta name="og:title" content={siteTitle} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content="cmd8.vercel.app"></meta>
+      <meta name="twitter:url" content="ganoverflow.vercel.app"></meta>
       <meta name="twitter:title" content={siteTitle} />
       <meta name="twitter:description" content={siteDescription} />
       <meta name="twitter:image" content="/images/logo.png" />
@@ -90,14 +90,14 @@ const Header = (): JSX.Element => {
         <div className="container mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-sapn-1">
             <Link href="/" className="flex items-center" passHref>
-              <Image
+              {/* <Image
                 src="/images/logo.png"
                 alt="Logo"
                 height={50}
                 width={50}
                 className="h-9 w-9"
-              />
-              <h1 className="logo-text ml-1 text-xl">AIGHT</h1>
+              /> */}
+              <h1 className="logo-text ml-1 text-xl">Gan Overflow</h1>
             </Link>
           </div>
           <div className="col-sapn-1 self-center">
@@ -221,7 +221,7 @@ const Footer = () => {
         </section>
         <ul className="section_social"></ul>
         <small className="txt_copyright">
-          © <a href="https://www.ai-ght.com">AIGHT (cmd8)</a> All rights
+          © <a href="https://www.ganoverflow.com">GanOverflow</a> All rights
           reserved.
         </small>
       </div>
