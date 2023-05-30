@@ -4,7 +4,7 @@ services:
     image: choseongwoo/ganoverflow-back:v0526-5
     build:
       context: ./ganoverflow-back
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: nest
     volumes:
       # - ./src:/app/src

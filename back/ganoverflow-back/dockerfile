@@ -1,16 +1,17 @@
 # Match with my local Node Version
 FROM node:16-alpine
 
-WORKDIR /app
-ADD . /app/
+WORKDIR /ganoverflow-back
 
-COPY . .
+COPY package.json package-lock.json ./
+
 # Dependency Install
-RUN rm -rf node_modules
-RUN npm install
+RUN npm ci
+
+# Copy source code
+COPY . .
 
 # 항상 dist갱신
-RUN rm -rf dist 
 RUN npm run build
 
 # PORT (8080) Expose
