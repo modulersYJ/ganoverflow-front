@@ -1,0 +1,223 @@
+@tailwind base;
+
+/* Firefox */
+ {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 18px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
+
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.3s forwards;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.3s forwards;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-10%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateX(-10%);
+    }
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --colorFg1: #888;
+  --colorFg2: #6b7684;
+  --colorFg3: #fff;
+  --colorBg1: #191f28;
+  --colorBg2: #111;
+
+  --shadow-modal: rgba(0, 0, 0, 0.09) 0px 3px 12px 0px;
+  --radius1: 10px;
+  --radius2: 20px;
+  --radius3: 40px;
+
+  --bpPcSuper: 1339;
+  --bpPc: 1024;
+  --bpTablet: 768;
+  --bpPhoneMedium: 576;
+  --pbPhoneSmall: 325;
+
+  --primary: #5c5c5c;
+  --secondary: #1a1a1a;
+}
+
+/* Common */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap");
+
+@font-face {
+  font-family: "NotoSansLao";
+
+  src: url("/fonts/NotoSansLao-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "peaceSans";
+
+  src: url("/fonts/PeaceSans.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "morganBold";
+
+  src: url("/fonts/Morganite-Bold.ttf") format("truetype");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* ==Global== */
+* {
+  font-family: "Noto Sans KR", sans-serif;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* Header */
+.side-canvas {
+  transform: translateX(150%);
+  transition: transform 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100rem;
+  width: 100%;
+  background-color: #1c1c20;
+  z-index: 50;
+  padding: 2rem;
+}
+
+.side-canvas.open {
+  transform: translateX(0%);
+}
+
+header {
+}
+
+.header-nav {
+  background-color: rgba(22, 22, 23, 0.8);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+.nav-bar {
+  background-color: #1f2937;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.nav-container {
+  max-width: 70rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.logo-container {
+  flex-shrink: 0;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-family: "MorganBold", sans-serif;
+  font-size: 2rem;
+  color: white;
+}
+
+/* Footer */
+footer {
+  display: block;
+  min-height: auto;
+  background-color: var(--colorBg2);
+}
+
+footer * {
+  color: var(--colorFg1);
+}
+
+.inner_footer {
+  padding: 15px 0;
+  display: block;
+}
+.section_terms-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  font-size: 12px;
+}
+
+/* main */
+
+body {
+  padding: 0;
+  margin-top: 0;
+  font-family: "Open Sans", sans-serif;
+  min-height: 100vh; /* 화면 높이 최소값 */
+}
+
+#__next {
+  min-height: 100vh; /* 화면 높이 최소값 */
+}
+
+main {
+  min-height: calc(100vh - 258px); /* 화면 높이에서 header와 footer 높이 제외 */
+}
+
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
