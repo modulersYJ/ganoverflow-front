@@ -54,8 +54,8 @@ const RegisterPage = () => {
       };
       await register(formattedData);
       router.push("/accounts/login");
-    } catch (error) {
-      // 에러 처리
+    } catch (error: any) {
+      alert(`회원가입 실패!, ${error}`);
     }
   };
 

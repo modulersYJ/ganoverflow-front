@@ -2,5 +2,4 @@
 
 // export const HOST = LOCAL_API_HOST;
 // export const HOST = "http://127.0.0.1:8000";
-// export const HOST = "http://118.67.134.211:3001";
-export const HOST = "http://172.30.1.48:3000";
+export const HOST = "http://118.67.134.211:3001";

@@ -7,6 +7,7 @@ import InputField from "@/components/ui/Accounts/InputField";
 
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
+import Link from "next/link";
 
 const Login = () => {
   const setUser = useSetRecoilState(userState);
@@ -28,7 +29,7 @@ const Login = () => {
       setUser(response); // Recoil 유저 상태 업데이트
       router.push("/");
     } catch (error) {
-      // 에러 처리
+      alert(`로그인 실패!, ${error}`);
     }
   };
 
@@ -88,7 +89,7 @@ const Login = () => {
               type="button"
               className="text-sm text-gray-500 hover:text-gray-400"
             >
-              회원가입
+              <Link href="/accounts/register">회원가입</Link>
             </button>
           </div>
 
@@ -110,7 +111,7 @@ const Login = () => {
 
           <div className="mt-6 grid grid-cols-3 gap-3">
             <div>
-              <SocialLoginButton provider="kakao"/>
+              <SocialLoginButton provider="kakao" />
             </div>
 
             <div>
