@@ -86,7 +86,7 @@ const Header = (): JSX.Element => {
 
   return (
     <header>
-      <nav className="header-nav shadow-md fixed w-full top-0 z-50 ">
+      <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
         <div className="container mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-sapn-1">
             <Link href="/" className="flex items-center" passHref>
@@ -104,7 +104,7 @@ const Header = (): JSX.Element => {
             <div className="hidden md:flex items-center">
               <Link
                 href="/"
-                className="text-white font-inter text-sm px-4 py-2"
+                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
                 홈
@@ -113,28 +113,28 @@ const Header = (): JSX.Element => {
                 href="/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-pink-600 font-inter text-sm px-4 py-2 font-semibold"
+                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
                 머시기
               </Link>
               <Link
                 href="/"
-                className="text-white font-inter text-sm px-4 py-2"
+                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
                 커뮤니티
               </Link>
               <Link
                 href="/"
-                className="text-white font-inter text-xs px-4 py-2"
+                className="text-[#AEAEB2] font-inter text-xs px-4 py-5 font-semibold"
                 passHref
               >
-                About GanOverflow
+                GAN Overflow
               </Link>
               <Link
                 href="/"
-                className="text-white font-inter text-xs px-4 py-2"
+                className="text-[#AEAEB2]  font-inter text-xs px-4 py-5 font-semibold"
                 passHref
               >
                 CONTACT
