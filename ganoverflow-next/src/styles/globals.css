@@ -228,7 +228,8 @@ body {
 }
 
 main {
-  min-height: calc(100vh - 258px); /* 화면 높이에서 header와 footer 높이 제외 */
+  min-height: calc(100vh - 165px); /* 화면 높이에서 header와 footer 높이 제외 */
+  padding-top: 68px;
 }
 
 .swiper-wrapper {
