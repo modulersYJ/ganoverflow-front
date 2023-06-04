@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
+import Layout from "@/components/layout";
 // import { QueryClient, QueryClientProvider } from "react-query";
 // import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -24,8 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="" />
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
+      {/* <Layout> */}
       <Component {...pageProps} />
-
+      {/* </Layout> */}
       {/* <Analytics /> */}
       {/* </QueryClientProvider> */}
     </RecoilRoot>

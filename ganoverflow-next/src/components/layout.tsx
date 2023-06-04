@@ -14,22 +14,24 @@ const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누�
 
 export default function Layout({
   children,
-  home,
+  // home,
+  offFooter,
 }: {
   children: React.ReactNode;
-  home?: boolean;
+  // home?: boolean;
+  offFooter?: boolean;
 }) {
   return (
     <div>
       <CapsulizedHead />
       <Header />
       <main>{children}</main>
-      {!home && (
+      {/* {!home && (
         <div>
           <Link href="/">← Back to home</Link>
         </div>
-      )}
-      <Footer />
+      )} */}
+      {!offFooter && <Footer />}
     </div>
   );
 }
@@ -103,11 +105,11 @@ const Header = (): JSX.Element => {
           <div className="col-sapn-1 self-center">
             <div className="hidden md:flex items-center">
               <Link
-                href="/"
+                href="/chat"
                 className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
-                홈
+                채팅
               </Link>
               <Link
                 href="/"

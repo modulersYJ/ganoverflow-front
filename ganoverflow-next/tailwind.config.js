@@ -20,7 +20,11 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      borderRadius: {
+        "chat-question": "20px 20px 0px 20px",
+        "chat-answer": "20px 20px 20px 0px",
+      },
     },
+    plugins: [],
   },
-  plugins: [],
 };
