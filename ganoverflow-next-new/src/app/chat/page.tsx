@@ -69,34 +69,40 @@ const Chat = () => {
           {chat.map((chatLine, index) => (
             <div
               key={index}
-              className={` w-full py-5 ${
+              className={`w-full py-5 ${
                 index % 2 === 0 ? "bg-gray-700" : "bg-gray-800" // 홀짝 배경색 변경
-              }`}
+              } flex flex-row`}
             >
-              <div className="chatPairBox w-2/3 sm:w-1/3 flex flex-col justify-center self-center m-auto">
-                <div
-                  key={index}
-                  className={`msgBox p-4 max-w-sm text-xs ${
-                    chatLine.isUser
-                      ? "bg-blue-500 text-white self-end rounded-chat-question" //사용자 질문
-                      : "bg-gray-500 self-start rounded-chat-answer" //GPT 답변
-                  } inline-block`}
-                >
-                  {chatLine.message}
+              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 lg:w-2/5 m-auto">
+                <div className="chatPairBox w-full flex flex-col justify-center self-center">
+                  <div
+                    key={index}
+                    className={`msgBox p-4 max-w-sm text-xs ${
+                      chatLine.isUser
+                        ? "bg-blue-500 text-white self-end rounded-chat-question" //사용자 질문
+                        : "bg-gray-500 self-start rounded-chat-answer" //GPT 답변
+                    } inline-block`}
+                  >
+                    {chatLine.message}
+                  </div>
+                  <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
+                    {`답변이요`}
+                  </div>
                 </div>
-                <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
-                  {`답변이요`}
+                <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
+                  <div className="flex flex-row justify-end w-full h-full">
+                    <CircularCheckbox
+                      isChecked={chatLine.isChecked}
+                      onCheckboxChange={() => onCheckboxChange(index)}
+                    />
+                  </div>
                 </div>
-                <CircularCheckbox
-                  isChecked={chatLine.isChecked}
-                  onCheckboxChange={() => onCheckboxChange(index)}
-                />
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center dark md:dark:bg-vert-dark-gradient md:bg-vert-light-gradient">
+      <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center dark dark:bg-vert-dark-gradient bg-vert-light-gradient">
         <form
           onSubmit={submitMessage}
           className="w-full max-w-[40%] flex items-center"
@@ -109,7 +115,7 @@ const Chat = () => {
           />
           <button
             type="submit"
-            className="rounded-full bg-blue-500 text-white p-2 text-xs"
+            className="rounded-xl bg-blue-500 text-white p-2 text-xs min-w-[50px]"
           >
             제출
           </button>
