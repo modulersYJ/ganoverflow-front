@@ -9,6 +9,8 @@ import {
   ReactElement,
 } from "react";
 
+import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
+
 type ChatMessage = {
   message: string;
   isUser: boolean;
@@ -59,7 +61,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="fixed right-32 bottom-28">
+      <div className="fixed right-48 bottom-24 z-10">
         <BtnSubmitSaveChat checkCnt={checkCnt} />
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
@@ -85,11 +87,9 @@ const Chat = () => {
                 <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
                   {`답변이요`}
                 </div>
-                <input
-                  type="checkbox"
-                  checked={chatLine.isChecked}
-                  onChange={() => onCheckboxChange(index)}
-                  className="mt-4"
+                <CircularCheckbox
+                  isChecked={chatLine.isChecked}
+                  onCheckboxChange={() => onCheckboxChange(index)}
                 />
               </div>
             </div>
