@@ -61,7 +61,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="fixed right-48 bottom-24 z-10">
+      <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
         <BtnSubmitSaveChat checkCnt={checkCnt} />
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
