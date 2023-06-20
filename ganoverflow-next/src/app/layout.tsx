@@ -15,7 +15,7 @@ import { Inter } from "next/font/google";
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
 
-export const metadata = {
+const metadata = {
   title: siteTitle,
   description: siteDescription,
 };

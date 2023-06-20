@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { login } from "@/app/api/accounts";
 import { ILogIn } from "@/interfaces/accounts";
 import SocialLoginButton from "@/components/ui/Accounts/SocialLoginButton";

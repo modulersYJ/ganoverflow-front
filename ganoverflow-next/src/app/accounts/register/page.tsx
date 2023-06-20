@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { register } from "@/app/api/accounts";
 import { IRegister } from "@/interfaces/accounts";
 import InputField from "@/components/ui/Accounts/InputField";
