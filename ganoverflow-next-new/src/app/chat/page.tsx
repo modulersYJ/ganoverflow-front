@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
+import LeftNavBar from "@/components/ui/Chat/LeftNavBar";
 
 type ChatMessage = {
   message: string;
@@ -61,6 +62,9 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-full">
+      <div className="z-10 ">
+        <LeftNavBar />
+      </div>
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
         <BtnSubmitSaveChat checkCnt={checkCnt} />
       </div>
