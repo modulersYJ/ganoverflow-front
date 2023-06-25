@@ -11,26 +11,46 @@ import {
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
 import LeftNavBar from "@/components/ui/Chat/LeftNavBar";
+import { chat } from "@/app/api/chat";
+import { IChat } from "@/interfaces/chat";
 
 type ChatMessage = {
-  message: string;
+  userMessage: string;
+  botMessage: string;
   isUser: boolean;
   isChecked: boolean;
 };
 
 const Chat = () => {
   const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [aChat, setAChat] = useState<ChatMessage[]>([]);
   const [checkCnt, setCheckCnt] = useState<number>(0);
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
 
-  const submitMessage = (e: FormEvent) => {
+  const [formData, setFormData] = useState<IChat>({
+    prompt: "",
+  });
+
+  const submitMessage = async (e: FormEvent) => {
+    console.log("message!!");
     e.preventDefault();
-    setChat((prevChat) => [
+    setFormData({ prompt: message });
+
+    // 서버에 데이터 제출 후, 응답 받기
+    const response = await chat({ prompt: message });
+
+    setAChat((prevChat) => [
       ...prevChat,
-      { message, isUser: true, isChecked: false },
+      {
+        userMessage: message,
+        botMessage: response.bot,
+        isUser: true,
+        isChecked: false,
+      },
     ]);
+
     setMessage("");
+
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({
         behavior: "smooth",
@@ -46,13 +66,13 @@ const Chat = () => {
 
   // 체크박스 카운트 (for )
   const onCheckboxChange = (index: number) => {
-    setChat((prevChat) => {
+    setAChat((prevChat) => {
       const newChat = [...prevChat];
       newChat[index].isChecked = !newChat[index].isChecked;
       return newChat;
     });
     setCheckCnt(
-      (prevCheckCnt) => prevCheckCnt + (chat[index].isChecked ? 1 : -1)
+      (prevCheckCnt) => prevCheckCnt + (aChat[index].isChecked ? 1 : -1)
     );
   };
 
@@ -70,7 +90,7 @@ const Chat = () => {
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
-          {chat.map((chatLine, index) => (
+          {aChat.map((chatLine, index) => (
             <div
               key={index}
               className={`w-full py-5 ${
@@ -87,10 +107,10 @@ const Chat = () => {
                         : "bg-gray-500 self-start rounded-chat-answer" //GPT 답변
                     } inline-block`}
                   >
-                    {chatLine.message}
+                    {chatLine.userMessage}
                   </div>
                   <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
-                    {`답변이요`}
+                    {chatLine.botMessage}
                   </div>
                 </div>
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
