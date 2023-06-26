@@ -1,11 +1,10 @@
-
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { HOST } from "./env/HOST";
-import { IRegister, ILogIn } from "@/interfaces/accounts"; 
+import { IRegister, ILogIn } from "@/interfaces/accounts";
 
 const API: AxiosInstance = axios.create({
-  baseURL: `${HOST}/accounts`,
+  baseURL: `${HOST}/auth`,
   withCredentials: true, // 쿠키를 보내기 위해 설정
 });
 
