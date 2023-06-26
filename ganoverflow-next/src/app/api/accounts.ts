@@ -12,9 +12,9 @@ const API: AxiosInstance = axios.create({
 API.interceptors.response.use(
   (response) => {
     // JWT access 토큰이 있으면 응답 본문에서 받아와서 저장
-    const accessToken = response.data.access;
+    const accessToken = response.data.access_token;
     if (accessToken) {
-      Cookies.set("access", accessToken);
+      Cookies.set("access_token", accessToken);
     }
 
     return response;
