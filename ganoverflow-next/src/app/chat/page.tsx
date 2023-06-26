@@ -48,8 +48,8 @@ const Chat = () => {
     setAChat((prevChat) => [
       ...prevChat,
       {
-        userMessage: message,
-        botMessage: response.bot,
+        question: message,
+        answer: response.bot,
         isUser: true,
         isChecked: false,
       },
@@ -116,10 +116,10 @@ const Chat = () => {
                         : "bg-gray-500 self-start rounded-chat-answer" //GPT 답변
                     } inline-block`}
                   >
-                    {chatLine.userMessage}
+                    {chatLine.question}
                   </div>
                   <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
-                    {chatLine.botMessage}
+                    {chatLine.answer}
                   </div>
                 </div>
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
