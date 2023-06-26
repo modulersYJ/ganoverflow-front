@@ -12,24 +12,30 @@ import {
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
 import LeftNavBar from "@/components/ui/Chat/LeftNavBar";
 import { chat } from "@/app/api/chat";
+import { sendChatPost } from "../api/chatPost";
 import { IChat } from "@/interfaces/chat";
-
-type ChatMessage = {
-  userMessage: string;
-  botMessage: string;
-  isUser: boolean;
-  isChecked: boolean;
-};
+import { IChatMessage } from "@/interfaces/chat";
 
 const Chat = () => {
   const [message, setMessage] = useState<string>("");
-  const [aChat, setAChat] = useState<ChatMessage[]>([]);
+  const [aChat, setAChat] = useState<IChatMessage[]>([]);
   const [checkCnt, setCheckCnt] = useState<number>(0);
+
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
 
   const [formData, setFormData] = useState<IChat>({
     prompt: "",
   });
+
+  const onClickSaveChat = (e: React.MouseEvent) => {
+    console.log("achat", aChat);
+    const selectedPairs = aChat.filter((aPair) => {
+      return aPair.isChecked === true;
+    });
+
+    console.log(selectedPairs);
+    sendChatPost(selectedPairs);
+  };
 
   const submitMessage = async (e: FormEvent) => {
     console.log("message!!");
@@ -86,7 +92,10 @@ const Chat = () => {
         <LeftNavBar />
       </div>
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        <BtnSubmitSaveChat checkCnt={checkCnt} />
+        <BtnSubmitSaveChat
+          checkCnt={checkCnt}
+          onClickHandler={onClickSaveChat}
+        />
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
@@ -151,7 +160,13 @@ const Chat = () => {
 
 export default Chat;
 
-const BtnSubmitSaveChat = ({ checkCnt }: { checkCnt: number }) => {
+const BtnSubmitSaveChat = ({
+  checkCnt,
+  onClickHandler,
+}: {
+  checkCnt: number;
+  onClickHandler: React.MouseEventHandler;
+}) => {
   return (
     <div>
       {checkCnt > 0 ? (
@@ -160,7 +175,12 @@ const BtnSubmitSaveChat = ({ checkCnt }: { checkCnt: number }) => {
             <div className="rounded-full w-8 h-7 text-indigo-700 text-sm font-bold bg-violet-700">
               <div className="mt-1 text-white">+{checkCnt}</div>
             </div>
-            <div className="mt-1 ml-3 text-sm font-semibold">채팅 저장하기</div>
+            <div
+              className="mt-1 ml-3 text-sm font-semibold"
+              onClick={onClickHandler}
+            >
+              채팅 저장하기
+            </div>
           </div>
         </button>
       ) : (

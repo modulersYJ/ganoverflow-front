@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { HOST } from "./env/HOST";
-import { IChat } from "@/interfaces/chat";
+import { IChat, IChatMessage } from "@/interfaces/chat";
 
 const API: AxiosInstance = axios.create({
   baseURL: `${HOST}/chatbot`,
