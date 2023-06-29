@@ -15,8 +15,11 @@ import { chat } from "@/app/api/chat";
 import { sendChatPost } from "../api/chatPost";
 import { IChat } from "@/interfaces/chat";
 import { IChatMessage } from "@/interfaces/chat";
+// import { useRouter } from "next/navigation";
 
 const Chat = () => {
+  const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
+  const [isChatSaved, setChatSaved] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [aChat, setAChat] = useState<IChatMessage[]>([]);
   const [checkCnt, setCheckCnt] = useState<number>(0);
@@ -27,35 +30,52 @@ const Chat = () => {
     prompt: "",
   });
 
-  const onClickSaveChat = (e: React.MouseEvent) => {
+  const onClickSaveChat = async (e: React.MouseEvent) => {
     console.log("achat", aChat);
     const selectedPairs = aChat.filter((aPair) => {
       return aPair.isChecked === true;
     });
 
     console.log(selectedPairs);
-    sendChatPost(selectedPairs);
+    const result = await sendChatPost(selectedPairs);
+
+    setChatSaved(true);
   };
 
   const submitMessage = async (e: FormEvent) => {
-    console.log("message!!");
     e.preventDefault();
+    if (isNowAnswering) {
+      alert("답변중에는 질문할 수 없습니다!");
+      return;
+    }
+
+    if (message === "") {
+      alert("메시지를 입력하세요.");
+      return;
+    }
+
+    setIsNowAnswering(true);
     setFormData({ prompt: message });
 
-    // 서버에 데이터 제출 후, 응답 받기
-    const response = await chat({ prompt: message });
-
+    setMessage("");
     setAChat((prevChat) => [
       ...prevChat,
       {
         question: message,
-        answer: response.bot,
+        answer: "",
         isUser: true,
         isChecked: false,
       },
     ]);
 
-    setMessage("");
+    // 서버에 데이터 제출 후, 응답 받기
+    const response = await chat({ prompt: message });
+
+    setAChat((prevChat) => {
+      let newChat = [...prevChat];
+      newChat[newChat.length - 1].answer = response.bot;
+      return newChat;
+    });
 
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({
@@ -64,6 +84,7 @@ const Chat = () => {
         inline: "nearest",
       });
     }
+    setIsNowAnswering(false);
   };
 
   const onMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,10 +113,27 @@ const Chat = () => {
         <LeftNavBar />
       </div>
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        <BtnSubmitSaveChat
-          checkCnt={checkCnt}
-          onClickHandler={onClickSaveChat}
-        />
+        {isChatSaved ? (
+          <>
+            <button
+              className="w-36 h-12 bg-blue-500 text-white rounded-lg"
+              onClick={() => {
+                setAChat([]);
+                setCheckCnt(0);
+                setChatSaved(false);
+                setFormData({ prompt: "" });
+                setMessage("");
+              }}
+            >
+              새 채팅 시작
+            </button>
+          </>
+        ) : (
+          <BtnSubmitSaveChat
+            checkCnt={checkCnt}
+            onClickHandler={onClickSaveChat}
+          />
+        )}
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
@@ -125,6 +163,7 @@ const Chat = () => {
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
                   <div className="flex flex-row justify-end w-full h-full">
                     <CircularCheckbox
+                      isDisabled={isChatSaved}
                       isChecked={chatLine.isChecked}
                       onCheckboxChange={() => onCheckboxChange(index)}
                     />
@@ -135,20 +174,31 @@ const Chat = () => {
           ))}
         </div>
       </div>
-      <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center dark dark:bg-vert-dark-gradient bg-vert-light-gradient">
+      <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center bg-vert-dark-gradient ">
         <form
           onSubmit={submitMessage}
           className="w-full max-w-[40%] flex items-center"
         >
-          <input
-            value={message}
-            onChange={onMessageChange}
-            className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs"
-            placeholder="메시지를 입력하새우"
-          />
+          {isChatSaved ? (
+            <input
+              onChange={onMessageChange}
+              className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
+              value={"새 채팅을 시작하세요"}
+              disabled
+            />
+          ) : (
+            <input
+              value={message}
+              onChange={onMessageChange}
+              className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs"
+              placeholder={"메시지를 입력하새우"}
+            />
+          )}
           <button
             type="submit"
-            className="rounded-xl bg-blue-500 text-white p-2 text-xs min-w-[50px]"
+            className={`rounded-xl text-white p-2 text-xs min-w-[50px] ${
+              message ? "bg-blue-500" : "bg-gray-500"
+            }`}
           >
             제출
           </button>

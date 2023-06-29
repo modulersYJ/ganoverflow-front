@@ -4,6 +4,7 @@ import CheckBoxIcon from "@mui/icons-material/Check";
 import CheckboxProps from "./interface";
 
 const CircularCheckbox: React.FC<CheckboxProps> = ({
+  isDisabled,
   isChecked,
   onCheckboxChange,
 }) => {
@@ -13,12 +14,22 @@ const CircularCheckbox: React.FC<CheckboxProps> = ({
 
   return (
     <label className="inline-flex items-center mt-4">
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={handleCheckboxChange}
-        className="hidden"
-      />
+      {isDisabled ? (
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+          className="hidden"
+          disabled
+        />
+      ) : (
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+          className="hidden"
+        />
+      )}
       <span className="relative  w-6 h-6 rounded-full  bg-gray-200 flex items-center justify-center">
         <span
           className={`absolute inset-0 rounded-full ${

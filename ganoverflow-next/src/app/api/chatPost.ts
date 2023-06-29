@@ -10,7 +10,11 @@ const API: AxiosInstance = axios.create({
 
 export const sendChatPost = async (
   selectedPairs: IChatMessage[]
-): Promise<{ msg: string }> => {
+): Promise<{ msg: string } | null> => {
+  if (selectedPairs.length === 0) {
+    return null;
+  }
+
   const response = await API.post("/", selectedPairs);
   return response.data;
 };

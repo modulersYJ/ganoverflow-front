@@ -1,6 +1,7 @@
 interface CheckboxProps {
-	isChecked: boolean;
-	onCheckboxChange: (isChecked: boolean) => void;
-  }
+  isDisabled: boolean;
+  isChecked: boolean;
+  onCheckboxChange: (isChecked: boolean) => void;
+}
 
 export default CheckboxProps;
