@@ -10,9 +10,9 @@ import {
 } from "react";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
-import LeftNavBar from "@/components/ui/Chat/LeftNavBar";
+
 import { chat } from "@/app/api/chat";
-import { sendChatPost } from "../api/chatPost";
+import { sendChatPost } from "./api/route";
 import { IChat } from "@/interfaces/chat";
 import { IChatMessage } from "@/interfaces/chat";
 // import { useRouter } from "next/navigation";
@@ -20,8 +20,6 @@ import { IChatMessage } from "@/interfaces/chat";
 export type ChatSavedStatus = "F" | "ING" | "T";
 
 const Chat = () => {
-  const modalRef = useRef<HTMLDialogElement>(null);
-
   const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
   const [isChatSavedStatus, setChatSavedStatus] =
     useState<ChatSavedStatus>("F");
@@ -57,7 +55,11 @@ const Chat = () => {
     });
 
     setIsModalOpen(false);
-    const result = await sendChatPost(title, selectedPairs);
+    const result = await sendChatPost({
+      title: title,
+      chatPair: selectedPairs,
+    });
+    console.log("client res", result);
 
     setChatSavedStatus("T");
   };
@@ -161,9 +163,6 @@ const Chat = () => {
       ) : (
         <></>
       )}
-      <div className="z-10 ">
-        <LeftNavBar />
-      </div>
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
         {isChatSavedStatus === "T" ? (
           <>
