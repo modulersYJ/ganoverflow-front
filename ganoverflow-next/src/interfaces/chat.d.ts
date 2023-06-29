@@ -3,8 +3,13 @@ export interface IChat {
 }
 
 export interface IChatMessage {
-  userMessage: string;
-  botMessage: string;
+  question: string;
+  answer: string;
   isUser: boolean;
   isChecked: boolean;
+}
+
+export interface IChatPost {
+  title: string;
+  chatPair: IChatMessage[];
 }
