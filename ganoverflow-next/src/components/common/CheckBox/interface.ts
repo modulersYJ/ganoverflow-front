@@ -1,5 +1,7 @@
+import { ChatSavedStatus } from "@/app/chat/page";
+
 interface CheckboxProps {
-  isDisabled: boolean;
+  isDisabled: ChatSavedStatus;
   isChecked: boolean;
   onCheckboxChange: (isChecked: boolean) => void;
 }

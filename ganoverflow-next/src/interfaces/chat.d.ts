@@ -8,3 +8,8 @@ export interface IChatMessage {
   isUser: boolean;
   isChecked: boolean;
 }
+
+export interface IChatPost {
+  title: string;
+  chatPair: IChatMessage[];
+}

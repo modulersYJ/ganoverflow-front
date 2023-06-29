@@ -14,7 +14,7 @@ const CircularCheckbox: React.FC<CheckboxProps> = ({
 
   return (
     <label className="inline-flex items-center mt-4">
-      {isDisabled ? (
+      {isDisabled === "T" || isDisabled === "ING" ? (
         <input
           type="checkbox"
           checked={isChecked}

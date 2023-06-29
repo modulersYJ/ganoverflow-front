@@ -17,12 +17,21 @@ import { IChat } from "@/interfaces/chat";
 import { IChatMessage } from "@/interfaces/chat";
 // import { useRouter } from "next/navigation";
 
+export type ChatSavedStatus = "F" | "ING" | "T";
+
 const Chat = () => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+
   const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
-  const [isChatSaved, setChatSaved] = useState(false);
+  const [isChatSavedStatus, setChatSavedStatus] =
+    useState<ChatSavedStatus>("F");
+
+  const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [aChat, setAChat] = useState<IChatMessage[]>([]);
   const [checkCnt, setCheckCnt] = useState<number>(0);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
 
@@ -31,15 +40,26 @@ const Chat = () => {
   });
 
   const onClickSaveChat = async (e: React.MouseEvent) => {
+    if (isNowAnswering) {
+      alert("답변중에는 저장할 수 없습니다!");
+      return;
+    }
+
     console.log("achat", aChat);
+
+    setChatSavedStatus("ING");
+    setIsModalOpen(true);
+  };
+
+  const onClickSubmitPost = async (e: React.MouseEvent) => {
     const selectedPairs = aChat.filter((aPair) => {
       return aPair.isChecked === true;
     });
 
-    console.log(selectedPairs);
-    const result = await sendChatPost(selectedPairs);
+    setIsModalOpen(false);
+    const result = await sendChatPost(title, selectedPairs);
 
-    setChatSaved(true);
+    setChatSavedStatus("T");
   };
 
   const submitMessage = async (e: FormEvent) => {
@@ -87,7 +107,11 @@ const Chat = () => {
     setIsNowAnswering(false);
   };
 
-  const onMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const onChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
@@ -109,18 +133,46 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-full">
+      {isModalOpen ? (
+        <div>
+          <div className="fixed inset-0 bg-black opacity-50 z-20"></div>
+          <dialog className="flex justify-between gap-1 px-20 py-10 mt-60 outline-none text-lg font-semibold backdrop:bg-black backdrop:opacity-90 rounded-md z-30">
+            <input
+              className="h-11 w-full"
+              onChange={onChangeTitle}
+              placeholder="저장할 대화 제목을 입력해주세요"
+            />
+            <button
+              onClick={onClickSubmitPost}
+              className="mx-auto px-5 py-2 w-1/3 bg-red-400 outline-none rounded-md"
+            >
+              제출
+            </button>
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+              className="mx-auto px-5 py-2 w-1/3  bg-red-400 outline-none rounded-md"
+            >
+              취소
+            </button>
+          </dialog>
+        </div>
+      ) : (
+        <></>
+      )}
       <div className="z-10 ">
         <LeftNavBar />
       </div>
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        {isChatSaved ? (
+        {isChatSavedStatus === "T" ? (
           <>
             <button
               className="w-36 h-12 bg-blue-500 text-white rounded-lg"
               onClick={() => {
                 setAChat([]);
                 setCheckCnt(0);
-                setChatSaved(false);
+                setChatSavedStatus("F");
                 setFormData({ prompt: "" });
                 setMessage("");
               }}
@@ -163,7 +215,7 @@ const Chat = () => {
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
                   <div className="flex flex-row justify-end w-full h-full">
                     <CircularCheckbox
-                      isDisabled={isChatSaved}
+                      isDisabled={isChatSavedStatus}
                       isChecked={chatLine.isChecked}
                       onCheckboxChange={() => onCheckboxChange(index)}
                     />
@@ -179,9 +231,9 @@ const Chat = () => {
           onSubmit={submitMessage}
           className="w-full max-w-[40%] flex items-center"
         >
-          {isChatSaved ? (
+          {isChatSavedStatus === "T" ? (
             <input
-              onChange={onMessageChange}
+              onChange={onChangeMessage}
               className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
               value={"새 채팅을 시작하세요"}
               disabled
@@ -189,7 +241,7 @@ const Chat = () => {
           ) : (
             <input
               value={message}
-              onChange={onMessageChange}
+              onChange={onChangeMessage}
               className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs"
               placeholder={"메시지를 입력하새우"}
             />
