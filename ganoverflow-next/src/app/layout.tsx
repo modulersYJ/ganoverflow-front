@@ -110,13 +110,6 @@ const Header = (): JSX.Element => {
         <div className="container mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-sapn-1">
             <Link href="/" className="flex items-center" passHref>
-              {/* <Image
-                src="/images/logo.png"
-                alt="Logo"
-                height={50}
-                width={50}
-                className="h-9 w-9"
-              /> */}
               <h1 className="logo-text ml-1 text-xl">Gan Overflow</h1>
             </Link>
           </div>

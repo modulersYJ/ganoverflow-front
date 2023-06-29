@@ -2,5 +2,5 @@
 
 // export const HOST = LOCAL_API_HOST;
 // export const HOST = "http://127.0.0.1:3100";
-export const HOST = "http://localhost:3100";
-// export const HOST = "https://api.ganoverflow.com";
+// export const HOST = "http://localhost:3100";
+export const HOST = "https://api.ganoverflow.com";
