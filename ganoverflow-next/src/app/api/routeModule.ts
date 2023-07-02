@@ -1,40 +1,76 @@
-import { NextResponse } from "next/server";
-import { HOST } from "./env/HOST";
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
+import { IAuthData, fetchAccessToken } from "./jwt";
 
-const API: AxiosInstance = axios.create({
-  baseURL: `${HOST}/`,
-  withCredentials: true, // 쿠키를 보내기 위해 설정
-});
+export async function POST(
+  API: AxiosInstance,
+  endPoint: string,
+  body: any,
+  headers?: any
+): Promise<any> {
+  const response = headers
+    ? await API.post(endPoint, body, headers)
+    : await API.post(endPoint, body);
 
-export async function POST(endPoint: string, body: any): Promise<string> {
-  const response = API.post(endPoint, body);
-
-  const res = await response;
-  if (res.status !== 201) {
-    console.log(res);
-    return `${res.status}: 오류좀보소`;
+  if (response.status !== 201 && response.status !== 204) {
+    return `${response.status}: 오류좀보소`;
   }
-  console.log(res);
-  return `${res}`;
+  console.log("IN POST", response);
+  return response;
 }
 
-export async function GET(endPoint: string) {
+//Access Token을 헤더에 넣어서 보내는 POST
+export async function AuthPOST(
+  API: AxiosInstance,
+  endPoint: string,
+  body: any,
+  authData: IAuthData
+): Promise<string> {
+  try {
+    const response = await API.post(endPoint, body, {
+      headers: {
+        Authorization: `Bearer ${authData.accessToken}`,
+      },
+    });
+
+    const res = response.data;
+    if (res.status !== 201 && res.status !== 204) {
+      console.log(res);
+      return `${res.status}: 오류좀보소`;
+    }
+    console.log(res);
+    return `${res}`;
+  } catch (error: any) {
+    if (error.response && error.response.data === "Expired token") {
+      // Access 토큰이 만료된 경우, 새로운 Access 토큰을 발급 후 재시도
+      const newAccessToken = await fetchAccessToken(authData.userId);
+      return AuthPOST(API, endPoint, body, {
+        accessToken: newAccessToken,
+        userId: authData.userId,
+      });
+    } else {
+      throw error;
+    }
+  }
+}
+
+export async function GET(
+  endPoint: string,
+  body?: any
+  // headers?: any
+): Promise<any> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
-
   const apiKey = process.env.DATA_API_KEY;
-
   if (apiKey) {
     headers["API-Key"] = apiKey;
   }
 
-  const res = await fetch(`${HOST}/${endPoint}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/${endPoint}`, {
     headers,
     next: { revalidate: 60 },
+    body: body ? JSON.stringify(body) : null,
   });
   const data = await res.json();
-  console.log("@@@@@@@@@@@@@@@ GET ROOT", data);
   return data;
 }

@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { register } from "@/app/api/accounts";
+import { register } from "./api/route";
 import { IRegister } from "@/interfaces/accounts";
 import InputField from "@/components/ui/Accounts/InputField";
 import Checkbox from "@/components/ui/Accounts/Checkbox";
@@ -54,10 +54,12 @@ const RegisterPage = () => {
         ...formData,
         // phone_num: formData.phone_num.replace(/^0/, "+82-"),
       };
-      await register(formattedData);
+      const registerRes = await register(formattedData);
       router.push("/accounts/login");
+      return registerRes;
     } catch (error: any) {
       alert(`회원가입 실패!, ${error}`);
+      throw error;
     }
   };
 

@@ -1,17 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import TERMS from "@/components/terms.json";
-import { userState } from "@/atoms/user";
-// import { useRecoilValue, useSetRecoilState } from "recoil";
-import { logout } from "@/app/api/accounts";
-import { useRouter } from "next/router";
+
+import { logout } from "./accounts/login/api/route";
+
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import { RecoilRoot } from "recoil";
+
+import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
+import { userState } from "@/atoms/user";
+import { accessTokenState } from "@/atoms/jwt";
+import { getLocalStorageItem } from "./utils/common/localStorage";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -74,7 +78,19 @@ const CapsulizedHead = (): JSX.Element => {
 
 const Header = (): JSX.Element => {
   const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
-  // const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    const userData = getLocalStorageItem("userData");
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
+
+  const onClickSetLogout = async () => {
+    setUser(null);
+  };
+  console.log("userData: ", user);
 
   const onClickHamburger = () => {
     setIsOffCanvasOpen(!isOffCanvasOpen);
@@ -99,10 +115,7 @@ const Header = (): JSX.Element => {
     return () => {
       document.removeEventListener("click", closeMenuOnClickOutside);
     };
-  }, [
-    isOffCanvasOpen,
-    // user
-  ]);
+  }, [isOffCanvasOpen, user]);
 
   return (
     <header>
@@ -157,34 +170,24 @@ const Header = (): JSX.Element => {
           <div className="col-sapn-1 self-center">
             <div className="self-center">
               <div className="hidden md:flex text-white font-bold hover:text-gray-400">
-                {
-                  // user === null
-                  null === null ? (
-                    <Link href="/accounts/login" passHref>
-                      로그인
-                    </Link>
-                  ) : (
-                    // <Link href="/" passHref>
-                    //   {user?.nickname}
-                    //   <span className="text-xs">님</span>
-                    // </Link>
+                {user === null ? (
+                  <Link href="/accounts/login" passHref>
+                    로그인
+                  </Link>
+                ) : (
+                  <div>
                     <UserDropdownButton
-                      nickname={
-                        "need to fix"
-                        // user.nickname
-                      }
+                      userData={user}
+                      onClickSetLogout={onClickSetLogout}
                     />
-                  )
-                }
+                  </div>
+                )}
               </div>
               <HamburgerButton onClickButton={onClickHamburger} />
               <SideCanvas
                 isOffCanvasOpen={isOffCanvasOpen}
                 onClickClose={onClickHamburger}
-                user={
-                  // user
-                  "need to fix"
-                }
+                user={user}
               />
             </div>
           </div>
@@ -194,21 +197,32 @@ const Header = (): JSX.Element => {
   );
 };
 
-const UserDropdownButton = ({ nickname }: { nickname: string }) => {
+const UserDropdownButton = ({
+  userData,
+  onClickSetLogout,
+}: {
+  userData: { id: string; nickname: string };
+  onClickSetLogout: () => void;
+}) => {
+  const setAccessState = useSetRecoilState(accessTokenState);
   const router = useRouter();
-  // const setUser = useSetRecoilState(userState);
 
   const onClickLogOut = async () => {
-    const response = await logout();
-    // setUser(null); // Recoil 유저 상태 업데이트
+    console.log("유저아이디:", userData.id);
+    const response = await logout(userData.id);
+
+    onClickSetLogout();
+    setAccessState(null);
+
     router.push("/");
+    return response;
   };
 
   return (
     <div className="relative">
       <Link href="/" passHref>
         <button className="text-white font-bold hover:text-gray-400">
-          {nickname}
+          {userData?.nickname}
           <span className="text-xs">님</span>
         </button>
       </Link>

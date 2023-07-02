@@ -1,10 +1,7 @@
 import { atom } from "recoil";
+import { getLocalStorageItem } from "@/app/utils/common/localStorage";
 
-export interface INickname {
-  nickname: string;
-}
-
-export const userState = atom<INickname | null>({
+export const userState = atom({
   key: "userState",
   default: null,
 });
