@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import TERMS from "@/components/terms.json";
 
-import { logout } from "./accounts/login/api/route";
+import { logout } from "./accounts/login/api/login";
 
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";

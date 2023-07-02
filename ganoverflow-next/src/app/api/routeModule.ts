@@ -1,15 +1,13 @@
 import { AxiosInstance } from "axios";
-import { IAuthData, fetchAccessToken } from "./jwt";
+import { IAuthData, fetchAccessToken } from "@/app/api/jwt";
 
 export async function POST(
   API: AxiosInstance,
   endPoint: string,
-  body: any,
+  body?: any,
   headers?: any
 ): Promise<any> {
-  const response = headers
-    ? await API.post(endPoint, body, headers)
-    : await API.post(endPoint, body);
+  const response = await API.post(endPoint, body, headers);
 
   if (response.status !== 201 && response.status !== 204) {
     return `${response.status}: 오류좀보소`;
@@ -53,11 +51,7 @@ export async function AuthPOST(
   }
 }
 
-export async function GET(
-  endPoint: string,
-  body?: any
-  // headers?: any
-): Promise<any> {
+export async function GET(endPoint: string): Promise<any> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -69,7 +63,7 @@ export async function GET(
   const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/${endPoint}`, {
     headers,
     next: { revalidate: 60 },
-    body: body ? JSON.stringify(body) : null,
+    // body: body ? JSON.stringify(body) : null,
   });
   const data = await res.json();
   return data;

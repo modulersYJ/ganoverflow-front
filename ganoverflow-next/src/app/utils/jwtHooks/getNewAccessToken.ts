@@ -34,7 +34,7 @@ export const useAuthDataHook = async (): Promise<IAuthData> => {
   const accessToken = await getNewAccessTokenHook();
   const user = await getLocalStorageItem("userData");
 
-  if (user === null) {
+  if (user === null || user === undefined) {
     return { accessToken: null, userId: null };
   }
   return { accessToken: accessToken, userId: user.id };

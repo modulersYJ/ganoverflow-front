@@ -1,21 +1,35 @@
 import Cookies from "js-cookie";
-import { logout } from "../accounts/login/api/route";
+import { logout } from "../accounts/login/api/login";
 import axios, { AxiosInstance } from "axios";
-import { POST } from "./routeModule";
+import { POST } from "@/app/api/routeModule";
 import { authAPI as API } from "./axiosInstanceManager";
+import { type } from "os";
 
 export interface IAuthData {
   accessToken: string | null | undefined;
   userId: string | null;
 }
 
+export const GenerateAuthHeader = (authData: IAuthData) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${authData.accessToken}`,
+    },
+  };
+};
+
 export const fetchAccessToken = async (
   userId: string | null
 ): Promise<string> => {
   try {
-    const response = await POST(API, "refresh", {
-      token: Cookies.get("refresh_token"),
-    });
+    const response = await POST(
+      API,
+      "refresh",
+      {
+        token: Cookies.get("refresh_token"),
+      },
+      null
+    );
     const newAccessToken: string = response.data;
     return newAccessToken;
   } catch (error: any) {

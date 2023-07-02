@@ -2,13 +2,14 @@
 
 import { useState, ChangeEvent, FormEvent, useRef, useEffect } from "react";
 
-import { chat } from "./api/route";
-import { sendChatPost } from "./api/route";
 import { IChat, IChatPair } from "@/interfaces/chat";
-// import { useRouter } from "next/navigation";
 import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
+import { chatAPI, chatPostAPI } from "../api/axiosInstanceManager";
+import { GenerateAuthHeader } from "../api/jwt";
+import { sendChat, sendChatPost } from "./api/chat";
+// import { sendChatPost } from "./api/route";
 
 export type ChatSavedStatus = "F" | "ING" | "T";
 
@@ -44,18 +45,16 @@ const Chat = () => {
   };
 
   const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
-    console.log("저장 제출시작!");
     const selectedPairs = aChat.filter((aPair) => {
       return aPair.isChecked === true;
     });
-    console.log("저장 제출중!");
-    const result = await sendChatPost(
-      {
-        title: title,
-        chatPair: selectedPairs,
-      },
-      await authData
-    );
+    const chatPostBody = {
+      title: title,
+      chatPair: selectedPairs,
+    };
+
+    const result = await sendChatPost(chatPostBody, await authData);
+
     console.log("client res", result);
     setIsModalOpen(false);
     setChatSavedStatus("T");
@@ -88,11 +87,12 @@ const Chat = () => {
     ]);
 
     // 서버에 데이터 제출 후, 응답 받기
-    const response = await chat({ prompt: message });
+    const response = await sendChat({ prompt: message });
+    // const response = await chatAPI.post("/", { prompt: message });
 
     setAChat((prevChat) => {
       let newChat = [...prevChat];
-      newChat[newChat.length - 1].answer = response.bot;
+      newChat[newChat.length - 1].answer = response.data.bot;
       return newChat;
     });
 
@@ -268,17 +268,15 @@ const BtnSubmitSaveChat = ({
   return (
     <div>
       {checkCnt > 0 ? (
-        <button className="rounded-xl border-b-4 border-violet-800 h-14 flex flex-col justify-center opacity-85 ">
+        <button
+          className="rounded-xl border-b-4 border-violet-800 h-14 flex flex-col justify-center opacity-85 "
+          onClick={onClickHandler}
+        >
           <div className="m-4 flex flex-row">
             <div className="rounded-full w-8 h-7 text-indigo-700 text-sm font-bold bg-violet-700">
               <div className="mt-1 text-white">+{checkCnt}</div>
             </div>
-            <div
-              className="mt-1 ml-3 text-sm font-semibold"
-              onClick={onClickHandler}
-            >
-              채팅 저장하기
-            </div>
+            <div className="mt-1 ml-3 text-sm font-semibold">채팅 저장하기</div>
           </div>
         </button>
       ) : (

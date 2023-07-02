@@ -7,6 +7,7 @@ import {
   setLocalStorageItem,
 } from "@/app/utils/common/localStorage";
 import { authAPI as API } from "@/app/api/axiosInstanceManager";
+import { userAPI } from "@/app/api/axiosInstanceManager";
 
 // response interceptor 추가
 API.interceptors.response.use(
@@ -36,7 +37,8 @@ export const login = async (
   id: string;
   access_token: string;
 }> => {
-  const response = await POST(API, "login", userData);
+  const response = await POST(API, "login", userData, null);
+  // const response = await API.post("/login", userData);
 
   setLocalStorageItem("userData", {
     id: response.data.id,
@@ -46,20 +48,27 @@ export const login = async (
   return response.data;
 };
 
+export const register = async (userData: IRegister) => {
+  const res = await POST(userAPI, "register", userData, null);
+  return res;
+};
+
 export const refreshAccessToken = async () => {
-  await API.post("/refresh");
+  await POST(userAPI, "refresh", null, null);
 };
 
 export const logout = async (userId: string): Promise<void> => {
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${Cookies.get("refresh_token")}`,
-    },
-  };
-
-  const response = await POST(API, "logout", { userId: userId }, headers);
+  const response = await POST(
+    API,
+    "logout",
+    { userId: userId },
+    {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("refresh_token")}`,
+      },
+    }
+  );
   removeUserData();
   Cookies.remove("refresh_token");
   return response;
 };
-
