@@ -1,32 +1,26 @@
 "use client";
 
-import {
-  useState,
-  ChangeEvent,
-  FormEvent,
-  useRef,
-  useEffect,
-  ReactElement,
-} from "react";
+import { useState, ChangeEvent, FormEvent, useRef, useEffect } from "react";
+
+import { chat } from "./api/route";
+import { sendChatPost } from "./api/route";
+import { IChat, IChatPair } from "@/interfaces/chat";
+// import { useRouter } from "next/navigation";
+import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
-
-import { chat } from "@/app/api/chat";
-import { sendChatPost } from "./api/route";
-import { IChat } from "@/interfaces/chat";
-import { IChatMessage } from "@/interfaces/chat";
-// import { useRouter } from "next/navigation";
 
 export type ChatSavedStatus = "F" | "ING" | "T";
 
 const Chat = () => {
+  const authData = useAuthDataHook();
   const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
   const [isChatSavedStatus, setChatSavedStatus] =
     useState<ChatSavedStatus>("F");
 
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [aChat, setAChat] = useState<IChatMessage[]>([]);
+  const [aChat, setAChat] = useState<IChatPair[]>([]);
   const [checkCnt, setCheckCnt] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -37,7 +31,7 @@ const Chat = () => {
     prompt: "",
   });
 
-  const onClickSaveChat = async (e: React.MouseEvent) => {
+  const onClickSaveChatpostInit = async (e: React.MouseEvent) => {
     if (isNowAnswering) {
       alert("답변중에는 저장할 수 없습니다!");
       return;
@@ -49,22 +43,25 @@ const Chat = () => {
     setIsModalOpen(true);
   };
 
-  const onClickSubmitPost = async (e: React.MouseEvent) => {
+  const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
+    console.log("저장 제출시작!");
     const selectedPairs = aChat.filter((aPair) => {
       return aPair.isChecked === true;
     });
-
-    setIsModalOpen(false);
-    const result = await sendChatPost({
-      title: title,
-      chatPair: selectedPairs,
-    });
+    console.log("저장 제출중!");
+    const result = await sendChatPost(
+      {
+        title: title,
+        chatPair: selectedPairs,
+      },
+      await authData
+    );
     console.log("client res", result);
-
+    setIsModalOpen(false);
     setChatSavedStatus("T");
   };
 
-  const submitMessage = async (e: FormEvent) => {
+  const submitMsg = async (e: FormEvent) => {
     e.preventDefault();
     if (isNowAnswering) {
       alert("답변중에는 질문할 수 없습니다!");
@@ -145,16 +142,16 @@ const Chat = () => {
               placeholder="저장할 대화 제목을 입력해주세요"
             />
             <button
-              onClick={onClickSubmitPost}
-              className="mx-auto px-5 py-2 w-1/3 bg-red-400 outline-none rounded-md"
+              onClick={onClickSaveChatpostExec}
+              className="mx-auto px-5 py-2 w-1/3 bg-blue-400 outline-none rounded-md"
             >
-              제출
+              저장
             </button>
             <button
               onClick={() => {
                 setIsModalOpen(false);
               }}
-              className="mx-auto px-5 py-2 w-1/3  bg-red-400 outline-none rounded-md"
+              className="mx-auto px-5 py-2 w-1/3  bg-blue-200 outline-none rounded-md"
             >
               취소
             </button>
@@ -182,7 +179,7 @@ const Chat = () => {
         ) : (
           <BtnSubmitSaveChat
             checkCnt={checkCnt}
-            onClickHandler={onClickSaveChat}
+            onClickHandler={onClickSaveChatpostInit}
           />
         )}
       </div>
@@ -227,7 +224,7 @@ const Chat = () => {
       </div>
       <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center bg-vert-dark-gradient ">
         <form
-          onSubmit={submitMessage}
+          onSubmit={submitMsg}
           className="w-full max-w-[40%] flex items-center"
         >
           {isChatSavedStatus === "T" ? (

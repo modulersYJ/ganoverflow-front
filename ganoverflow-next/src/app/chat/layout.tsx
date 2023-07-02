@@ -1,12 +1,12 @@
 import React from "react";
-import { getChatPosts } from "./api/route";
+import { getAllChatPosts } from "./api/route";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const chatPosts = await getChatPosts();
+  const chatPosts = await getAllChatPosts();
   console.log("@@@@@@@@@@@@@@@@@Layout", chatPosts);
   return (
     <div>

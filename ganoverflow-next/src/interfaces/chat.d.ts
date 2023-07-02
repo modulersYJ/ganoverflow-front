@@ -2,14 +2,14 @@ export interface IChat {
   prompt: string;
 }
 
-export interface IChatMessage {
+export interface IChatPair {
   question: string;
   answer: string;
   isUser: boolean;
   isChecked: boolean;
 }
 
-export interface IChatPost {
+export interface IChatPostSend {
   title: string;
-  chatPair: IChatMessage[];
+  chatPair: IChatPair[];
 }

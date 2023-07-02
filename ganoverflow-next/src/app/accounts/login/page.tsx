@@ -2,17 +2,21 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/app/api/accounts";
+import { login } from "./api/route";
 import { ILogIn } from "@/interfaces/accounts";
+import Link from "next/link";
 import SocialLoginButton from "@/components/ui/Accounts/SocialLoginButton";
 import InputField from "@/components/ui/Accounts/InputField";
 
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { accessTokenState } from "@/atoms/jwt";
 import { userState } from "@/atoms/user";
-import Link from "next/link";
+import { getLocalStorageItem } from "@/app/utils/common/localStorage";
 
 const Login = () => {
-  const setUser = useSetRecoilState(userState);
+  const access_token = useRecoilValue(accessTokenState);
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const setUserState = useSetRecoilState(userState);
 
   const [formData, setFormData] = useState<ILogIn>({
     username: "",
@@ -24,11 +28,15 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const onClickLoginSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const response = await login(formData);
-      setUser(response); // Recoil 유저 상태 업데이트
+      console.log("res login", response);
+      setAccessToken(response.access_token); // Recoil 유저 상태 업데이트
+      console.log("access_token state", access_token);
+
+      setUserState(getLocalStorageItem("userData"));
       router.push("/");
     } catch (error) {
       alert(`로그인 실패!, ${error}`);
@@ -45,7 +53,7 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={onClickLoginSubmit}>
             <div>
               <InputField
                 label="아이디"
