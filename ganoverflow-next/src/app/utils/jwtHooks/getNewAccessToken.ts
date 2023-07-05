@@ -17,7 +17,8 @@ export const getNewAccessTokenHook = async () => {
         : null;
 
       if (!userId) {
-        throw new Error("User id is not found");
+        console.log("사용자 ID를 찾을 수 없습니다!");
+        return;
       }
 
       const newAT = await fetchAccessToken(userId);
