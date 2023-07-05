@@ -1,18 +1,45 @@
 "use client";
 
-import { ChangeEvent, InputHTMLAttributes, useState } from "react";
+import { useState } from "react";
+import { getComments, postComment } from "../api/chatposts";
+import { useAuthDataHook } from "@/app/utils/jwtHooks/getNewAccessToken";
+import { useRouter } from "next/navigation";
 
-export function CommentBox({ comments }: { comments: any }) {
-  const commentCount = comments?.length;
-  const [commentData, setCommentData] = useState<string>("");
+export async function CommentBox({ chatPostId }: { chatPostId: string }) {
+  const authData = useAuthDataHook();
+  const router = useRouter();
+  // const commentCount = comments?.length;
+  const commentCount = 0;
+  const [comments, setComments] = useState([]);
+  const [commentData, setCommentData] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentData(e.target.value);
   };
+
+  const handleSubmit = async () => {
+    if (commentData === "") {
+      alert("댓글을 입력하세요");
+      return;
+    }
+    const res = await postComment(commentData, await authData, chatPostId);
+    if (res.status === 201) {
+      setCommentData("");
+      alert("등록이 완료되었습니다.");
+      router.refresh();
+    } else {
+      console.log("res ", res);
+      alert("등록 실패");
+    }
+  };
+
   return (
     <>
       <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
       <div className="comments-commentbox border border-stone-500">
-        {comments}
+        {/* {comments?.map((comment, idx) => {
+          return <div key={idx}>{comment}</div>;
+        })} */}
       </div>
       <div className="comments-write-box flex flex-col">
         <input
@@ -23,7 +50,10 @@ export function CommentBox({ comments }: { comments: any }) {
           placeholder="댓글을 입력해 주세요"
         />
         <div className="flex justify-end">
-          <button className="comment-submit w-32 h-8 bg-indigo-400 rounded-xl">
+          <button
+            className="comment-submit w-32 h-8 bg-indigo-400 rounded-xl"
+            onClick={handleSubmit}
+          >
             등록
           </button>
         </div>

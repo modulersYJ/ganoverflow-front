@@ -8,7 +8,7 @@ export default async function PostDetailPage() {
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId);
-  console.log(postData);
+  // console.log(postData);
   return (
     <div className="grid">
       <article className="post-detail-main w-3/5 place-self-center">
@@ -47,7 +47,7 @@ export default async function PostDetailPage() {
               );
             })}
         </div>
-        <CommentBox comments={postData?.comments} />
+        <CommentBox chatPostId={chatPostId} />
       </article>
     </div>
   );

@@ -14,13 +14,15 @@ export default async function PostPage({
       <div className="grid">
         <table className="w-3/5 place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
-            <th className="p-2.5">번호</th>
-            <th className="p-2.5">카테고리</th>
-            <th className="p-2.5">제목</th>
-            <th className="p-2.5">글쓴이</th>
-            <th className="p-2.5">작성일</th>
-            <th className="p-2.5">댓글</th>
-            <th className="p-2.5">추천</th>
+            <tr>
+              <th className="p-2.5">번호</th>
+              <th className="p-2.5">카테고리</th>
+              <th className="p-2.5">제목</th>
+              <th className="p-2.5">글쓴이</th>
+              <th className="p-2.5">작성일</th>
+              <th className="p-2.5">댓글</th>
+              <th className="p-2.5">추천</th>
+            </tr>
           </thead>
           <tbody>
             {allPosts.length > 0 ? (
