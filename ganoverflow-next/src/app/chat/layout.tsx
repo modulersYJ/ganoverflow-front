@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { getAllChatPosts } from "./api/chat";
+import { getAllChatPostsByUserId } from "./api/chat";
 import { chatPostAPI } from "../api/axiosInstanceManager";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const chatPosts = await getAllChatPosts();
+  const chatPosts = await getAllChatPostsByUserId();
   // const chatPosts = await chatPostAPI.get("/");
 
   console.log("@@@@@@@@@@@@@@@@@Layout", chatPosts);

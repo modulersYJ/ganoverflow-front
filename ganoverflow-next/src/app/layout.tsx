@@ -139,18 +139,18 @@ const Header = (): JSX.Element => {
               <Link
                 href="/"
                 target="_blank"
-                rel="noreferrer"
+                // rel="noreferrer"
                 className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
                 머시기
               </Link>
               <Link
-                href="/"
+                href="/posts"
                 className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
               >
-                커뮤니티
+                게시판
               </Link>
               <Link
                 href="/"
