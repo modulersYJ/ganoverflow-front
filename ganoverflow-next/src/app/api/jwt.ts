@@ -25,9 +25,7 @@ export const fetchAccessToken = async (
     const response = await POST(
       API,
       "refresh",
-      {
-        token: Cookies.get("refresh_token"),
-      },
+      null, // refresh_token은 credentials로 쿠키에 담아 전송됨.
       null
     );
     const newAccessToken: string = response.data;
