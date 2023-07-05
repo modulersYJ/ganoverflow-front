@@ -86,11 +86,10 @@ const Chat = () => {
 
     // 서버에 데이터 제출 후, 응답 받기
     const response = await sendChat({ prompt: message });
-    // const response = await chatAPI.post("/", { prompt: message });
 
     setAChat((prevChat) => {
       let newChat = [...prevChat];
-      newChat[newChat.length - 1].answer = response.data.bot;
+      newChat[newChat.length - 1].answer = response.bot;
       return newChat;
     });
 
