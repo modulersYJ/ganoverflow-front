@@ -6,8 +6,6 @@ import { IChat, IChatPair } from "@/interfaces/chat";
 import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
-import { chatAPI, chatPostAPI } from "../api/axiosInstanceManager";
-import { GenerateAuthHeader } from "../api/jwt";
 import { sendChat, sendChatPost } from "./api/chat";
 // import { sendChatPost } from "./api/route";
 

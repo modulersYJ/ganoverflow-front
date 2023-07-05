@@ -8,6 +8,7 @@ import {
 } from "@/app/utils/common/localStorage";
 import { authAPI as API } from "@/app/api/axiosInstanceManager";
 import { userAPI } from "@/app/api/axiosInstanceManager";
+import { GenerateAuthHeader } from "@/app/api/jwt";
 
 // response interceptor 추가
 API.interceptors.response.use(
@@ -58,17 +59,7 @@ export const refreshAccessToken = async () => {
 };
 
 export const logout = async (userId: string): Promise<void> => {
-  const response = await POST(
-    API,
-    "logout",
-    { userId: userId },
-    {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("refresh_token")}`,
-      },
-    }
-  );
+  const response = await POST(API, "logout", { userId }, null);
   removeUserData();
-  Cookies.remove("refresh_token");
   return response;
 };
