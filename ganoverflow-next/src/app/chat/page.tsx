@@ -189,7 +189,7 @@ const Chat = () => {
                 index % 2 === 0 ? "bg-gray-700" : "bg-gray-800" // 홀짝 배경색 변경
               } flex flex-row`}
             >
-              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 lg:w-2/5 m-auto">
+              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 md:w-2/5 m-auto">
                 <div className="chatPairBox w-full flex flex-col justify-center self-center">
                   <div
                     key={index}
@@ -222,7 +222,7 @@ const Chat = () => {
       <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center bg-vert-dark-gradient ">
         <form
           onSubmit={submitMsg}
-          className="w-full max-w-[40%] flex items-center"
+          className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
         >
           {isChatSavedStatus === "T" ? (
             <input
