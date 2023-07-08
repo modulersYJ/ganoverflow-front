@@ -7,28 +7,35 @@ import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
 import { sendChat, sendChatPost } from "./api/chat";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "@/atoms/jwt";
+import {
+  isNowAnsweringState,
+  chatSavedStatusState,
+  titleState,
+  questionInputState,
+  chatPairsState,
+  checkCntState,
+  isModalOpenState,
+  formDataState,
+} from "@/atoms/chat";
 // import { sendChatPost } from "./api/route";
-
-export type ChatSavedStatus = "F" | "ING" | "T";
 
 const Chat = () => {
   const authData = useAuthDataHook();
-  const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
-  const [isChatSavedStatus, setChatSavedStatus] =
-    useState<ChatSavedStatus>("F");
 
-  const [title, setTitle] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [aChat, setAChat] = useState<IChatPair[]>([]);
-  const [checkCnt, setCheckCnt] = useState<number>(0);
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isNowAnswering, setIsNowAnswering] =
+    useRecoilState(isNowAnsweringState);
+  const [chatSavedStatus, setChatSavedStatus] =
+    useRecoilState(chatSavedStatusState);
+  const [title, setTitle] = useRecoilState(titleState);
+  const [questionInput, setQuestionInput] = useRecoilState(questionInputState);
+  const [chatPairs, setChatPairs] = useRecoilState(chatPairsState);
+  const [checkCnt, setCheckCnt] = useRecoilState(checkCntState);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(isModalOpenState);
+  const [formData, setFormData] = useRecoilState(formDataState);
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
-
-  const [formData, setFormData] = useState<IChat>({
-    prompt: "",
-  });
 
   const onClickSaveChatpostInit = async (e: React.MouseEvent) => {
     if (isNowAnswering) {
@@ -36,14 +43,14 @@ const Chat = () => {
       return;
     }
 
-    console.log("achat", aChat);
+    console.log("chatPairs", chatPairs);
 
     setChatSavedStatus("ING");
     setIsModalOpen(true);
   };
 
   const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
-    const selectedPairs = aChat.filter((aPair) => {
+    const selectedPairs = chatPairs.filter((aPair) => {
       return aPair.isChecked === true;
     });
     const chatPostBody = {
@@ -58,26 +65,33 @@ const Chat = () => {
     setChatSavedStatus("T");
   };
 
+  const onClickNewChatBtn = async (e: React.MouseEvent) => {
+    setChatPairs([]);
+    setCheckCnt(0);
+    setChatSavedStatus("F");
+    setFormData({ prompt: "" });
+    setQuestionInput("");
+  };
+
   const submitMsg = async (e: FormEvent) => {
     e.preventDefault();
     if (isNowAnswering) {
       alert("답변중에는 질문할 수 없습니다!");
       return;
     }
-
-    if (message === "") {
+    if (questionInput === "") {
       alert("메시지를 입력하세요.");
       return;
     }
 
     setIsNowAnswering(true);
-    setFormData({ prompt: message });
+    setFormData({ prompt: questionInput });
 
-    setMessage("");
-    setAChat((prevChat) => [
+    setQuestionInput("");
+    setChatPairs((prevChat) => [
       ...prevChat,
       {
-        question: message,
+        question: questionInput,
         answer: "",
         isUser: true,
         isChecked: false,
@@ -85,11 +99,14 @@ const Chat = () => {
     ]);
 
     // 서버에 데이터 제출 후, 응답 받기
-    const response = await sendChat({ prompt: message });
+    const response = await sendChat({ prompt: questionInput });
 
-    setAChat((prevChat) => {
+    setChatPairs((prevChat) => {
       let newChat = [...prevChat];
-      newChat[newChat.length - 1].answer = response.bot;
+      newChat[newChat.length - 1] = {
+        ...newChat[newChat.length - 1],
+        answer: response.bot,
+      };
       return newChat;
     });
 
@@ -108,18 +125,21 @@ const Chat = () => {
   };
 
   const onChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
+    setQuestionInput(e.target.value);
   };
 
   // 체크박스 카운트 (for )
   const onCheckboxChange = (index: number) => {
-    setAChat((prevChat) => {
-      const newChat = [...prevChat];
-      newChat[index].isChecked = !newChat[index].isChecked;
-      return newChat;
+    setChatPairs((prevChatPairs) => {
+      const newChatPairs = [...prevChatPairs];
+      newChatPairs[index] = {
+        ...newChatPairs[index],
+        isChecked: !newChatPairs[index].isChecked,
+      };
+      return newChatPairs;
     });
     setCheckCnt(
-      (prevCheckCnt) => prevCheckCnt + (aChat[index].isChecked ? 1 : -1)
+      (prevCheckCnt) => prevCheckCnt + (chatPairs[index].isChecked ? -1 : 1)
     );
   };
 
@@ -158,17 +178,11 @@ const Chat = () => {
         <></>
       )}
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        {isChatSavedStatus === "T" ? (
+        {chatSavedStatus === "T" ? (
           <>
             <button
               className="w-36 h-12 bg-blue-500 text-white rounded-lg"
-              onClick={() => {
-                setAChat([]);
-                setCheckCnt(0);
-                setChatSavedStatus("F");
-                setFormData({ prompt: "" });
-                setMessage("");
-              }}
+              onClick={onClickNewChatBtn}
             >
               새 채팅 시작
             </button>
@@ -182,7 +196,7 @@ const Chat = () => {
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
-          {aChat.map((chatLine, index) => (
+          {chatPairs.map((chatLine, index) => (
             <div
               key={index}
               className={`w-full py-5 ${
@@ -208,7 +222,7 @@ const Chat = () => {
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
                   <div className="flex flex-row justify-end w-full h-full">
                     <CircularCheckbox
-                      isDisabled={isChatSavedStatus}
+                      isDisabled={chatSavedStatus}
                       isChecked={chatLine.isChecked}
                       onCheckboxChange={() => onCheckboxChange(index)}
                     />
@@ -224,7 +238,7 @@ const Chat = () => {
           onSubmit={submitMsg}
           className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
         >
-          {isChatSavedStatus === "T" ? (
+          {chatSavedStatus === "T" ? (
             <input
               onChange={onChangeMessage}
               className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
@@ -233,7 +247,7 @@ const Chat = () => {
             />
           ) : (
             <input
-              value={message}
+              value={questionInput}
               onChange={onChangeMessage}
               className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs"
               placeholder={"메시지를 입력하새우"}
@@ -242,7 +256,7 @@ const Chat = () => {
           <button
             type="submit"
             className={`rounded-xl text-white p-2 text-xs min-w-[50px] ${
-              message ? "bg-blue-500" : "bg-gray-500"
+              questionInput ? "bg-blue-500" : "bg-gray-500"
             }`}
           >
             제출

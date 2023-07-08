@@ -5,9 +5,9 @@ export async function POST(
   API: AxiosInstance,
   endPoint: string,
   body?: any,
-  headers?: any
+  authHeaders?: any
 ): Promise<any> {
-  const response = await API.post(endPoint, body, headers);
+  const response = await API.post(endPoint, body, authHeaders);
 
   if (response.status !== 201 && response.status !== 204) {
     return `${response.status}: 오류좀보소`;
@@ -51,17 +51,24 @@ export async function AuthPOST(
   }
 }
 
-export async function GET(endPoint: string): Promise<any> {
-  const headers: Record<string, string> = {
+export async function GET(
+  endPoint: string,
+  params?: string,
+  headers?: any
+): Promise<any> {
+  const NoHeaders: Record<string, string> = {
     "Content-Type": "application/json",
   };
-  const apiKey = process.env.DATA_API_KEY;
-  if (apiKey) {
-    headers["API-Key"] = apiKey;
-  }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/${endPoint}`, {
-    headers,
+  console.log("GET authHeaders", headers);
+
+  const reqPath = params
+    ? `${process.env.NEXT_PUBLIC_HOST}/${endPoint}/${params}`
+    : `${process.env.NEXT_PUBLIC_HOST}/${endPoint}`;
+
+  const res = await fetch(reqPath, {
+    method: "GET",
+    ...headers,
     next: { revalidate: 60 },
     // body: body ? JSON.stringify(body) : null,
   });
