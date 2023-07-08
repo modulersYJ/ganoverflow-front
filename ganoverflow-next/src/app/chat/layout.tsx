@@ -1,6 +1,6 @@
 "use client";
-import React, { MouseEventHandler, useEffect, useState } from "react";
-import { getAllChatPosts, getFoldersByUser } from "./api/chat";
+import React, { useEffect, useState } from "react";
+import { getFoldersByUser } from "./api/chat";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
