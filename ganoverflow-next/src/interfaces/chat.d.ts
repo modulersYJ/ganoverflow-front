@@ -9,7 +9,23 @@ export interface IChatPair {
   isChecked: boolean;
 }
 
-export interface IChatPostSend {
+export interface IChatPostSendDTO {
   title: string;
   chatPair: IChatPair[];
+}
+
+interface IFolderWithPostsDTO {
+  folderId: number;
+  folderName: string;
+  order: number;
+  userId: string;
+  chatposts: IChatPostWithFolder[];
+}
+
+interface IChatPostWithFolder {
+  chatPostId: string;
+  title: string;
+  order: number;
+  userId: string;
+  folder: number;
 }

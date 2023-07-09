@@ -46,7 +46,7 @@ export default function RootLayout({
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
           <Header />
-          <main className="grow">{children}</main>
+          <main className="grow pt-[44px] md:pt-[68px]">{children}</main>
           {/* {!offFooter &&  */}
           {/* <Footer /> */}
           {/* } */}
@@ -122,7 +122,7 @@ const Header = (): JSX.Element => {
     <header>
       <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
         <div className="container mx-auto px-6 py-1 flex justify-between">
-          <div className="flex items-center col-sapn-1">
+          <div className="flex items-center col-span-1">
             <Link href="/" className="flex items-center" passHref>
               <h1 className="logo-text ml-1 text-xl">Gan Overflow</h1>
             </Link>
@@ -176,7 +176,7 @@ const Header = (): JSX.Element => {
                     로그인
                   </Link>
                 ) : (
-                  <div>
+                  <div className="">
                     <UserDropdownButton
                       userData={user}
                       onClickSetLogout={onClickSetLogout}
@@ -308,7 +308,7 @@ const HamburgerButton = ({ onClickButton }: any): JSX.Element => {
   return (
     <button
       type="button"
-      className="md:hidden text-white focus:outline-none"
+      className="md:hidden my-2 text-white focus:outline-none"
       aria-label="Toggle menu"
       onClick={onClickButton}
     >
