@@ -8,11 +8,10 @@ export default async function PostDetailPage() {
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId);
-  // console.log(postData);
+  console.log(postData);
   return (
     <div className="grid">
       <article className="post-detail-main w-3/5 place-self-center">
-        <div>게시물 보여줘잉</div>
         <div className="post-title-box w-full border border-x-0 border-green-500 border-t-4 py-5 flex flex-col">
           <h2 className="post-title text-start px-3 text-3xl text">
             {postData?.title}
@@ -47,7 +46,7 @@ export default async function PostDetailPage() {
               );
             })}
         </div>
-        <CommentBox chatPostId={chatPostId} />
+        <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
       </article>
     </div>
   );

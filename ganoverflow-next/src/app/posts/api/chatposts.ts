@@ -13,7 +13,7 @@ export const getOneChatPost = async (chatPostId: string) => {
 };
 
 export const postComment = async (
-  commentData: string,
+  commentData: { content: string },
   authData: IAuthData,
   chatPostId: string
 ) => {

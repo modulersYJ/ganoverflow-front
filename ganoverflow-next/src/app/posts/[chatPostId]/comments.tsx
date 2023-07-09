@@ -1,20 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { getComments, postComment } from "../api/chatposts";
 import { useAuthDataHook } from "@/app/utils/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
 
-export async function CommentBox({ chatPostId }: { chatPostId: string }) {
+export function CommentBox({
+  chatPostId,
+  comments,
+}: {
+  chatPostId: string;
+  comments: {
+    commentId: number;
+    content: string;
+    createdAt: Date;
+    delYn: string;
+  }[];
+}) {
   const authData = useAuthDataHook();
   const router = useRouter();
-  // const commentCount = comments?.length;
-  const commentCount = 0;
-  const [comments, setComments] = useState([]);
+  const commentCount = comments?.length;
   const [commentData, setCommentData] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCommentData(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -22,7 +32,11 @@ export async function CommentBox({ chatPostId }: { chatPostId: string }) {
       alert("댓글을 입력하세요");
       return;
     }
-    const res = await postComment(commentData, await authData, chatPostId);
+    const res = await postComment(
+      { content: commentData },
+      await authData,
+      chatPostId
+    );
     if (res.status === 201) {
       setCommentData("");
       alert("등록이 완료되었습니다.");
@@ -37,9 +51,13 @@ export async function CommentBox({ chatPostId }: { chatPostId: string }) {
     <>
       <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
       <div className="comments-commentbox border border-stone-500">
-        {/* {comments?.map((comment, idx) => {
-          return <div key={idx}>{comment}</div>;
-        })} */}
+        {comments?.map((comment, idx) => {
+          return (
+            <div key={idx} className="border border-1">
+              {comment.content}
+            </div>
+          );
+        })}
       </div>
       <div className="comments-write-box flex flex-col">
         <input
