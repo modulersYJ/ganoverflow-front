@@ -56,7 +56,6 @@ export async function GET(
   params?: string,
   headers?: any
 ): Promise<any> {
-
   const reqPath = params
     ? `${process.env.NEXT_PUBLIC_HOST}/${endPoint}/${params}`
     : `${process.env.NEXT_PUBLIC_HOST}/${endPoint}`;
@@ -65,7 +64,6 @@ export async function GET(
     method: "GET",
     ...headers,
     next: { revalidate: 60 },
-    // body: body ? JSON.stringify(body) : null,
   });
   const data = await res.json();
   return data;
