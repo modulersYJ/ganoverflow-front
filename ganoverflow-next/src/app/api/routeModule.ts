@@ -56,11 +56,6 @@ export async function GET(
   params?: string,
   headers?: any
 ): Promise<any> {
-  const NoHeaders: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  console.log("GET authHeaders", headers);
 
   const reqPath = params
     ? `${process.env.NEXT_PUBLIC_HOST}/${endPoint}/${params}`
