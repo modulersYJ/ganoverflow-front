@@ -1,32 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getAllChatPostsByUserId, getFoldersByUser } from "./api/chat";
-import { chatPostAPI } from "../api/axiosInstanceManager";
-import Link from "next/link";
+import { getFoldersByUser } from "./api/chat";
 import { useRouter } from "next/navigation";
 
 //파일모양 아이콘 import
 import ChatIcon from "@mui/icons-material/ChatOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
 import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { accessTokenState } from "@/atoms/jwt";
 import { getLocalStorageItem } from "../utils/common/localStorage";
 import { IAuthData } from "../api/jwt";
-import {
-  chatSavedStatusState,
-  questionInputState,
-  chatPairsState,
-  checkCntState,
-  formDataState,
-} from "@/atoms/chat";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { useNewChatStatesHook } from "../utils/chat/useNewChatStates";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const authData = useAuthDataHook();
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  useAuthDataHook();
+  const accessToken = useRecoilValue(accessTokenState);
   const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
 
   const {
