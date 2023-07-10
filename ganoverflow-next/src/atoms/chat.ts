@@ -13,11 +13,6 @@ export const chatSavedStatusState = atom({
   default: "F" as ChatSavedStatus,
 });
 
-export const titleState = atom({
-  key: "titleState",
-  default: "",
-});
-
 export const questionInputState = atom({
   key: "qustionInputState",
   default: "",
@@ -31,11 +26,6 @@ export const chatPairsState = atom({
 export const checkCntState = atom({
   key: "checkCntState",
   default: 0,
-});
-
-export const isModalOpenState = atom({
-  key: "isModalOpenState",
-  default: false,
 });
 
 export const formDataState = atom({

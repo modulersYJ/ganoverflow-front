@@ -8,15 +8,12 @@ import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
 import { sendChat, sendChatPost } from "./api/chat";
 import { useRecoilState } from "recoil";
-import { accessTokenState } from "@/atoms/jwt";
 import {
   isNowAnsweringState,
   chatSavedStatusState,
-  titleState,
   questionInputState,
   chatPairsState,
   checkCntState,
-  isModalOpenState,
   formDataState,
 } from "@/atoms/chat";
 // import { sendChatPost } from "./api/route";
@@ -24,15 +21,16 @@ import {
 const Chat = () => {
   const authData = useAuthDataHook();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+
   const [isNowAnswering, setIsNowAnswering] =
     useRecoilState(isNowAnsweringState);
   const [chatSavedStatus, setChatSavedStatus] =
     useRecoilState(chatSavedStatusState);
-  const [title, setTitle] = useRecoilState(titleState);
   const [questionInput, setQuestionInput] = useRecoilState(questionInputState);
   const [chatPairs, setChatPairs] = useRecoilState(chatPairsState);
   const [checkCnt, setCheckCnt] = useRecoilState(checkCntState);
-  const [isModalOpen, setIsModalOpen] = useRecoilState(isModalOpenState);
   const [formData, setFormData] = useRecoilState(formDataState);
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
