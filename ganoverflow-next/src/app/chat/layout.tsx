@@ -7,18 +7,18 @@ import { useRouter } from "next/navigation";
 import ChatIcon from "@mui/icons-material/ChatOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
 import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { accessTokenState } from "@/atoms/jwt";
 import { getLocalStorageItem } from "../utils/common/localStorage";
 import { IAuthData } from "../api/jwt";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { useNewChatStatesHook } from "../utils/chat/useNewChatStates";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { foldersWithPostsState } from "@/atoms/folder";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   useAuthDataHook();
   const accessToken = useRecoilValue(accessTokenState);
-  const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
-
   const {
     chatSavedStatus,
     setChatSavedStatus,
@@ -36,6 +36,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     setQuestionInput("");
   };
 
+  const [foldersWithPosts, setFoldersWithPosts] = useRecoilState(
+    foldersWithPostsState
+  );
+
   const fetchData = async (accessToken: string) => {
     const user = await getLocalStorageItem("userData");
 
@@ -44,25 +48,58 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       userId: user.id,
     };
     const chatFoldersByUser = await getFoldersByUser(user.id, authData);
-    setFoldersData(chatFoldersByUser);
+    setFoldersWithPosts(chatFoldersByUser);
 
     console.log("@@@@@@@@@@@@@@@@@Layout: Folders", chatFoldersByUser);
   };
 
-   // case 1)
-   useEffect(() => {
+  const handleDragEnd = (result: any) => {
+    const { source, destination } = result;
+
+    // 드랍 지점이 없을 경우 무시
+    if (!destination) {
+      return;
+    }
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return; // 드래그 시작 지점과 드랍 지점이 같을 경우 무시
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      console.log("BEF FoldersWithPosts: ", ...foldersWithPosts);
+      setFoldersWithPosts((prev) => {
+        let cloned = [...prev];
+        let swapItem = {
+          ...cloned[destination.index],
+          order: cloned[source.index].order,
+        };
+        cloned[destination.index] = {
+          ...cloned[source.index],
+          order: cloned[destination.index].order,
+        };
+        cloned[source.index] = swapItem;
+        return cloned;
+      });
+      console.log("AFTER FoldersWithPosts: ", ...foldersWithPosts);
+    }
+  };
+
+  // case 1)
+  useEffect(() => {
     if (accessToken) {
       fetchData(accessToken);
     }
   }, [accessToken]);
-  
+
   // case 2)
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
       fetchData(accessToken);
     }
   }, [chatSavedStatus, accessToken]);
-
 
   return (
     <div className="ChatPageCont">
@@ -81,25 +118,64 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="plain-text text-black py-2">my posts</div>
           <div className="list-container overflow-auto overflow-y-scroll h-screen pb-[400px]">
-            {foldersData.map((folder, index) => {
-              if (folder.order === 0) {
-                return (
-                  <div key={folder.folderId}>
-                    {folder.chatposts.map((post, index) => (
-                      <PostUnit key={index} postData={post} isDefault={true} />
-                    ))}
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {foldersWithPosts.map((folder, index) =>
+                      folder.order === 0 ? (
+                        <div key={folder.folderId}>
+                          {folder.chatposts.map((post, index) => (
+                            <PostUnit
+                              key={index}
+                              postData={post}
+                              isDefault={true}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <Draggable
+                          key={folder.folderId}
+                          draggableId={folder.folderId.toString()}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              {folder.order === 0 ? (
+                                folder.chatposts.map((post, index) => (
+                                  <PostUnit
+                                    key={index}
+                                    postData={post}
+                                    isDefault={true}
+                                  />
+                                ))
+                              ) : (
+                                <>
+                                  <FolderUnit key={index} folderData={folder} />
+                                  {folder.chatposts.map((post, index) => (
+                                    <PostUnit
+                                      key={index}
+                                      postData={post}
+                                      isDefault={false}
+                                    />
+                                  ))}
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      )
+                    )}
+                    {provided.placeholder}
                   </div>
-                );
-              }
-              return (
-                <div key={folder.folderId}>
-                  <FolderUnit key={index} folderData={folder} />
-                  {folder.chatposts.map((post, index) => (
-                    <PostUnit key={index} postData={post} isDefault={false} />
-                  ))}
-                </div>
-              );
-            })}
+                )}
+              </Droppable>
+              {children}
+            </DragDropContext>
           </div>
         </div>
       </div>
