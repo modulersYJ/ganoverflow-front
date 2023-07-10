@@ -25,19 +25,22 @@ export const sendChatPost = async (
   return response;
 };
 
-export const getAllChatPostsByUserId = async () => {
-  const response = await GET("chatposts/my-chats");
+export const getAllChatPostsByUserId = async (
+  userId: string,
+  authData: IAuthData
+) => {
+  const response = await GET(
+    "chatposts/my-chats",
+    userId,
+    GenerateAuthHeader(authData)
+  );
   return response;
 };
 
 export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   console.log("getFoldersByUser authData:", authData);
 
-  const response = await GET(
-    "folders",
-    userId,
-    await GenerateAuthHeader(authData)
-  );
+  const response = await GET("folders", userId, GenerateAuthHeader(authData));
 
   return response;
 };
