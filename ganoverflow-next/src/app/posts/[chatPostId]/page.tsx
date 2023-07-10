@@ -10,6 +10,7 @@ export default async function PostDetailPage({
 
   const postData = await getOneChatPost(chatPostId);
   console.log(postData);
+
   return (
     <div className="grid">
       <article className="post-detail-main w-3/5 place-self-center">
@@ -28,9 +29,9 @@ export default async function PostDetailPage({
               )} ${postData?.createdAt.slice(11, 19)}`}</div>
             </div>
             <div className="post-stats w-1/3 space-x-2">
-              <span>따봉 {postData?.likes ?? "3"}</span>
-              <span>조회수 {postData?.viewCount ?? "123"}</span>
-              <span>댓글 {postData?.comments.length ?? "3따봉"}</span>
+              <span>따봉 {postData?.likes}</span>
+              <span>조회수 {postData?.viewCount}</span>
+              <span>댓글 {postData?.comments.length}</span>
             </div>
           </div>
         </div>

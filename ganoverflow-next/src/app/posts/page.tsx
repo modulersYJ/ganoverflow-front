@@ -7,7 +7,7 @@ export default async function PostPage({
   children: React.ReactNode;
 }) {
   const allPosts = await getAllChatPost();
-  console.log("ap", allPosts[0]["userId"]);
+  console.log("ap", allPosts[0]);
   return (
     <>
       <div className="post-title text-xl ">GanOverflow - POSTS</div>
@@ -45,9 +45,9 @@ export default async function PostPage({
                   <td className="py-1">
                     {post?.createdAt.slice(0, 10) ?? "2"}
                   </td>
-                  <td className="py-1">{post?.comments?.length ?? "2"}</td>
-                  <td className="py-1">{post?.comments?.viewCount ?? "123"}</td>
-                  <td className="py-1">{post?.likes ?? "4"}</td>
+                  <td className="py-1">{post?.comments?.length ?? 0}</td>
+                  <td className="py-1">{post?.viewCount}</td>
+                  <td className="py-1">{post?.likes}</td>
                 </tr>
               ))
             ) : (
