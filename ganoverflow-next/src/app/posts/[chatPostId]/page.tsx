@@ -1,10 +1,11 @@
-"use client";
-import { useParams } from "next/navigation";
 import { getOneChatPost } from "../api/chatposts";
 import { CommentBox } from "./comments";
 
-export default async function PostDetailPage() {
-  const params = useParams();
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { chatPostId: string };
+}) {
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId);
