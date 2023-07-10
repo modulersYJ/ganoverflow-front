@@ -49,20 +49,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     console.log("@@@@@@@@@@@@@@@@@Layout: Folders", chatFoldersByUser);
   };
 
-  // chatSavedStatus의 T로의 변경 시 방금 막 chatPost가 종료된 것으로, sideBar posts의 업데이트 필요
-  // 불필요한 호출 배제를 위해 useEffect 구독 상태를 두개로 분리
+   // case 1)
+   useEffect(() => {
+    if (accessToken) {
+      fetchData(accessToken);
+    }
+  }, [accessToken]);
+  
+  // case 2)
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
       fetchData(accessToken);
     }
   }, [chatSavedStatus, accessToken]);
 
-  // 일단 accessToken을 받아오면 무조건 한번 fetchData를 실행한다.
-  useEffect(() => {
-    if (accessToken) {
-      fetchData(accessToken);
-    }
-  }, [accessToken]);
 
   return (
     <div className="ChatPageCont">
