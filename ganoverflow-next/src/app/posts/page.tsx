@@ -21,6 +21,7 @@ export default async function PostPage({
               <th className="p-2.5">글쓴이</th>
               <th className="p-2.5">작성일</th>
               <th className="p-2.5">댓글</th>
+              <th className="p-2.5">조회수</th>
               <th className="p-2.5">추천</th>
             </tr>
           </thead>
@@ -45,6 +46,7 @@ export default async function PostPage({
                     {post?.createdAt.slice(0, 10) ?? "2"}
                   </td>
                   <td className="py-1">{post?.comments?.length ?? "2"}</td>
+                  <td className="py-1">{post?.comments?.viewCount ?? "123"}</td>
                   <td className="py-1">{post?.likes ?? "4"}</td>
                 </tr>
               ))
