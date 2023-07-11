@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getFoldersByUser } from "./api/chat";
+import { getAllChatPostsByUserId, getFoldersByUser } from "./api/chat";
+import { chatPostAPI } from "../api/axiosInstanceManager";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

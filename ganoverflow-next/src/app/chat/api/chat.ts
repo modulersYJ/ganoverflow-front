@@ -25,8 +25,8 @@ export const sendChatPost = async (
   return response;
 };
 
-export const getAllChatPosts = async () => {
-  const response = await GET("chatposts");
+export const getAllChatPostsByUserId = async () => {
+  const response = await GET("chatposts/my-chats");
   return response;
 };
 
