@@ -8,7 +8,9 @@ export const getAllChatPost = async () => {
 };
 
 export const getOneChatPost = async (chatPostId: string) => {
-  const response = await GET(`chatposts/public/${chatPostId}`);
+  const response = await GET(`chatposts/public/${chatPostId}`, {
+    revalidateTime: 0,
+  });
   return response;
 };
 
