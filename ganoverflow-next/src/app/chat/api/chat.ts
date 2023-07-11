@@ -13,7 +13,7 @@ export const sendChat = async (userData: IChat) => {
 
 export const sendChatPost = async (
   chatPostBody: IChatPostSendDTO,
-  authData: IAuthData
+  authData: IAuthData | undefined
 ) => {
   const response = await POST(
     chatPostAPI,
@@ -33,11 +33,10 @@ export const getAllChatPostsByUserId = async () => {
 export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   console.log("getFoldersByUser authData:", authData);
 
-  const response = await GET(
-    "folders",
-    userId,
-    await GenerateAuthHeader(authData)
-  );
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+  const response = await GET("folders", userId, GenerateAuthHeader(authData));
 
   return response;
 };

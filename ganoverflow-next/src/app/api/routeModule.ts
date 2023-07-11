@@ -53,7 +53,7 @@ export async function AuthPOST(
 
 export async function GET(
   endPoint: string,
-  params?: string,
+  params?: string | null,
   headers?: any
 ): Promise<any> {
   const NoHeaders: Record<string, string> = {
