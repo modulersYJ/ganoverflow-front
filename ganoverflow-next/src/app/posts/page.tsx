@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { getAllChatPost } from "./api/chatposts";
 
-export default async function PostPage({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function PostPage() {
   const allPosts = await getAllChatPost();
   console.log("ap", allPosts[0]);
   return (
@@ -55,7 +51,6 @@ export default async function PostPage({
             )}
           </tbody>
         </table>
-        {children}
       </div>
     </>
   );
