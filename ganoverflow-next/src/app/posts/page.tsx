@@ -36,7 +36,7 @@ export default async function PostPage() {
                     </Link>
                   </td>
                   <td className="py-1">
-                    {post?.userId.nickname ?? "작성자 없음"}
+                    {post?.userId?.nickname ?? "작성자 없음"}
                   </td>
                   <td className="py-1">
                     {post?.createdAt.slice(0, 10) ?? "2"}
