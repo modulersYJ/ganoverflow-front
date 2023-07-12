@@ -1,3 +1,5 @@
+export type ChatSavedStatus = "F" | "ING" | "T";
+
 export interface IChat {
   prompt: string;
 }
