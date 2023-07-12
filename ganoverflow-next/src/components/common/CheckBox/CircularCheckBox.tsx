@@ -6,10 +6,10 @@ import CheckboxProps from "./interface";
 const CircularCheckbox: React.FC<CheckboxProps> = ({
   isDisabled,
   isChecked,
-  onCheckboxChange,
+  onChangeCheckBox,
 }) => {
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onCheckboxChange(event.target.checked);
+    onChangeCheckBox(event.target.checked);
   };
 
   return (

@@ -1,149 +1,24 @@
 "use client";
-
-import { useState, ChangeEvent, FormEvent, useRef, useEffect } from "react";
-
-import { IChat, IChatPair } from "@/interfaces/chat";
-import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
-
+import { useState } from "react";
 import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
-import { sendChat, sendChatPost } from "./api/chat";
-import { useRecoilState } from "recoil";
-import {
-  isNowAnsweringState,
-  chatSavedStatusState,
-  questionInputState,
-  chatPairsState,
-  checkCntState,
-  formDataState,
-} from "@/atoms/chat";
-// import { sendChatPost } from "./api/route";
+import { IChatMainProps } from "@/interfaces/IProps/chat";
 
-const Chat = () => {
-  const authData = useAuthDataHook();
-
+export const ChatMain = ({
+  onChangeTitle,
+  onChangeMessage,
+  onChangeCheckBox,
+  onClickNewChatBtn,
+  onClickSaveChatpostInit,
+  onClickSaveChatpostExec,
+  onClickSubmitMsg,
+  questionInput,
+  chatSavedStatus,
+  checkCnt,
+  chatPairs,
+  scrollRef,
+}: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [title, setTitle] = useState("");
-
-  const [isNowAnswering, setIsNowAnswering] =
-    useRecoilState(isNowAnsweringState);
-  const [chatSavedStatus, setChatSavedStatus] =
-    useRecoilState(chatSavedStatusState);
-  const [questionInput, setQuestionInput] = useRecoilState(questionInputState);
-  const [chatPairs, setChatPairs] = useRecoilState(chatPairsState);
-  const [checkCnt, setCheckCnt] = useRecoilState(checkCntState);
-  const [formData, setFormData] = useRecoilState(formDataState);
-
-  const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
-
-  const onClickSaveChatpostInit = async (e: React.MouseEvent) => {
-    if (isNowAnswering) {
-      alert("답변중에는 저장할 수 없습니다!");
-      return;
-    }
-
-    console.log("chatPairs", chatPairs);
-
-    setChatSavedStatus("ING");
-    setIsModalOpen(true);
-  };
-
-  const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
-    const selectedPairs = chatPairs.filter((aPair) => {
-      return aPair.isChecked === true;
-    });
-    const chatPostBody = {
-      title: title,
-      chatPair: selectedPairs,
-    };
-
-    const result = await sendChatPost(chatPostBody, await authData);
-
-    console.log("client res", result);
-    setIsModalOpen(false);
-    setChatSavedStatus("T");
-  };
-
-  const onClickNewChatBtn = async (e: React.MouseEvent) => {
-    setChatPairs([]);
-    setCheckCnt(0);
-    setChatSavedStatus("F");
-    setFormData({ prompt: "" });
-    setQuestionInput("");
-  };
-
-  const submitMsg = async (e: FormEvent) => {
-    e.preventDefault();
-    if (isNowAnswering) {
-      alert("답변중에는 질문할 수 없습니다!");
-      return;
-    }
-    if (questionInput === "") {
-      alert("메시지를 입력하세요.");
-      return;
-    }
-
-    setIsNowAnswering(true);
-    setFormData({ prompt: questionInput });
-
-    setQuestionInput("");
-    setChatPairs((prevChat) => [
-      ...prevChat,
-      {
-        question: questionInput,
-        answer: "",
-        isUser: true,
-        isChecked: false,
-      },
-    ]);
-
-    // 서버에 데이터 제출 후, 응답 받기
-    const response = await sendChat({ prompt: questionInput });
-
-    setChatPairs((prevChat) => {
-      let newChat = [...prevChat];
-      newChat[newChat.length - 1] = {
-        ...newChat[newChat.length - 1],
-        answer: response.bot,
-      };
-      return newChat;
-    });
-
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-    setIsNowAnswering(false);
-  };
-
-  const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const onChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuestionInput(e.target.value);
-  };
-
-  // 체크박스 카운트 (for )
-  const onCheckboxChange = (index: number) => {
-    setChatPairs((prevChatPairs) => {
-      const newChatPairs = [...prevChatPairs];
-      newChatPairs[index] = {
-        ...newChatPairs[index],
-        isChecked: !newChatPairs[index].isChecked,
-      };
-      return newChatPairs;
-    });
-    setCheckCnt(
-      (prevCheckCnt) => prevCheckCnt + (chatPairs[index].isChecked ? -1 : 1)
-    );
-  };
-
-  useEffect(() => {
-    console.log(checkCnt);
-  }, [checkCnt]);
+  const [response, setResponse] = useState<String>("");
 
   return (
     <div className="flex flex-col h-full">
@@ -157,7 +32,10 @@ const Chat = () => {
               placeholder="저장할 대화 제목을 입력해주세요"
             />
             <button
-              onClick={onClickSaveChatpostExec}
+              onClick={(e) => {
+                onClickSaveChatpostExec(e);
+                setIsModalOpen(false);
+              }}
               className="mx-auto px-5 py-2 w-1/3 bg-blue-400 outline-none rounded-md"
             >
               저장
@@ -188,7 +66,10 @@ const Chat = () => {
         ) : (
           <BtnSubmitSaveChat
             checkCnt={checkCnt}
-            onClickHandler={onClickSaveChatpostInit}
+            onClickHandler={(e) => {
+              onClickSaveChatpostInit(e);
+              setIsModalOpen(true);
+            }}
           />
         )}
       </div>
@@ -213,7 +94,7 @@ const Chat = () => {
                   >
                     {chatLine.question}
                   </div>
-                  <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4">
+                  <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
                     {chatLine.answer}
                   </div>
                 </div>
@@ -222,7 +103,7 @@ const Chat = () => {
                     <CircularCheckbox
                       isDisabled={chatSavedStatus}
                       isChecked={chatLine.isChecked}
-                      onCheckboxChange={() => onCheckboxChange(index)}
+                      onChangeCheckBox={() => onChangeCheckBox(index)}
                     />
                   </div>
                 </div>
@@ -233,7 +114,9 @@ const Chat = () => {
       </div>
       <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center bg-vert-dark-gradient ">
         <form
-          onSubmit={submitMsg}
+          onSubmit={(e) => {
+            onClickSubmitMsg(e, questionInput);
+          }}
           className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
         >
           {chatSavedStatus === "T" ? (
@@ -247,7 +130,7 @@ const Chat = () => {
             <input
               value={questionInput}
               onChange={onChangeMessage}
-              className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs"
+              className="rounded-full bg-gray-500 text-gray-100 flex-grow mr-4 p-2 text-xs"
               placeholder={"메시지를 입력하새우"}
             />
           )}
@@ -264,8 +147,6 @@ const Chat = () => {
     </div>
   );
 };
-
-export default Chat;
 
 const BtnSubmitSaveChat = ({
   checkCnt,
