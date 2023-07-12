@@ -10,10 +10,10 @@ export interface IAuthData {
   userId: string | null;
 }
 
-export const GenerateAuthHeader = (authData: IAuthData) => {
+export const GenerateAuthHeader = (authData: IAuthData | undefined) => {
   return {
     headers: {
-      Authorization: `Bearer ${authData.accessToken}`,
+      Authorization: `Bearer ${authData?.accessToken}`,
     },
   };
 };

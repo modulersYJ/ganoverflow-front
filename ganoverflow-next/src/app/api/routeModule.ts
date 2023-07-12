@@ -53,13 +53,20 @@ export async function AuthPOST(
 
 export async function GET(
   endPoint: string,
-  params?: string,
-  headers?: any
+  {
+    params = "",
+    headers = {},
+    revalidateTime = 10,
+  }: {
+    params?: string | null;
+    headers?: Object;
+    revalidateTime?: number;
+  } = {
+    params: "",
+    headers: {},
+    revalidateTime: 10,
+  }
 ): Promise<any> {
-  const NoHeaders: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
   console.log("GET authHeaders", headers);
 
   const reqPath = params
@@ -69,7 +76,7 @@ export async function GET(
   const res = await fetch(reqPath, {
     method: "GET",
     ...headers,
-    next: { revalidate: 60 },
+    next: { revalidate: revalidateTime },
     // body: body ? JSON.stringify(body) : null,
   });
   const data = await res.json();

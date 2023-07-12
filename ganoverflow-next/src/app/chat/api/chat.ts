@@ -6,15 +6,13 @@ import { chatAPI as API } from "@/app/api/axiosInstanceManager";
 import { chatPostAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 
-export const sendChat = async (userData: IChat) => {
-  const response = await POST(API, "/", userData, null);
-  return response.data;
-};
-
 export const sendChatPost = async (
   chatPostBody: IChatPostSendDTO,
-  authData: IAuthData
+  authData: IAuthData | undefined
 ) => {
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
   const response = await POST(
     chatPostAPI,
     "/",
@@ -33,17 +31,14 @@ export const getAllChatPostsByUserId = async () => {
 export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   console.log("getFoldersByUser authData:", authData);
 
-  const response = await GET(
-    "folders",
-    userId,
-    await GenerateAuthHeader(authData)
-  );
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+  const response = await GET("folders", {
+    params: userId,
+    headers: GenerateAuthHeader(authData),
+    revalidateTime: NaN,
+  });
 
   return response;
 };
-
-// export const getOneChatPost = async () => {
-//   const response = await GET("chatposts");
-
-//   return response;
-// };
