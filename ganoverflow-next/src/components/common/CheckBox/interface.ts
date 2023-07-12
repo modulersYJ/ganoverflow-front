@@ -1,4 +1,4 @@
-import { ChatSavedStatus } from "@/app/chat/page";
+import { ChatSavedStatus } from "@/interfaces/chat";
 
 interface CheckboxProps {
   isDisabled: ChatSavedStatus;
