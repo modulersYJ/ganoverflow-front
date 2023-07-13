@@ -30,7 +30,6 @@ export default async function PostDetailPage({
               )} ${postData?.createdAt?.slice(11, 19)}`}</div>
             </div>
             <div className="post-stats w-1/3 space-x-2">
-              <span>따봉 {postData?.likes}</span>
               <span>조회수 {postData?.viewCount}</span>
               <span>댓글 {postData?.comments?.length}</span>
             </div>

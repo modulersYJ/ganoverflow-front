@@ -11,10 +11,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const authData = useAuthDataHook();
 
   const [starCount, setStarCount] = useState(0);
-  //   const [stars, setStars] = useState<{ user: { id: string }; value: number }[]>(
-  //     []
-  //   );
-  const [stars, setStars] = useState<number>(0);
+  const [userDidLike, setUserDidLike] = useState<number>(0);
 
   // ^ stars fetch (GET) : 처음에 한번
   useEffect(() => {
@@ -24,14 +21,9 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
         (star: { user: { id: string }; value: number }) =>
           star?.user?.id === userData?.id
       );
-      console.log(filteredStar);
-      //   setStars(filteredStar.length === 0 ? 0 : filteredStar[0].value);
+      setUserDidLike(filteredStar.length === 0 ? 0 : filteredStar[0].value);
     });
   }, []);
-
-  // ^ 내(유저)가 눌렀는지 판단하기 : length가 1이면 누른적 있음 / 0이면 한번도 없음
-  //   const filteredStar = stars?.filter((star) => star?.user?.id === userData?.id);
-  //   const userDidLiked = stars.length === 0 ? 0 : stars[0].value;
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO 로그인 안돼있으면 에러처리 (alert)
@@ -48,7 +40,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
     const { name } = e.target as HTMLButtonElement;
 
     // ! 한번도 안눌렀거나 따봉 / 붐따 취소해서 userDidLiked가 0인 경우
-    if (stars === 0) {
+    if (userDidLike === 0) {
       if (name === "up") {
         value = 1;
       } else if (name === "down") {
@@ -57,7 +49,10 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
     } else {
       // ! 따봉 / 붐따를 기존에 누른 경우
       // ^ 같은 버튼 두번 누르면 취소
-      if ((name === "up" && stars === 1) || (name === "down" && stars === -1)) {
+      if (
+        (name === "up" && userDidLike === 1) ||
+        (name === "down" && userDidLike === -1)
+      ) {
         value = 0;
         // ^ 붐따 후 따봉
       } else if (name === "up") {
@@ -67,7 +62,6 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
         value = -1;
       }
     }
-    // }
 
     const res = await postStar({
       chatPostId: chatPostId,
@@ -76,7 +70,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
     });
     if (res.status === 201) {
       setStarCount(res.data.count);
-      setStars(value);
+      setUserDidLike(value);
     }
   };
 
@@ -86,7 +80,9 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
         <div className="post-likes w-1/2 h-32 flex justify-center items-center border">
           <button
             name="up"
-            className="border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500"
+            className={`border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500 ${
+              userDidLike === 1 ? "text-5xl" : ""
+            }`}
             onClick={(e) => handleLike(e)}
           >
             따봉
@@ -95,11 +91,11 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
             <span>따봉수</span>
             <span>{starCount}</span>
           </div>
-          <span>내가 눌렀던가? {stars === 0 ? "안누름" : stars}</span>
-          <div></div>
           <button
             name="down"
-            className="border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500"
+            className={`border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500 ${
+              userDidLike === -1 ? "text-5xl" : ""
+            }`}
             onClick={(e) => handleLike(e)}
           >
             붐따
