@@ -19,3 +19,4 @@ export const chatPostAPI = GenerateAPI("chatposts");
 export const authAPI = GenerateAPI("auth");
 export const userAPI = GenerateAPI("user");
 export const commentAPI = GenerateAPI("comments");
+export const starAPI = GenerateAPI("stars");

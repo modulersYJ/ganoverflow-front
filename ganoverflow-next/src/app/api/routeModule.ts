@@ -35,7 +35,8 @@ export async function AuthPOST(
       console.log(res);
       return `${res.status}: 오류좀보소`;
     }
-    console.log(res);
+    console.log("🚀 ~ file: routeModule.ts:34 ~ res:", res);
+
     return `${res}`;
   } catch (error: any) {
     if (error.response && error.response.data === "Expired token") {
