@@ -10,7 +10,7 @@ export default async function PostDetailPage({
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId);
-  console.log(postData);
+  console.log("STARS ", postData.stars);
 
   return (
     <div className="grid">

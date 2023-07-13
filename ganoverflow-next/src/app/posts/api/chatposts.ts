@@ -42,14 +42,14 @@ export const postStar = async ({
   value: number;
   authData: IAuthData;
 }) => {
-  const res = await AuthPOST(
+  const res = await POST(
     starAPI,
     "",
     {
       chatPostId: chatPostId,
       like: value,
     },
-    authData
+    GenerateAuthHeader(authData)
   );
   return res;
 };
