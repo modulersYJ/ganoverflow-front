@@ -1,15 +1,58 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import ChatIcon from "@mui/icons-material/ChatOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
-
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { IChatSideBarProps } from "@/interfaces/IProps/chat";
+import { foldersWithPostsState } from "@/atoms/folder";
+
 
 export default function ChatSideBar({
   onClickNewChatBtn,
   foldersData,
 }: IChatSideBarProps) {
+  const [foldersWithPosts, setFoldersWithPosts] = useRecoilState(
+    foldersWithPostsState
+  );
+
+  useEffect(() => {
+    setFoldersWithPosts(foldersData);
+  }, [foldersData]);
+
+  const handleDragEnd = (result: any) => {
+    const { source, destination } = result;
+
+    // 드랍 지점이 없을 경우 무시
+    if (!destination) {
+      return;
+    }
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return; // 드래그 시작 지점과 드랍 지점이 같을 경우 무시
+    }
+    if (source.droppableId === destination.droppableId) {
+      console.log("BEF FoldersWithPosts: ", ...foldersWithPosts);
+      setFoldersWithPosts((prev) => {
+        let cloned = [...prev];
+        let swapItem = {
+          ...cloned[destination.index],
+          order: cloned[source.index].order,
+        };
+        cloned[destination.index] = {
+          ...cloned[source.index],
+          order: cloned[destination.index].order,
+        };
+        cloned[source.index] = swapItem;
+        return cloned;
+      });
+      console.log("AFTER FoldersWithPosts: ", ...foldersWithPosts);
+    }
+  };
+
   return (
     <div className="ChatPageCont">
       <div className="ChatSideBar fixed hidden md:block md:top-[68px] left-0 w-60 h-full bg-gray-800">
@@ -83,7 +126,6 @@ export default function ChatSideBar({
                   </div>
                 )}
               </Droppable>
-              {children}
             </DragDropContext>
           </div>
         </div>
