@@ -56,7 +56,7 @@ export default async function PostDetailPage({
               );
             })}
         </div>
-        <LikeBox stars={postData?.stars} chatPostId={chatPostId} />
+        <LikeBox chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
       </article>
     </div>
