@@ -12,7 +12,7 @@ import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
 import { useRecoilValue } from "recoil";
-import { getLocalStorageItem } from "../utils/common/localStorage";
+import { getSessionStorageItem } from "../utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
 import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
@@ -180,7 +180,7 @@ const fetchFolderData = async (
   setFoldersData: any,
   setAuthData: any
 ) => {
-  const user = await getLocalStorageItem("userData");
+  const user = await getSessionStorageItem("userData");
 
   const authData: IAuthData = {
     accessToken: accessToken,
@@ -201,7 +201,7 @@ const scrollDown = (scrollRef: any) => {
   }
 };
 
-// No need to cache 
+// No need to cache
 const fetchUpdateStreamAnswer = async ({
   prompt,
   currStream,

@@ -15,7 +15,7 @@ import { Inter } from "next/font/google";
 import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
-import { getLocalStorageItem } from "./utils/common/localStorage";
+import { getSessionStorageItem } from "./utils/common/sessionStorage";
 import { useAuthDataHook } from "./utils/jwtHooks/getNewAccessToken";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
@@ -82,7 +82,7 @@ const Header = (): JSX.Element => {
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
-    const userData = getLocalStorageItem("userData");
+    const userData = getSessionStorageItem("userData");
     if (userData) {
       setUser(userData);
     }

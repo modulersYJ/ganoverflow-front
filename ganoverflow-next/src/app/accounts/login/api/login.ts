@@ -4,8 +4,8 @@ import { IRegister } from "@/interfaces/accounts";
 import { POST } from "@/app/api/routeModule";
 import {
   removeUserData,
-  setLocalStorageItem,
-} from "@/app/utils/common/localStorage";
+  setSessionStorageItem,
+} from "@/app/utils/common/sessionStorage";
 import { authAPI as API } from "@/app/api/axiosInstanceManager";
 import { userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader } from "@/app/api/jwt";
@@ -41,7 +41,7 @@ export const login = async (
   const response = await POST(API, "login", userData, null);
   // const response = await API.post("/login", userData);
 
-  setLocalStorageItem("userData", {
+  setSessionStorageItem("userData", {
     id: response.data.id,
     nickname: response.data.nickname,
   });
