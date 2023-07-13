@@ -1,5 +1,6 @@
 import { getOneChatPost } from "../api/chatposts";
 import { CommentBox } from "./comments";
+import { LikeBox } from "./likes";
 
 export default async function PostDetailPage({
   params,
@@ -23,15 +24,15 @@ export default async function PostDetailPage({
               <div className="post-user px-3 border border-0 border-r-2">
                 {postData?.userId?.nickname}
               </div>
-              <div className="post-date px-3">{`${postData?.createdAt.slice(
+              <div className="post-date px-3">{`${postData?.createdAt?.slice(
                 0,
                 10
-              )} ${postData?.createdAt.slice(11, 19)}`}</div>
+              )} ${postData?.createdAt?.slice(11, 19)}`}</div>
             </div>
             <div className="post-stats w-1/3 space-x-2">
               <span>따봉 {postData?.likes}</span>
               <span>조회수 {postData?.viewCount}</span>
-              <span>댓글 {postData?.comments.length}</span>
+              <span>댓글 {postData?.comments?.length}</span>
             </div>
           </div>
         </div>
@@ -55,16 +56,7 @@ export default async function PostDetailPage({
               );
             })}
         </div>
-        <div className="flex justify-center my-6">
-          <div className="post-likes w-1/2 h-32 flex justify-center items-center border">
-            <button className="border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500">
-              따봉
-            </button>
-            <button className="border rounded-lg p-2 mx-8 h-12 hover:bg-slate-500">
-              붐따
-            </button>
-          </div>
-        </div>
+        <LikeBox stars={postData?.stars} chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
       </article>
     </div>
