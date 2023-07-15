@@ -7,7 +7,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { IChatSideBarProps } from "@/interfaces/IProps/chat";
 import { foldersWithPostsState } from "@/atoms/folder";
-
+import { FolderFileNoOrderDND } from "./Dnd";
 
 export default function ChatSideBar({
   onClickNewChatBtn,
@@ -69,8 +69,9 @@ export default function ChatSideBar({
             </button>
           </div>
           <div className="plain-text text-black py-2">my posts</div>
-          <div className="list-container overflow-auto overflow-y-scroll h-screen pb-[400px]">
-            <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="list-container overflow-y-hidden h-screen pb-[200px]">
+            <FolderFileNoOrderDND />
+            {/* <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="droppable">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -126,7 +127,7 @@ export default function ChatSideBar({
                   </div>
                 )}
               </Droppable>
-            </DragDropContext>
+            </DragDropContext> */}
           </div>
         </div>
       </div>

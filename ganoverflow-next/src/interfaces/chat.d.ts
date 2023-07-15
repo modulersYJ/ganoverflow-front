@@ -24,7 +24,7 @@ interface IFolderWithPostsDTO {
   chatposts: IChatPostWithFolder[];
 }
 
-interface IChatPostWithFolder {
+export interface IChatPostWithFolder {
   chatPostId: string;
   title: string;
   order: number;
