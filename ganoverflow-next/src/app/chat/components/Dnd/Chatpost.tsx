@@ -1,12 +1,11 @@
 import { useDrag } from "react-dnd";
 import { useSetRecoilState } from "recoil";
-import { chatpostWithFolderstate } from "./atom/recoilState";
+import { chatpostWithFolderstate } from "@/atoms/folder";
 import React from "react";
 import ChatIcon from "@mui/icons-material/ChatBubble";
 
 const style: React.CSSProperties = {
-  border: "1px dashed gray",
-
+  // border: "1px dashed gray",
   cursor: "move",
   float: "left",
 };
@@ -40,9 +39,6 @@ export const Chatpost = function Chatpost({
   const opacity = isDragging ? 0.4 : 1;
 
   return (
-    // <div ref={drag} style={{ ...style, opacity }} data-testid={`chatpost`}>
-    //   {chatpost.chatpostName}
-    // </div>
     <div ref={drag} style={{ opacity }} data-testid={`chatpost`}>
       <PostUnit
         postData={chatpost}
@@ -62,7 +58,7 @@ const PostUnit: React.FC<{
 }> = ({ postData, isDefault, style, opacity }) => {
   return (
     <div
-      className={`w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 bg-emerald-400 text-black border-gray-900 border py-1 hover:bg-slate-400 ${
+      className={`w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-400  ${
         isDefault ? "pl-1" : "pl-5"
       }`}
       style={{ ...style, opacity }}

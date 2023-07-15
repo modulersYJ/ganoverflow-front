@@ -7,11 +7,9 @@ import React from "react";
 export function FolderFileNoOrderDND() {
   return (
     <div className="FolderFileNoOrderDND">
-      <RecoilRoot>
-        <DndProvider backend={HTML5Backend}>
-          <Container />
-        </DndProvider>
-      </RecoilRoot>
+      <DndProvider backend={HTML5Backend}>
+        <Container />
+      </DndProvider>
     </div>
   );
 }

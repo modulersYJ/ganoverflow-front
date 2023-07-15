@@ -11,32 +11,38 @@ import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { getSessionStorageItem } from "../utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
 import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
 import { FolderFileNoOrderDND } from "./components/Dnd";
+import { foldersWithChatpostsState } from "@/atoms/folder";
+
 export default function ChatPage() {
   useAuthDataHook();
   const accessToken = useRecoilValue(accessTokenState);
   const [authData, setAuthData] = useState<IAuthData>();
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
-  const [title, setTitle] = useState("");
+  const [chatpostName, setChatpostName] = useState("");
 
   const [isNowAnswering, setIsNowAnswering] = useState(false);
   const [chatSavedStatus, setChatSavedStatus] = useState<ChatSavedStatus>("F");
   const [questionInput, setQuestionInput] = useState("");
   const [chatPairs, setChatPairs] = useState<IChatPair[]>([]);
   const [checkCnt, setCheckCnt] = useState(0);
-  const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
+  // const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
+  const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
+    foldersWithChatpostsState
+  );
   const [currStream, setCurrStream] = useState<string>("");
 
   // foldersData - case 1)
   useEffect(() => {
     if (accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
+      console.log("foldersData: ", foldersData, accessToken);
     }
   }, [accessToken]);
 
@@ -44,6 +50,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
+      console.log("foldersData: ", foldersData);
     }
   }, [chatSavedStatus, accessToken]);
 
@@ -127,7 +134,7 @@ export default function ChatPage() {
   };
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setChatpostName(e.target.value);
   };
 
   const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
@@ -135,7 +142,7 @@ export default function ChatPage() {
       return aPair.isChecked === true;
     });
     const chatPostBody = {
-      title: title,
+      chatpostName: chatpostName,
       chatPair: selectedPairs,
     };
     await sendChatPost(chatPostBody, authData);
@@ -169,7 +176,7 @@ export default function ChatPage() {
       <ChatSideBar
         onClickNewChatBtn={onClickNewChatBtn}
         chatSavedStatus={chatSavedStatus}
-        foldersData={foldersData}
+        // foldersData={foldersData}
       />
     </>
   );

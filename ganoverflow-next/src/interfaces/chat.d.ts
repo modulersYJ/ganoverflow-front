@@ -12,7 +12,7 @@ export interface IChatPair {
 }
 
 export interface IChatPostSendDTO {
-  title: string;
+  chatpostName: string;
   chatPair: IChatPair[];
 }
 
@@ -21,13 +21,12 @@ interface IFolderWithPostsDTO {
   folderName: string;
   order: number;
   userId: string;
-  chatposts: IChatPostWithFolder[];
+  chatposts: IChatPostWithFolder[] | [];
 }
 
 export interface IChatPostWithFolder {
-  chatPostId: string;
-  title: string;
+  chatPostId: number;
+  chatpostName: string;
   order: number;
-  userId: string;
-  folder: number;
+  folderId: number;
 }

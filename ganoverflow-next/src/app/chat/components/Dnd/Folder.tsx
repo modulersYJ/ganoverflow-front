@@ -3,17 +3,11 @@ import { Chatpost } from "./Chatpost";
 import React from "react";
 import FolderIcon from "@mui/icons-material/Folder";
 import ChatIcon from "@mui/icons-material/ChatBubble";
+import { IChatPostWithFolder } from "@/interfaces/chat";
 
 const style: React.CSSProperties = {
-  width: "12rem",
-  marginRight: "1.5rem",
-  marginBottom: "1.5rem",
-  color: "black",
-  padding: "1rem",
-  textAlign: "center",
-  fontSize: "1rem",
-  lineHeight: "normal",
-  float: "left",
+  // color: "black",
+  padding: "0.5rem",
 };
 
 export const Folder = ({ folder }: { folder: any }) => {
@@ -26,29 +20,29 @@ export const Folder = ({ folder }: { folder: any }) => {
     }),
   }));
   const isActive = canDrop && isOver;
-  let backgroundColor = "#222";
+  let backgroundColor = "black";
   if (isActive) {
-    backgroundColor = "darkgreen";
+    backgroundColor = "#444";
   } else if (canDrop) {
-    backgroundColor = "darkkhaki";
+    backgroundColor = "black";
   }
   return (
     <div
       ref={drop}
       style={{
-        // ...style,
-        // backgroundColor,
+        ...style,
+        backgroundColor,
         display: "flex",
         flexDirection: "column",
       }}
       data-testid="folder"
     >
       {folder.order === 0 ? (
-        <div className="min-h-[300px]">
-          {folder.chatposts.map((chatpost: any) => (
+        <div className="min-h-[20px]">
+          {folder.chatposts.map((chatpost: IChatPostWithFolder) => (
             <Chatpost
               chatpost={chatpost}
-              key={chatpost.chatpostId}
+              key={chatpost.chatPostId}
               isDefault={true}
             />
           ))}
@@ -56,10 +50,10 @@ export const Folder = ({ folder }: { folder: any }) => {
       ) : (
         <>
           <FolderUnit folderData={folder} />
-          {folder.chatposts.map((chatpost: any) => (
+          {folder.chatposts.map((chatpost: IChatPostWithFolder) => (
             <Chatpost
               chatpost={chatpost}
-              key={chatpost.chatpostId}
+              key={chatpost.chatPostId}
               isDefault={false}
             />
           ))}
@@ -71,7 +65,7 @@ export const Folder = ({ folder }: { folder: any }) => {
 
 const FolderUnit: React.FC<{ folderData: any }> = ({ folderData }) => {
   return (
-    <div className="w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 bg-emerald-400 text-black border-gray-900 border py-1 hover:bg-slate-400 ">
+    <div className="w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-white  py-1">
       <div className="flex flex-row pb-1">
         <div className="w-2/12">
           <FolderIcon sx={{ fontSize: "19px" }} />
