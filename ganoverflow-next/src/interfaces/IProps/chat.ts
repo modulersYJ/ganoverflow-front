@@ -30,6 +30,15 @@ export interface IFetchStreamAnswerProps {
   setIsNowAnswering: any;
 }
 
+export interface ISaveChatModalProps {
+  onClickSaveChatpostExec: (e: React.MouseEvent) => void;
+  onChangeTitleAndCategory: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  categories: { categoryName: string }[];
+  setIsModalOpen: (value: boolean) => void;
+}
+
 export interface ITitleAndCategory {
   title: string;
   category?: string;
