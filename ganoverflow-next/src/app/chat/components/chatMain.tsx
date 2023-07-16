@@ -42,7 +42,7 @@ export const ChatMain = ({
             <label>
               카테고리를 선택하세요
               <select name="categoryName" onChange={onChangeTitleAndCategory}>
-                <option>없음</option>
+                <option value={""}>없음</option>
                 {categories.map((category) => (
                   <option>{category.categoryName}</option>
                 ))}
