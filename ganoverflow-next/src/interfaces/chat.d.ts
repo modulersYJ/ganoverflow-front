@@ -14,6 +14,7 @@ export interface IChatPair {
 export interface IChatPostSendDTO {
   title: string;
   chatPair: IChatPair[];
+  category?: string;
 }
 
 interface IFolderWithPostsDTO {

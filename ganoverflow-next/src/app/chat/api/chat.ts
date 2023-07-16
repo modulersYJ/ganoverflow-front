@@ -42,3 +42,8 @@ export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
 
   return response;
 };
+
+export const getAllCategories = async () => {
+  const response = await GET("categories");
+  return response;
+};

@@ -1,7 +1,9 @@
 import { ChatSavedStatus, IChatPair, IFolderWithPostsDTO } from "../chat";
 
 export interface IChatMainProps {
-  onChangeTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeTitleAndCategory: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   onChangeMessage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeCheckBox: (index: number) => void;
   onClickNewChatBtn: (e: React.MouseEvent) => void;
@@ -26,4 +28,9 @@ export interface IFetchStreamAnswerProps {
   currStream: string;
   setCurrStream: any;
   setIsNowAnswering: any;
+}
+
+export interface ITitleAndCategory {
+  title: string;
+  category?: string;
 }
