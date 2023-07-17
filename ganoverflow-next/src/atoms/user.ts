@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { getSessionStorageItem } from "@/app/utils/common/sessionStorage";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 export const userState = atom({
   key: "userState",

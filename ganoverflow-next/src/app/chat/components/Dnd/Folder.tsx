@@ -4,20 +4,11 @@ import React from "react";
 import FolderIcon from "@mui/icons-material/Folder";
 import { IChatPostWithFolder } from "@/interfaces/chat";
 
-
 const style: React.CSSProperties = {
   padding: "0.5rem",
 };
 
-export const Folder = ({
-  folder,
-  idx,
-  
-}: {
-  folder: any;
-  idx: number;
-  
-}) => {
+export const Folder = ({ folder, idx }: { folder: any; idx: number }) => {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "chatpost",
     drop: () => ({ name: folder.folderName, folderId: folder.folderId }),

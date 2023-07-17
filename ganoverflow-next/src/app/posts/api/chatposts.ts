@@ -1,4 +1,4 @@
-import { commentAPI } from "@/app/api/axiosInstanceManager";
+import { commentAPI, starAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 import { GET, POST } from "@/app/api/routeModule";
 
@@ -30,5 +30,31 @@ export const postComment = async (
 
 export const getComments = async (chatPostId: string) => {
   const res = await GET(`comments/all/${chatPostId}`);
+  return res;
+};
+
+export const getStars = async (chatPostId: string) => {
+  const res = await GET(`stars/${chatPostId}`);
+  return res;
+};
+
+export const postStar = async ({
+  chatPostId,
+  value,
+  authData,
+}: {
+  chatPostId: string;
+  value: number;
+  authData: IAuthData;
+}) => {
+  const res = await POST(
+    starAPI,
+    "",
+    {
+      chatPostId: chatPostId,
+      like: value,
+    },
+    GenerateAuthHeader(authData)
+  );
   return res;
 };
