@@ -12,11 +12,10 @@ interface IComment {
 
 interface IChatPost {
   chatPostId: string;
-  title: string;
+  chatpostName: string;
   userId: string;
-  categoryName?: string | null ;
+  categoryName?: string | null;
   createdAt: Date;
   delYn: "Y" | "N";
-  folder?: Folder | null;
   chatPair?: IChatPair[] | null;
 }

@@ -25,4 +25,5 @@ interface User {
   comments?: Comment[] | null;
   followerId?: Follow[] | null;
   followeeId?: Follow[] | null;
+  folders?: string;
 }

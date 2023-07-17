@@ -2,15 +2,22 @@ import { useDrop } from "react-dnd";
 import { Chatpost } from "./Chatpost";
 import React from "react";
 import FolderIcon from "@mui/icons-material/Folder";
-import ChatIcon from "@mui/icons-material/ChatBubble";
 import { IChatPostWithFolder } from "@/interfaces/chat";
 
+
 const style: React.CSSProperties = {
-  // color: "black",
   padding: "0.5rem",
 };
 
-export const Folder = ({ folder }: { folder: any }) => {
+export const Folder = ({
+  folder,
+  idx,
+  
+}: {
+  folder: any;
+  idx: number;
+  
+}) => {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "chatpost",
     drop: () => ({ name: folder.folderName, folderId: folder.folderId }),
@@ -37,7 +44,7 @@ export const Folder = ({ folder }: { folder: any }) => {
       }}
       data-testid="folder"
     >
-      {folder.order === 0 ? (
+      {idx === 0 ? (
         <div className="min-h-[20px]">
           {folder.chatposts.map((chatpost: IChatPostWithFolder) => (
             <Chatpost

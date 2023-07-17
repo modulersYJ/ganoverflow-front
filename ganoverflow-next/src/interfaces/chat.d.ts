@@ -19,14 +19,17 @@ export interface IChatPostSendDTO {
 interface IFolderWithPostsDTO {
   folderId: number;
   folderName: string;
-  order: number;
-  userId: string;
-  chatposts: IChatPostWithFolder[] | [];
+  chatposts: IChatPostWithFolder[];
 }
 
 export interface IChatPostWithFolder {
   chatPostId: number;
   chatpostName: string;
-  order: number;
+}
+
+export interface ISerailzedChatposts {
+  chatPostId: number;
+  chatpostName: string;
   folderId: number;
+  folderName: string;
 }

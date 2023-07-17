@@ -17,7 +17,8 @@ export const Chatpost = function Chatpost({
   chatpost: any;
   isDefault: boolean;
 }) {
-  const setChatpost = useSetRecoilState(chatpostWithFolderstate);
+  const setFoldersWithPosts = useSetRecoilState(chatpostWithFolderstate);
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "chatpost",
     item: chatpost,
@@ -26,7 +27,11 @@ export const Chatpost = function Chatpost({
       if (item && dropResult) {
         // 소스 폴더 ID와 목적지 폴더 ID가 다른 경우에만 상태 업데이트
         if (item.folderId !== dropResult.folderId) {
-          setChatpost({ ...item, folderId: dropResult.folderId });
+          // 폴더 변경 감지 및 업데이트를 위해, dropResult의 folderId는 담아줌다, 하지만 atom의 folderState를 보면 set처리 중 조건판별에만 사용한 이후 실제 저장하지 않도록 처리했음
+          setFoldersWithPosts({
+            ...item,
+            folderId: dropResult.folderId,
+          });
         }
       }
     },

@@ -1,21 +1,32 @@
-import { memo, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { memo } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Folder } from "./Folder";
-import { foldersWithChatpostsState } from "@/atoms/folder";
+import {
+  chatpostWithFolderstate,
+  foldersWithChatpostsState,
+} from "@/atoms/folder";
 import React from "react";
+import { accessTokenState } from "@/atoms/jwt";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import useDidMountEffect from "@/hooks/useDidMountEffect";
+import { putFoldersByUser } from "../../api/chat";
+import { restructFoldersWithPosts } from "@/utils/folders";
 
 export const Container = memo(() => {
   const [folders]: any = useRecoilState(foldersWithChatpostsState);
 
-  useEffect(() => {
-    folders.map((folder: any) => {
-      console.log(`========${folder.folderName}=======`);
-      folder.chatposts.map((chatpost: any) => {
-        console.log(`${chatpost.chatpostName}`, chatpost);
-      });
-      console.log("===========================\n\n");
+  const foldersWithPosts = useRecoilValue(chatpostWithFolderstate);
+
+  const accessToken = useRecoilValue(accessTokenState);
+  const userData = getSessionStorageItem("userData");
+
+  // 첫 마운트 무시 커스텀 훅
+  useDidMountEffect(() => {
+    putFoldersByUser(userData.id, restructFoldersWithPosts(foldersWithPosts), {
+      accessToken,
+      userId: userData.id,
     });
-  }, [folders]);
+  }, [foldersWithPosts]);
 
   return (
     <div>
@@ -27,13 +38,8 @@ export const Container = memo(() => {
           flexDirection: "column",
         }}
       >
-        {/* {[...folders]
-          .sort((a, b) => (a.order === 0 ? 1 : b.order === 0 ? -1 : 0))
-          .map((folder: any) => (
-            <Folder folder={folder} key={folder.folderId} />
-          ))} */}
-        {folders.map((folder: any) => (
-          <Folder folder={folder} key={folder.folderId} />
+        {folders.map((folder: any, idx: number) => (
+          <Folder folder={folder} key={folder.folderId} idx={idx} />
         ))}
       </div>
     </div>

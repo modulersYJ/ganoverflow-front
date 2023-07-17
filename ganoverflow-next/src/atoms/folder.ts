@@ -1,6 +1,6 @@
+import { serializePostsWithFolderId } from "@/utils/folders";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { atom, selector } from "recoil";
-
 
 export const foldersWithChatpostsState = atom({
   key: "foldersWithChatpostsState",
@@ -14,12 +14,8 @@ export const chatpostWithFolderstate = selector({
   key: "chatpostWithFolderstate",
   get: ({ get }) => {
     const folderWithChatposts = get(foldersWithChatpostsState);
-    return folderWithChatposts.flatMap((folder: IFolderWithPostsDTO) =>
-      folder.chatposts.map((chatpost: IChatPostWithFolder) => ({
-        ...chatpost,
-        folderId: folder.folderId,
-      }))
-    );
+    // 구조화된 FolderWithPostsDTO 배열을 시리얼라이즈 (in)
+    return serializePostsWithFolderId(folderWithChatposts);
   },
   set: ({ set, get }, newchatpost: any) => {
     if (
@@ -29,30 +25,31 @@ export const chatpostWithFolderstate = selector({
       throw new Error("Invalid chatpost");
     }
     const Folders = get(foldersWithChatpostsState);
-    set(
-      foldersWithChatpostsState,
-      Folders.map((folder: any) => {
-        if (folder.folderId === newchatpost.folderId) {
-          return {
-            ...folder,
-            chatposts: [
-              ...folder.chatposts.filter(
-                (chatpost: any) =>
-                  chatpost.chatPostId !== newchatpost.chatPostId
-              ),
-              newchatpost,
-            ],
-          };
-        } else {
-          return {
-            ...folder,
-            chatposts: folder.chatposts.filter(
-              (chatpost: IChatPostWithFolder) =>
-                chatpost.chatPostId !== newchatpost.chatPostId
+
+    // 새 폴더 상태 생성
+    const newFoldersState = Folders.map((folder: any) => {
+      if (folder.folderId === newchatpost.folderId) {
+        return {
+          ...folder,
+          chatposts: [
+            ...folder.chatposts.filter(
+              (chatpost: any) => chatpost.chatPostId !== newchatpost.chatPostId
             ),
-          };
-        }
-      })
-    );
+            newchatpost,
+          ],
+        };
+      } else {
+        return {
+          ...folder,
+          chatposts: folder.chatposts.filter(
+            (chatpost: IChatPostWithFolder) =>
+              chatpost.chatPostId !== newchatpost.chatPostId
+          ),
+        };
+      }
+    });
+
+    // 폴더 상태 업데이트
+    set(foldersWithChatpostsState, newFoldersState);
   },
 });
