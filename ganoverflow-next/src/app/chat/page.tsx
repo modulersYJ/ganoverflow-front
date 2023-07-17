@@ -7,16 +7,15 @@ import {
   IChatPair,
   IFolderWithPostsDTO,
 } from "@/interfaces/chat";
-import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { getSessionStorageItem } from "../utils/common/sessionStorage";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
 import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
-import { FolderFileNoOrderDND } from "./components/Dnd";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 
 export default function ChatPage() {

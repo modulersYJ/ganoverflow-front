@@ -11,7 +11,7 @@ import InputField from "@/components/ui/Accounts/InputField";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { accessTokenState } from "@/atoms/jwt";
 import { userState } from "@/atoms/user";
-import { getSessionStorageItem } from "@/app/utils/common/sessionStorage";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 const Login = () => {
   const access_token = useRecoilValue(accessTokenState);

@@ -6,7 +6,7 @@ export default async function PostPage() {
   console.log("ap", allPosts[0]);
   return (
     <>
-      <div className="post-title text-xl ">GanOverflow - POSTS</div>
+      <div className="post-chatpostName text-xl ">GanOverflow - POSTS</div>
       <div className="grid">
         <table className="w-3/5 place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
@@ -32,7 +32,7 @@ export default async function PostPage() {
                   <td className="py-1">{post?.category ?? "카테고리"}</td>
                   <td className="py-1">
                     <Link href={`/posts/${post?.chatPostId}`}>
-                      {post?.title}
+                      {post?.chatpostName}
                     </Link>
                   </td>
                   <td className="py-1">

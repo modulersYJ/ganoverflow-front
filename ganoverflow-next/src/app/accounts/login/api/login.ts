@@ -5,7 +5,8 @@ import { POST } from "@/app/api/routeModule";
 import {
   removeUserData,
   setSessionStorageItem,
-} from "@/app/utils/common/sessionStorage";
+} from "@/utils/common/sessionStorage";
+
 import { authAPI as API } from "@/app/api/axiosInstanceManager";
 import { userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader } from "@/app/api/jwt";
