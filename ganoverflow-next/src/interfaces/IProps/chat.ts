@@ -41,6 +41,6 @@ export interface ISaveChatModalProps {
 }
 
 export interface ITitleAndCategory {
-  title: string;
+  chatpostName: string;
   category?: string;
 }

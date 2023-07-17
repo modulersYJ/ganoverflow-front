@@ -19,7 +19,6 @@ import {
   IFetchStreamAnswerProps,
   ITitleAndCategory,
 } from "@/interfaces/IProps/chat";
-import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 
 export default function ChatPage() {
@@ -147,6 +146,8 @@ export default function ChatPage() {
       ...titleAndCategory,
       [e.target.name]: e.target.value,
     });
+  };
+
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatpostName(e.target.value);
   };
