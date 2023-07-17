@@ -15,6 +15,10 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
+import {
+  IFetchStreamAnswerProps,
+  ITitleAndCategory,
+} from "@/interfaces/IProps/chat";
 import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 
@@ -24,6 +28,9 @@ export default function ChatPage() {
   const [authData, setAuthData] = useState<IAuthData>();
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
+  const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
+    chatpostName: "",
+  });
   const [chatpostName, setChatpostName] = useState("");
 
   const [isNowAnswering, setIsNowAnswering] = useState(false);
@@ -132,6 +139,14 @@ export default function ChatPage() {
     setChatSavedStatus("ING");
   };
 
+  const onChangeTitleAndCategory = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    console.log(e.target.value, e.target.name);
+    setTitleAndCategory({
+      ...titleAndCategory,
+      [e.target.name]: e.target.value,
+    });
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatpostName(e.target.value);
   };
@@ -142,6 +157,7 @@ export default function ChatPage() {
     });
     const chatPostBody = {
       chatpostName: chatpostName,
+      category: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
     await sendChatPost(chatPostBody, authData);
@@ -159,7 +175,7 @@ export default function ChatPage() {
   return (
     <>
       <ChatMain
-        onChangeTitle={onChangeTitle}
+        onChangeTitleAndCategory={onChangeTitleAndCategory}
         onChangeMessage={onChangeMessage}
         onClickSaveChatpostInit={onClickSaveChatpostInit}
         onClickSaveChatpostExec={onClickSaveChatpostExec}
