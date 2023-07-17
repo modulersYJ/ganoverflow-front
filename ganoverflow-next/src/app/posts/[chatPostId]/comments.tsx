@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { getComments, postComment } from "../api/chatposts";
-import { useAuthDataHook } from "@/app/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
 
 export function CommentBox({

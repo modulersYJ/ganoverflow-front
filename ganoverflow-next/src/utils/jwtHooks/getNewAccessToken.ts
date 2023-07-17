@@ -5,15 +5,15 @@ import { useEffect } from "react";
 import { IAuthData, fetchAccessToken } from "@/app/api/jwt";
 
 import { accessTokenState } from "@/atoms/jwt";
-import { getLocalStorageItem } from "../common/localStorage";
+import { getSessionStorageItem } from "../common/sessionStorage";
 
 export const getNewAccessTokenHook = async () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   useEffect(() => {
     const callFetchAccessToken = async () => {
-      const userId = getLocalStorageItem("userData")
-        ? getLocalStorageItem("userData").id
+      const userId = getSessionStorageItem("userData")
+        ? getSessionStorageItem("userData").id
         : null;
 
       if (!userId) {
@@ -33,7 +33,7 @@ export const getNewAccessTokenHook = async () => {
 
 export const useAuthDataHook = async (): Promise<IAuthData> => {
   const accessToken = await getNewAccessTokenHook();
-  const user = await getLocalStorageItem("userData");
+  const user = await getSessionStorageItem("userData");
 
   if (user === null || user === undefined) {
     return { accessToken: null, userId: null };

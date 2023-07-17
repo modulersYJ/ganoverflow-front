@@ -1,13 +1,14 @@
 "use client";
 
-import { getLocalStorageItem } from "@/app/utils/common/localStorage";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "../api/chatposts";
-import { useAuthDataHook } from "@/app/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
-  const userData = getLocalStorageItem("userData");
+  const userData = getSessionStorageItem("userData");
   const authData = useAuthDataHook();
 
   const [starCount, setStarCount] = useState(0);

@@ -1,15 +1,13 @@
 "use client";
 import React from "react";
-import ChatIcon from "@mui/icons-material/ChatOutlined";
-import FolderIcon from "@mui/icons-material/FolderOutlined";
-
-import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { IChatSideBarProps } from "@/interfaces/IProps/chat";
+import { FolderFileNoOrderDND } from "./Dnd";
 
 export default function ChatSideBar({
   onClickNewChatBtn,
-  foldersData,
-}: IChatSideBarProps) {
+}: // foldersData,
+IChatSideBarProps) {
+
   return (
     <div className="ChatPageCont">
       <div className="ChatSideBar fixed hidden md:block md:top-[68px] left-0 w-60 h-full bg-gray-800">
@@ -26,68 +24,11 @@ export default function ChatSideBar({
             </button>
           </div>
           <div className="plain-text text-black py-2">my posts</div>
-          <div className="list-container overflow-auto overflow-y-scroll h-screen pb-[400px]">
-            {foldersData.map((folder, index) => {
-              if (folder.order === 0) {
-                return (
-                  <div key={folder.folderId}>
-                    {folder.chatposts.map((post, index) => (
-                      <PostUnit key={index} postData={post} isDefault={true} />
-                    ))}
-                  </div>
-                );
-              }
-              return (
-                <div key={folder.folderId}>
-                  <FolderUnit key={index} folderData={folder} />
-                  {folder.chatposts.map((post, index) => (
-                    <PostUnit key={index} postData={post} isDefault={false} />
-                  ))}
-                </div>
-              );
-            })}
+          <div className="list-container overflow-y-auto h-screen pb-[200px]">
+            <FolderFileNoOrderDND />
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-const FolderUnit: React.FC<{ folderData: IFolderWithPostsDTO }> = ({
-  folderData,
-}) => {
-  return (
-    <div className="w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 bg-emerald-400 text-black border-gray-900 border py-1 hover:bg-slate-400 ">
-      <div className="flex flex-row pb-1">
-        <div className="w-2/12">
-          <FolderIcon sx={{ fontSize: "19px" }} />
-        </div>
-        <div className="w-8/12 px-1 pt-[4px] text-left text-sm">
-          {folderData.folderName}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PostUnit: React.FC<{
-  postData: IChatPostWithFolder;
-  isDefault: boolean;
-}> = ({ postData, isDefault }) => {
-  return (
-    <div
-      className={`w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 bg-emerald-400 text-black border-gray-900 border py-1 hover:bg-slate-400 ${
-        isDefault ? "pl-1" : "pl-5"
-      }`}
-    >
-      <div className="flex flex-row pb-1">
-        <div className="w-2/12 ">
-          <ChatIcon sx={{ fontSize: "17px" }} />
-        </div>
-        <div className="w-8/12 px-1 pt-[3px] text-left text-sm">
-          {postData.title}
-        </div>
-      </div>
-    </div>
-  );
-};

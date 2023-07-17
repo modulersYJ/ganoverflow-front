@@ -1,9 +1,13 @@
-import { POST } from "@/app/api/routeModule";
+import { POST, PUT } from "@/app/api/routeModule";
 import { GET } from "@/app/api/routeModule";
 
-import { IChat, IChatPostSendDTO } from "@/interfaces/chat";
+import {
+  IChat,
+  IChatPostSendDTO,
+  IFolderWithPostsDTO,
+} from "@/interfaces/chat";
 import { chatAPI as API } from "@/app/api/axiosInstanceManager";
-import { chatPostAPI } from "@/app/api/axiosInstanceManager";
+import { chatPostAPI, userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 
 export const sendChatPost = async (
@@ -23,8 +27,14 @@ export const sendChatPost = async (
   return response;
 };
 
-export const getAllChatPostsByUserId = async () => {
-  const response = await GET("chatposts/my-chats");
+export const getAllChatPostsByUserId = async (
+  userId: string,
+  authData: IAuthData
+) => {
+  const response = await GET("chatposts/my-chats", {
+    params: userId,
+    headers: GenerateAuthHeader(authData),
+  });
   return response;
 };
 
@@ -34,7 +44,7 @@ export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   if (authData === undefined) {
     throw new Error("authData is undefined");
   }
-  const response = await GET("folders", {
+  const response = await GET("user/folders", {
     params: userId,
     headers: GenerateAuthHeader(authData),
     revalidateTime: NaN,
@@ -43,7 +53,28 @@ export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   return response;
 };
 
+
 export const getAllCategories = async () => {
   const response = await GET("categories");
+    return response;
+};
+
+export const putFoldersByUser = async (
+  userId: string,
+  newFoldersWithPosts: IFolderWithPostsDTO[],
+  authData: IAuthData
+) => {
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+
+  const response = await PUT(
+    userAPI,
+    "folders",
+    newFoldersWithPosts,
+    GenerateAuthHeader(authData),
+    userId
+  );
+
   return response;
 };

@@ -15,9 +15,9 @@ export default async function PostDetailPage({
   return (
     <div className="grid">
       <article className="post-detail-main w-3/5 place-self-center">
-        <div className="post-title-box w-full border border-x-0 border-green-500 border-t-4 py-5 flex flex-col">
-          <h2 className="post-title text-start px-3 text-3xl text">
-            {postData?.title}
+        <div className="post-chatpostName-box w-full border border-x-0 border-green-500 border-t-4 py-5 flex flex-col">
+          <h2 className="post-chatpostName text-start px-3 text-3xl text">
+            {postData?.chatpostName}
           </h2>
           <div className="post-userdate-box flex flex-row justify-between">
             <div className="w-full flex flex-row">

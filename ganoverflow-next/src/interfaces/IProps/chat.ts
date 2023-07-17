@@ -20,7 +20,8 @@ export interface IChatMainProps {
 export interface IChatSideBarProps {
   onClickNewChatBtn: (e: React.MouseEvent) => void;
   chatSavedStatus: ChatSavedStatus;
-  foldersData: IFolderWithPostsDTO[];
+  // foldersData: IFolderWithPostsDTO[];
+  // foldersData: any;
 }
 
 export interface IFetchStreamAnswerProps {
