@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/chat/components/FolderFileNoOrderDND/atom/recoilState.js", "src/app/chat/components/FolderFileNoOrderDND/Chatpost.js", "src/app/chat/components/FolderFileNoOrderDND/Container.js", "src/app/chat/components/FolderFileNoOrderDND/Folder.js", "src/app/chat/components/FolderFileNoOrderDND/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
