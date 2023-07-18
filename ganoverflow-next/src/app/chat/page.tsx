@@ -37,7 +37,6 @@ export default function ChatPage() {
   const [questionInput, setQuestionInput] = useState("");
   const [chatPairs, setChatPairs] = useState<IChatPair[]>([]);
   const [checkCnt, setCheckCnt] = useState(0);
-  // const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
     foldersWithChatpostsState
   );
@@ -47,7 +46,6 @@ export default function ChatPage() {
   useEffect(() => {
     if (accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
-      console.log("foldersData: ", foldersData, accessToken);
     }
   }, [accessToken]);
 
@@ -55,9 +53,13 @@ export default function ChatPage() {
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
-      console.log("foldersData: ", foldersData);
     }
   }, [chatSavedStatus, accessToken]);
+
+  // foldersData - case 3) 변경 로그
+  useEffect(() => {
+    console.log("foldersData: ", foldersData);
+  }, [foldersData]);
 
   // checkCnt
   useEffect(() => {

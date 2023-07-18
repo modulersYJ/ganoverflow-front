@@ -53,22 +53,22 @@ export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   return response;
 };
 
-
 export const getAllCategories = async () => {
   const response = await GET("categories");
-    return response;
+  return response;
 };
 
+// 포스트 소속 변경 or 폴더 추가/제거 시
 export const putFoldersByUser = async (
   userId: string,
   newFoldersWithPosts: IFolderWithPostsDTO[],
   authData: IAuthData
-) => {
+): Promise<IFolderWithPostsDTO[]> => {
   if (authData === undefined) {
     throw new Error("authData is undefined");
   }
 
-  const response = await PUT(
+  const updatedFoldersWithPosts = await PUT(
     userAPI,
     "folders",
     newFoldersWithPosts,
@@ -76,5 +76,5 @@ export const putFoldersByUser = async (
     userId
   );
 
-  return response;
+  return updatedFoldersWithPosts.data;
 };

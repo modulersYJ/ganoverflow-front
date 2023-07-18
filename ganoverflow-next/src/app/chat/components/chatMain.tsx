@@ -24,7 +24,6 @@ export const ChatMain = ({
   scrollRef,
 }: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [response, setResponse] = useState<String>("");
 
   const [categories, setCategories] = useState<ICategories[]>([]);
 

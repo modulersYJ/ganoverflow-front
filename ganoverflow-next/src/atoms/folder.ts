@@ -7,6 +7,10 @@ export const foldersWithChatpostsState = atom({
   default: [] as IFolderWithPostsDTO[],
 });
 
+export const isFolderUpdatedState = atom({
+  key: "isFolderUpdatedState",
+  default: false,
+});
 // 'chatpostWithFolderstate'는 Recoil selector로, 이는 상태를 변환하는 데 사용
 // 이 selector는 'foldersWithChatpostsState' atom을 가져와
 // 모든 폴더의 모든 chatpost를 시리얼라이즈하여 하나의 배열로 반환
@@ -15,6 +19,7 @@ export const chatpostWithFolderstate = selector({
   get: ({ get }) => {
     const folderWithChatposts = get(foldersWithChatpostsState);
     // 구조화된 FolderWithPostsDTO 배열을 시리얼라이즈 (in)
+    console.log("get - folderWithChatposts ", folderWithChatposts);
     return serializePostsWithFolderId(folderWithChatposts);
   },
   set: ({ set, get }, newchatpost: any) => {

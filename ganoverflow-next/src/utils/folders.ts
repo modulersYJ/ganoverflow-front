@@ -7,6 +7,15 @@ import {
 export function serializePostsWithFolderId(
   foldersWithChatposts: IFolderWithPostsDTO[]
 ) {
+  if (!foldersWithChatposts || foldersWithChatposts.length === 0) {
+    console.log("util / serializePostsWithFolderId - length 0 or undefined");
+    return [];
+  }
+  console.log(
+    "foldersWithChatposts - serializePostsWithFolderId",
+    foldersWithChatposts
+  );
+
   return foldersWithChatposts.flatMap(
     (folder: IFolderWithPostsDTO): ISerailzedChatposts[] =>
       folder.chatposts.map((chatpost: IChatPostWithFolder) => ({
