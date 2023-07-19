@@ -220,16 +220,18 @@ const UserDropdownButton = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative flex flex-row justify-center group">
       <Link href="/" passHref>
         <button className="text-white font-bold hover:text-gray-400">
           {userData?.nickname}
           <span className="text-xs">님</span>
         </button>
       </Link>
-      <div className="absolute top-10 right-0 bg-white py-2 rounded-md shadow-lg">
+      <div className="hidden group-hover:block hover:block fixed top-[46px] bg-white py-2 rounded-md shadow-lg">
         <Link href="/accounts/my-page" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-200">마이페이지</span>
+          <span className="block w-32 px-4 py-2 hover:bg-gray-200">
+            마이페이지
+          </span>
         </Link>
         <button onClick={onClickLogOut}>
           <span className="block px-4 py-2 hover:bg-gray-200">로그아웃</span>
