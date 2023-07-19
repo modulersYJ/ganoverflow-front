@@ -11,7 +11,7 @@ import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
@@ -37,7 +37,6 @@ export default function ChatPage() {
   const [questionInput, setQuestionInput] = useState("");
   const [chatPairs, setChatPairs] = useState<IChatPair[]>([]);
   const [checkCnt, setCheckCnt] = useState(0);
-  // const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
     foldersWithChatpostsState
   );
@@ -47,7 +46,6 @@ export default function ChatPage() {
   useEffect(() => {
     if (accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
-      console.log("foldersData: ", foldersData, accessToken);
     }
   }, [accessToken]);
 
@@ -55,7 +53,6 @@ export default function ChatPage() {
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
-      console.log("foldersData: ", foldersData);
     }
   }, [chatSavedStatus, accessToken]);
 
@@ -172,6 +169,21 @@ export default function ChatPage() {
     setQuestionInput("");
   };
   //
+
+  // const onClickNewFolderBtn = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+  // const onClickDeleteChatpost = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+
+  // const onClickDeleteFolder = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+
+  // const onDoubleClickChatpostName = async (e: React.MouseEvent) => {s}
+
+  // const onDoubleClickFolderName = async (e: React.MouseEvent) => {s}
 
   return (
     <>
