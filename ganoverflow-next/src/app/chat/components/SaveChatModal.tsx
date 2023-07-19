@@ -14,7 +14,7 @@ export const SaveChatModal = ({
           className="h-11 w-full"
           onChange={onChangeTitleAndCategory}
           placeholder="저장할 대화 제목을 입력해주세요"
-          name="title"
+          name="chatpostName"
         />
         <label>
           카테고리를 선택하세요
