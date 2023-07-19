@@ -1,8 +1,7 @@
 import { useDrag } from "react-dnd";
 import { useSetRecoilState } from "recoil";
-import { chatpostWithFolderstate } from "@/atoms/folder";
+import { chatpostsWithFolderstate } from "@/atoms/folder";
 import React from "react";
-import ChatIcon from "@mui/icons-material/ChatBubble";
 
 const style: React.CSSProperties = {
   // border: "1px dashed gray",
@@ -17,7 +16,7 @@ export const Chatpost = function Chatpost({
   chatpost: any;
   isDefault: boolean;
 }) {
-  const setFoldersWithPosts = useSetRecoilState(chatpostWithFolderstate);
+  const setFoldersWithPosts = useSetRecoilState(chatpostsWithFolderstate);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "chatpost",
@@ -70,7 +69,7 @@ const PostUnit: React.FC<{
     >
       <div className="flex flex-row pb-1">
         <div className="w-2/12 ">
-          <ChatIcon sx={{ fontSize: "17px" }} />
+          {/* <ChatIcon sx={{ fontSize: "17px" }} /> */}
         </div>
         <div className="w-8/12 px-1 pt-[3px] text-left text-sm">
           {postData.chatpostName}

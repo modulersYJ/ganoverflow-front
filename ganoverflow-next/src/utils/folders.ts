@@ -11,12 +11,8 @@ export function serializePostsWithFolderId(
     console.log("util / serializePostsWithFolderId - length 0 or undefined");
     return [];
   }
-  console.log(
-    "foldersWithChatposts - serializePostsWithFolderId",
-    foldersWithChatposts
-  );
 
-  return foldersWithChatposts.flatMap(
+  const serializedChatpostsWithFolder = foldersWithChatposts.flatMap(
     (folder: IFolderWithPostsDTO): ISerailzedChatposts[] =>
       folder.chatposts.map((chatpost: IChatPostWithFolder) => ({
         ...chatpost,
@@ -24,6 +20,12 @@ export function serializePostsWithFolderId(
         folderName: folder.folderName,
       }))
   );
+  console.log(
+    "serializePostsWithFolderId - serialized chatposts: ",
+    serializedChatpostsWithFolder
+  );
+
+  return serializedChatpostsWithFolder;
 }
 
 // 시리얼라이즈된 serilizedChatposts배열을 재구조화 (out)

@@ -2,7 +2,6 @@ import { memo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Folder } from "./Folder";
 import {
-  chatpostWithFolderstate,
   foldersWithChatpostsState,
   isFolderUpdatedState,
 } from "@/atoms/folder";
@@ -11,7 +10,6 @@ import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import useDidMountEffect from "@/hooks/useDidMountEffect";
 import { putFoldersByUser } from "../../api/chat";
-import { restructFoldersWithPosts } from "@/utils/folders";
 import { IFolderWithPostsDTO } from "@/interfaces/chat";
 
 export const Container = memo(() => {
@@ -20,8 +18,6 @@ export const Container = memo(() => {
   );
   const [isFolderUpdated, setIsFolderUpdated] =
     useRecoilState<boolean>(isFolderUpdatedState);
-
-  const foldersWithPosts = useRecoilValue(chatpostWithFolderstate);
 
   const accessToken = useRecoilValue(accessTokenState);
   const userData = getSessionStorageItem("userData");
@@ -32,7 +28,7 @@ export const Container = memo(() => {
       // folder 변경사항(폴더 추가, 제거, 포스트 소속 이동) 서버로 PUT
       const updatedFoldersWithPosts = await putFoldersByUser(
         userData.id,
-        restructFoldersWithPosts(foldersWithPosts),
+        foldersData,
         {
           accessToken,
           userId: userData.id,
@@ -50,7 +46,7 @@ export const Container = memo(() => {
     console.log("useDidMount!!!!");
     updateFolders();
     setIsFolderUpdated(true);
-  }, [foldersWithPosts]);
+  }, [foldersData]);
 
   return (
     <div>

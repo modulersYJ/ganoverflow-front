@@ -11,7 +11,7 @@ import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
@@ -55,11 +55,6 @@ export default function ChatPage() {
       fetchFolderData(accessToken, setFoldersData, setAuthData);
     }
   }, [chatSavedStatus, accessToken]);
-
-  // foldersData - case 3) 변경 로그
-  useEffect(() => {
-    console.log("foldersData: ", foldersData);
-  }, [foldersData]);
 
   // checkCnt
   useEffect(() => {
@@ -174,6 +169,21 @@ export default function ChatPage() {
     setQuestionInput("");
   };
   //
+
+  // const onClickNewFolderBtn = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+  // const onClickDeleteChatpost = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+
+  // const onClickDeleteFolder = async (e: React.MouseEvent) => {
+  //   s;
+  // };
+
+  // const onDoubleClickChatpostName = async (e: React.MouseEvent) => {s}
+
+  // const onDoubleClickFolderName = async (e: React.MouseEvent) => {s}
 
   return (
     <>
