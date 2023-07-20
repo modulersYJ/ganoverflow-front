@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllChatPost } from "./api/chatposts";
+import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 
 export default async function PostPage() {
   const allPosts = await getAllChatPost();
@@ -39,11 +40,16 @@ export default async function PostPage() {
                     {post?.userId?.nickname ?? "작성자 없음"}
                   </td>
                   <td className="py-1">
-                    {post?.createdAt.slice(0, 10) ?? "2"}
+                    {parseDateWithSeconds(post?.createdAt)}
                   </td>
                   <td className="py-1">{post?.comments?.length ?? 0}</td>
                   <td className="py-1">{post?.viewCount}</td>
-                  <td className="py-1">{post?.likes}</td>
+                  <td className="py-1">
+                    {post?.stars.reduce(
+                      (acc: number, curr: any) => acc + curr.value,
+                      0
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (
