@@ -1,6 +1,15 @@
 import { serializePostsWithFolderId } from "@/utils/folders";
-import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
+import {
+  IChatPostBasicInfo,
+  // IChatPostWithFolder,
+  IFolderWithPostsDTO,
+} from "@/interfaces/chat";
 import { atom, selector } from "recoil";
+
+export const isFolderSpreadState = atom({
+  key: "isFolderSpreadState",
+  default: {},
+});
 
 export const foldersWithChatpostsState = atom({
   key: "foldersWithChatpostsState",
@@ -47,14 +56,12 @@ export const chatpostsWithFolderstate = selector({
         return {
           ...folder,
           chatposts: folder.chatposts.filter(
-            (chatpost: IChatPostWithFolder) =>
+            (chatpost: IChatPostBasicInfo) =>
               chatpost.chatPostId !== newchatpost.chatPostId
           ),
         };
       }
     });
-
-
 
     // foldersWithChatpostsState의 폴더 상태 업데이트
     set(foldersWithChatpostsState, newFoldersState);

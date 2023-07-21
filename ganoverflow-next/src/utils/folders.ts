@@ -1,5 +1,5 @@
 import {
-  IChatPostWithFolder,
+  IChatPostBasicInfo,
   IFolderWithPostsDTO,
   ISerailzedChatposts,
 } from "@/interfaces/chat";
@@ -14,7 +14,7 @@ export function serializePostsWithFolderId(
 
   const serializedChatpostsWithFolder = foldersWithChatposts.flatMap(
     (folder: IFolderWithPostsDTO): ISerailzedChatposts[] =>
-      folder.chatposts.map((chatpost: IChatPostWithFolder) => ({
+      folder.chatposts.map((chatpost: IChatPostBasicInfo) => ({
         ...chatpost,
         folderId: folder.folderId,
         folderName: folder.folderName,
@@ -36,7 +36,7 @@ export function restructFoldersWithPosts(
 
   for (const item of data) {
     const existingFolder = folderMap.get(item.folderId);
-    const chatPost: IChatPostWithFolder = {
+    const chatPost: IChatPostBasicInfo = {
       chatPostId: item.chatPostId,
       chatpostName: item.chatpostName,
     };

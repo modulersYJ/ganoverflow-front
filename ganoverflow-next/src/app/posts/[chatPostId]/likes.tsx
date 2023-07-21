@@ -3,7 +3,6 @@
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "../api/chatposts";
 import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 

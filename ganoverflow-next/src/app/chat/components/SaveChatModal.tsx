@@ -20,8 +20,8 @@ export const SaveChatModal = ({
           카테고리를 선택하세요
           <select name="categoryName" onChange={onChangeTitleAndCategory}>
             <option value={""}>없음</option>
-            {categories.map((category) => (
-              <option>{category.categoryName}</option>
+            {categories.map((category, idx: number) => (
+              <option key={idx}>{category.categoryName}</option>
             ))}
           </select>
         </label>

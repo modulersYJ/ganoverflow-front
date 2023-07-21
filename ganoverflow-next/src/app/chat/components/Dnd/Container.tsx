@@ -58,8 +58,8 @@ export const Container = memo(() => {
           flexDirection: "column",
         }}
       >
-        {foldersData.map((folder: any, idx: number) => (
-          <Folder folder={folder} key={folder.folderId} idx={idx} />
+        {foldersData.map((folder: IFolderWithPostsDTO, idx: number) => (
+          <Folder curFolder={folder} key={folder.folderId} idx={idx} />
         ))}
       </div>
     </div>

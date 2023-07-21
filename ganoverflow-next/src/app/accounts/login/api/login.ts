@@ -9,7 +9,6 @@ import {
 
 import { authAPI as API } from "@/app/api/axiosInstanceManager";
 import { userAPI } from "@/app/api/axiosInstanceManager";
-import { GenerateAuthHeader } from "@/app/api/jwt";
 
 // response interceptor 추가
 API.interceptors.response.use(
@@ -39,8 +38,8 @@ export const login = async (
   id: string;
   access_token: string;
 }> => {
-  const response = await POST(API, "login", userData, null);
-  // const response = await API.post("/login", userData);
+  const body = userData;
+  const response = await POST({ API, endPoint: "login", body });
 
   setSessionStorageItem("userData", {
     id: response.data.id,
@@ -51,16 +50,21 @@ export const login = async (
 };
 
 export const register = async (userData: IRegister) => {
-  const res = await POST(userAPI, "register", userData, null);
+  const res = await POST({
+    API: userAPI,
+    endPoint: "register",
+    body: userData,
+  });
   return res;
 };
 
 export const refreshAccessToken = async () => {
-  await POST(userAPI, "refresh", null, null);
+  await POST({ API: userAPI, endPoint: "refresh" });
 };
 
 export const logout = async (userId: string): Promise<void> => {
-  const response = await POST(API, "logout", { userId }, null);
+  const body = { userId };
+  const response = await POST({ API, endPoint: "logout", body });
   removeUserData();
   return response;
 };
