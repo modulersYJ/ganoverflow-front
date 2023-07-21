@@ -8,7 +8,7 @@ import {
   IFolderWithPostsDTO,
   TLoadThisChatHandler,
 } from "@/interfaces/chat";
-import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";

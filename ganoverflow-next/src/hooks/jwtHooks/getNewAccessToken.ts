@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { IAuthData, fetchAccessToken } from "@/app/api/jwt";
 
 import { accessTokenState } from "@/atoms/jwt";
-import { getSessionStorageItem } from "../common/sessionStorage";
+import { getSessionStorageItem } from "../../utils/common/sessionStorage";
 
 export const getNewAccessTokenHook = async () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);

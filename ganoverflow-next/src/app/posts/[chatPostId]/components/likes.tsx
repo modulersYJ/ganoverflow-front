@@ -2,7 +2,7 @@
 
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "@/app/posts/api/chatposts";
-import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useState, useEffect } from "react";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {

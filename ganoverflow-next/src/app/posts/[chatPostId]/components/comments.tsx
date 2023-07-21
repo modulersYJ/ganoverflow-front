@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getComments, postComment } from "../../api/chatposts";
-import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 
