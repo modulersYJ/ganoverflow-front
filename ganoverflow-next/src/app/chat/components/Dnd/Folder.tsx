@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd";
 import { Chatpost } from "./Chatpost";
 import React, { useState } from "react";
 import FolderIcon from "@mui/icons-material/Folder";
-import { IFolderWithPostsDTO } from "@/interfaces/chat";
+import { IFolderWithPostsDTO, TLoadThisChatHandler } from "@/interfaces/chat";
 import { useRecoilState } from "recoil";
 import { foldersWithChatpostsState, isFolderSpreadState } from "@/atoms/folder";
 
@@ -23,9 +23,11 @@ const style: React.CSSProperties = {
 export const Folder = ({
   curFolder,
   idx,
+  loadThisChatHandler,
 }: {
   curFolder: IFolderWithPostsDTO;
   idx: number;
+  loadThisChatHandler: TLoadThisChatHandler;
 }) => {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "chatpost",
@@ -63,6 +65,7 @@ export const Folder = ({
               curFolderId={curFolder.folderId}
               key={chatpost.chatPostId}
               isDefault={true}
+              loadThisChatHandler={loadThisChatHandler}
             />
           ))}
         </div>
@@ -76,6 +79,7 @@ export const Folder = ({
                 curFolderId={curFolder.folderId}
                 key={chatpost.chatPostId}
                 isDefault={false}
+                loadThisChatHandler={loadThisChatHandler}
               />
             ))}
         </>

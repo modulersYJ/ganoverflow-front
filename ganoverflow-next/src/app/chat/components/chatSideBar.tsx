@@ -9,6 +9,7 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 
 export default function ChatSideBar({
   onClickNewChatBtn,
+  loadThisChatHandler,
 }: // foldersData,
 IChatSideBarProps) {
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
@@ -16,7 +17,7 @@ IChatSideBarProps) {
   );
 
   const onClickNewFolderBtn = () => {
-    // Default folder(= ID 0), NewFolder, OtherFolders 순으로 정렬, 저장  
+    // Default folder(= ID 0), NewFolder, OtherFolders 순으로 정렬, 저장
     const newFolderId =
       foldersData.reduce(
         (acc, cur) => (cur.folderId > acc ? cur.folderId : acc),
@@ -61,7 +62,7 @@ IChatSideBarProps) {
           </div>
           <div className="plain-text text-black py-2">my posts</div>
           <div className="list-container overflow-y-auto h-screen pb-[200px]">
-            <FolderFileNoOrderDND />
+            <FolderFileNoOrderDND loadThisChatHandler={loadThisChatHandler} />
           </div>
         </div>
       </div>

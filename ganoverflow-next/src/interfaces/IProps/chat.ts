@@ -1,4 +1,4 @@
-import { ChatSavedStatus, IChatPair, IFolderWithPostsDTO } from "../chat";
+import { ChatSavedStatus, IChatPair, IFolderWithPostsDTO, TLoadThisChatHandler } from "../chat";
 
 export interface IChatMainProps {
   onChangeTitleAndCategory: (
@@ -20,6 +20,7 @@ export interface IChatMainProps {
 export interface IChatSideBarProps {
   onClickNewChatBtn: (e: React.MouseEvent) => void;
   chatSavedStatus: ChatSavedStatus;
+  loadThisChatHandler: TLoadThisChatHandler
   // foldersData: IFolderWithPostsDTO[];
   // foldersData: any;
 }

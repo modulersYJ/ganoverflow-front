@@ -33,6 +33,17 @@ export const getAllChatPostsByUserId = async (
   return response;
 };
 
+export const getOneChatPostById = async (
+  chatpostId: string,
+  authData: IAuthData
+) => {
+  const response = await GET("chatposts", {
+    params: chatpostId,
+    headers: GenerateAuthHeader(authData),
+  });
+  return response;
+};
+
 export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   console.log("getFoldersByUser authData:", authData);
 

@@ -16,7 +16,7 @@ import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
-import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
