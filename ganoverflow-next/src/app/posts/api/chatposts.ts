@@ -19,12 +19,12 @@ export const postComment = async (
   authData: IAuthData,
   chatPostId: string
 ) => {
-  const res = await POST(
-    commentAPI,
-    `${chatPostId}`,
-    commentData,
-    GenerateAuthHeader(authData)
-  );
+  const res = await POST({
+    API: commentAPI,
+    endPoint: `${chatPostId}`,
+    body: commentData,
+    authHeaders: GenerateAuthHeader(authData),
+  });
   return res;
 };
 
@@ -47,14 +47,16 @@ export const postStar = async ({
   value: number;
   authData: IAuthData;
 }) => {
-  const res = await POST(
-    starAPI,
-    "",
-    {
-      chatPostId: chatPostId,
-      like: value,
-    },
-    GenerateAuthHeader(authData)
-  );
+  const body = {
+    chatPostId: chatPostId,
+    like: value,
+  };
+  const authHeaders = GenerateAuthHeader(authData);
+  const res = await POST({
+    API: starAPI,
+    endPoint: "",
+    authHeaders: authHeaders,
+    body,
+  });
   return res;
 };

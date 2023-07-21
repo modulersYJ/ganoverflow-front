@@ -1,9 +1,7 @@
-import Cookies from "js-cookie";
 import { logout } from "../accounts/login/api/login";
-import axios, { AxiosInstance } from "axios";
+
 import { POST } from "@/app/api/routeModule";
 import { authAPI as API } from "./axiosInstanceManager";
-import { type } from "os";
 
 export interface IAuthData {
   accessToken: string | null | undefined;
@@ -22,12 +20,10 @@ export const fetchAccessToken = async (
   userId: string | null
 ): Promise<string> => {
   try {
-    const response = await POST(
+    const response = await POST({
       API,
-      "refresh",
-      null, // refresh_token은 credentials로 쿠키에 담아 전송됨.
-      null
-    );
+      endPoint: "refresh",
+    });
     const newAccessToken: string = response.data;
     return newAccessToken;
   } catch (error: any) {

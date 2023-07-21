@@ -30,7 +30,6 @@ export default function ChatPage() {
   const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
     chatpostName: "",
   });
-  const [chatpostName, setChatpostName] = useState("");
 
   const [isNowAnswering, setIsNowAnswering] = useState(false);
   const [chatSavedStatus, setChatSavedStatus] = useState<ChatSavedStatus>("F");
@@ -145,16 +144,12 @@ export default function ChatPage() {
     });
   };
 
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChatpostName(e.target.value);
-  };
-
   const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
     const selectedPairs = chatPairs.filter((aPair) => {
       return aPair.isChecked === true;
     });
     const chatPostBody = {
-      chatpostName: chatpostName,
+      chatpostName: titleAndCategory.chatpostName,
       category: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
@@ -168,22 +163,6 @@ export default function ChatPage() {
     setChatSavedStatus("F");
     setQuestionInput("");
   };
-  //
-
-  // const onClickNewFolderBtn = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-  // const onClickDeleteChatpost = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-
-  // const onClickDeleteFolder = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-
-  // const onDoubleClickChatpostName = async (e: React.MouseEvent) => {s}
-
-  // const onDoubleClickFolderName = async (e: React.MouseEvent) => {s}
 
   return (
     <>

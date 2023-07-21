@@ -2,6 +2,11 @@ import { serializePostsWithFolderId } from "@/utils/folders";
 import { IChatPostWithFolder, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { atom, selector } from "recoil";
 
+export const isFolderSpreadState = atom({
+  key: "isFolderSpreadState",
+  default: {},
+});
+
 export const foldersWithChatpostsState = atom({
   key: "foldersWithChatpostsState",
   default: [] as IFolderWithPostsDTO[],
@@ -53,8 +58,6 @@ export const chatpostsWithFolderstate = selector({
         };
       }
     });
-
-
 
     // foldersWithChatpostsState의 폴더 상태 업데이트
     set(foldersWithChatpostsState, newFoldersState);
