@@ -1,9 +1,10 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { getComments, postComment } from "../api/chatposts";
 import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
+import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 
 export function CommentBox({
   chatPostId,
@@ -13,16 +14,18 @@ export function CommentBox({
   comments: {
     commentId: number;
     content: string;
-    createdAt: Date;
+    createdAt: string;
     delYn: string;
+    user: { username: string; nickname: string };
   }[];
 }) {
+  console.log("🚀 ~ file: comments.tsx:22 ~ comments:", comments);
   const authData = useAuthDataHook();
   const router = useRouter();
   const commentCount = comments?.length;
   const [commentData, setCommentData] = useState("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentData(e.target.value);
     console.log(e.target.value);
   };
@@ -53,14 +56,32 @@ export function CommentBox({
       <div className="comments-commentbox border border-stone-500">
         {comments?.map((comment, idx) => {
           return (
-            <div key={idx} className="border border-1">
-              {comment.content}
+            <div
+              key={idx}
+              className="flex flex-row border-b-2 border-stone-500"
+            >
+              <div className="w-1/5 text-left px-4 py-2">
+                {comment.user.nickname}
+              </div>
+              <div className="w-full text-left py-2">
+                {comment.content
+                  .split("\n")
+                  .map((word: string, idx: number) => (
+                    <React.Fragment key={idx}>
+                      {word}
+                      <br />
+                    </React.Fragment>
+                  ))}
+              </div>
+              <div className="w-1/4 text-right p-2">
+                {parseDateWithSeconds(comment.createdAt)}
+              </div>
             </div>
           );
         })}
       </div>
       <div className="comments-write-box flex flex-col">
-        <input
+        <textarea
           name="comment"
           onChange={handleChange}
           value={commentData}

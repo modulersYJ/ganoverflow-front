@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "./api/login";
 import { ILogIn } from "@/interfaces/accounts";
@@ -23,6 +23,10 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(access_token);
+  }, [access_token]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

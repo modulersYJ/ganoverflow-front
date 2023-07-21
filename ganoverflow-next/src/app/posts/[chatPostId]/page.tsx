@@ -1,3 +1,4 @@
+import { parseDate } from "@/utils/parseDate";
 import { getOneChatPost } from "../api/chatposts";
 import { CommentBox } from "./comments";
 import { LikeBox } from "./likes";
@@ -24,10 +25,9 @@ export default async function PostDetailPage({
               <div className="post-user px-3 border border-0 border-r-2">
                 {postData?.userId?.nickname}
               </div>
-              <div className="post-date px-3">{`${postData?.createdAt?.slice(
-                0,
-                10
-              )} ${postData?.createdAt?.slice(11, 19)}`}</div>
+              <div className="post-date px-3">
+                {parseDate(postData?.createdAt)}
+              </div>
             </div>
             <div className="post-stats w-1/3 space-x-2">
               <span>조회수 {postData?.viewCount}</span>
