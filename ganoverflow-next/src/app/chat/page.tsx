@@ -6,6 +6,7 @@ import {
   IChat,
   IChatPair,
   IFolderWithPostsDTO,
+  TLoadThisChatHandler,
 } from "@/interfaces/chat";
 import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
@@ -20,6 +21,7 @@ import {
   ITitleAndCategory,
 } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
+import { isLoadedChatState } from "@/atoms/chat";
 
 export default function ChatPage() {
   useAuthDataHook();
@@ -40,6 +42,7 @@ export default function ChatPage() {
     foldersWithChatpostsState
   );
   const [currStream, setCurrStream] = useState<string>("");
+  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
 
   // foldersData - case 1)
   useEffect(() => {
@@ -100,7 +103,6 @@ export default function ChatPage() {
       {
         question: questionInput,
         answer: "",
-        isUser: true,
         isChecked: false,
       },
     ]);
@@ -164,6 +166,16 @@ export default function ChatPage() {
     setQuestionInput("");
   };
 
+  const loadThisChatHandler: TLoadThisChatHandler = async (
+    chatPairs: IChatPair[]
+  ) => {
+    setChatPairs(chatPairs as IChatPair[]);
+    //// todo: load한 chatPairs들에 대해, checkbox checked 설정
+    // setCheckCnt(0);
+    setChatSavedStatus("T");
+    setQuestionInput("");
+  };
+
   return (
     <>
       <ChatMain
@@ -183,7 +195,7 @@ export default function ChatPage() {
       <ChatSideBar
         onClickNewChatBtn={onClickNewChatBtn}
         chatSavedStatus={chatSavedStatus}
-        // foldersData={foldersData}
+        loadThisChatHandler={loadThisChatHandler}
       />
     </>
   );

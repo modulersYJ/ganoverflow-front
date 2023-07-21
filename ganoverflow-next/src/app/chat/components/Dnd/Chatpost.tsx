@@ -4,16 +4,23 @@ import {
   chatpostsWithFolderstate,
   foldersWithChatpostsState,
 } from "@/atoms/folder";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import ChatIcon from "@mui/icons-material/Chat";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { IChatPostBasicInfo, IFolderWithPostsDTO } from "@/interfaces/chat";
+import {
+  IChatPair,
+  IChatPostBasicInfo,
+  IFolderWithPostsDTO,
+  TLoadThisChatHandler,
+} from "@/interfaces/chat";
 import TitleEdit from "@/components/ui/Chat/TitleEdit";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
-import { updateChatpostName } from "../../api/chat";
+import { getOneChatPostById, updateChatpostName } from "../../api/chat";
 import { accessTokenState } from "@/atoms/jwt";
 import { IAuthData } from "@/app/api/jwt";
+import useDidMountEffect from "@/hooks/useDidMountEffect";
+import { isLoadedChatState } from "@/atoms/chat";
 
 const style: React.CSSProperties = {
   cursor: "move",
@@ -24,10 +31,12 @@ export const Chatpost = function Chatpost({
   curChatpost,
   isDefault,
   curFolderId,
+  loadThisChatHandler,
 }: {
   curChatpost: IChatPostBasicInfo;
   curFolderId: IFolderWithPostsDTO["folderId"];
   isDefault: boolean;
+  loadThisChatHandler: TLoadThisChatHandler;
 }) {
   const setFoldersWithPostsByDnd = useSetRecoilState(chatpostsWithFolderstate);
   const [foldersWithPosts, setFoldersWithPosts] = useRecoilState(
@@ -37,9 +46,20 @@ export const Chatpost = function Chatpost({
   const [chatpostName, setChatpostName] = useState<string>(
     curChatpost.chatpostName
   );
+  const [loadedChatPairs, setLoadedChatPairs] = useState<IChatPair[]>([]);
+  const [isLoadedChat, setIsLodedChat] = useRecoilState(isLoadedChatState);
+
+  // 클릭된 해당 포스트의 채팅을 로드
+  useDidMountEffect(() => {
+    loadThisChatHandler(loadedChatPairs);
+  }, [loadedChatPairs]);
 
   const userData = getSessionStorageItem("userData");
   const accessToken = useRecoilValue(accessTokenState);
+  const authData = {
+    accessToken,
+    userId: userData.id,
+  };
 
   const handleUpdatePostName = async (newName: string) => {
     setChatpostName(newName);
@@ -48,10 +68,7 @@ export const Chatpost = function Chatpost({
       newName,
       userData.id,
       curFolderId,
-      {
-        accessToken,
-        userId: userData.id,
-      } as IAuthData
+      authData as IAuthData
     );
 
     setFoldersWithPosts(newFoldersWithPost);
@@ -96,9 +113,21 @@ export const Chatpost = function Chatpost({
     ]);
     curChatpost.chatPostId;
   };
+
+  const onClickLoadThisPost = async () => {
+    const LoadedPost = await getOneChatPostById(
+      curChatpost.chatPostId,
+      authData as IAuthData
+    );
+
+    setIsLodedChat(true);
+    setLoadedChatPairs(LoadedPost.chatPair);
+  };
+
   return (
     <div ref={drag} style={{ opacity }} data-testid={`chatpost`}>
       <PostUnit
+        onClickLoadBtn={onClickLoadThisPost}
         onClickDeleteBtn={onClickDeleteChatpostBtn}
         postData={curChatpost}
         isDefault={isDefault}
@@ -116,6 +145,7 @@ const PostUnit: React.FC<{
   style: any;
   opacity: any;
   onClickDeleteBtn: any;
+  onClickLoadBtn: any;
   handleUpdatePostName: any;
 }> = ({
   postData,
@@ -123,6 +153,7 @@ const PostUnit: React.FC<{
   style,
   opacity,
   onClickDeleteBtn,
+  onClickLoadBtn,
   handleUpdatePostName,
 }) => {
   return (
@@ -146,12 +177,12 @@ const PostUnit: React.FC<{
           <div className="w-2/12 ">
             <ChatIcon sx={{ fontSize: "17px" }} />
           </div>
-
-          <TitleEdit
-            initialName={postData.chatpostName}
-            onSave={handleUpdatePostName}
-          />
-
+          <div onClick={onClickLoadBtn} className="w-full">
+            <TitleEdit
+              initialName={postData.chatpostName}
+              onSave={handleUpdatePostName}
+            />
+          </div>
           <button className="w-2/12" onClick={onClickDeleteBtn}>
             <DeleteOutlineIcon
               className="deleteIcon"

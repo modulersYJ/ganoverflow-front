@@ -7,7 +7,6 @@ export interface IChat {
 export interface IChatPair {
   question: string;
   answer: string;
-  isUser: boolean;
   isChecked: boolean;
 }
 
@@ -34,3 +33,5 @@ export interface ISerailzedChatposts {
   folderId: number;
   folderName: string;
 }
+
+export type TLoadThisChatHandler = (chatPairs: IChatPair[]) => void;

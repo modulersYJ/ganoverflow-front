@@ -4,6 +4,8 @@ import CircularCheckbox from "@/components/common/CheckBox/CircularCheckBox";
 import { IChatMainProps } from "@/interfaces/IProps/chat";
 import { getAllCategories } from "../api/chat";
 import { SaveChatModal } from "./SaveChatModal";
+import { useRecoilState } from "recoil";
+import { isLoadedChatState } from "@/atoms/chat";
 
 interface ICategories {
   categoryName: string;
@@ -24,8 +26,8 @@ export const ChatMain = ({
   scrollRef,
 }: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [categories, setCategories] = useState<ICategories[]>([]);
+  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
 
   return (
     <div className="flex flex-col h-full">
@@ -40,6 +42,19 @@ export const ChatMain = ({
         <></>
       )}
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
+        {isLoadedChat && (
+          <div className="mb-4">
+            <button
+              className="w-36 h-12 bg-sky-700 text-white rounded-lg"
+              onClick={() => {
+                setIsLoadedChat(false);
+                // setChatSavedStatus("F");
+              }}
+            >
+              채팅 이어하기
+            </button>
+          </div>
+        )}
         {chatSavedStatus === "T" ? (
           <>
             <button
@@ -71,25 +86,26 @@ export const ChatMain = ({
             >
               <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 md:w-2/5 m-auto">
                 <div className="chatPairBox w-full flex flex-col justify-center self-center">
-                  <div
-                    key={index}
-                    className={`msgBox p-4 max-w-sm text-xs ${
-                      chatLine.isUser
-                        ? "bg-blue-500 text-white self-end rounded-chat-question" //사용자 질문
-                        : "bg-gray-500 self-start rounded-chat-answer" //GPT 답변
-                    } inline-block`}
-                  >
-                    {chatLine.question}
-                  </div>
-                  <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
-                    {chatLine.answer}
-                  </div>
+                  {chatLine.question && (
+                    <div
+                      key={index}
+                      className={`msgBox p-4 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
+                    >
+                      {chatLine.question}
+                    </div>
+                  )}
+
+                  {chatLine.answer && (
+                    <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
+                      {chatLine.answer}
+                    </div>
+                  )}
                 </div>
                 <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
                   <div className="flex flex-row justify-end w-full h-full">
                     <CircularCheckbox
                       isDisabled={chatSavedStatus}
-                      isChecked={chatLine.isChecked}
+                      isChecked={!!chatLine.isChecked}
                       onChangeCheckBox={() => onChangeCheckBox(index)}
                     />
                   </div>
