@@ -1,10 +1,9 @@
 "use client";
 
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
-import { getStars, postStar } from "../api/chatposts";
+import { getStars, postStar } from "@/app/posts/api/chatposts";
 import { useAuthDataHook } from "@/utils/jwtHooks/getNewAccessToken";
 import { useState, useEffect } from "react";
-
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const userData = getSessionStorageItem("userData");
