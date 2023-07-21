@@ -14,14 +14,14 @@ export const SaveChatModal = ({
           className="h-11 w-full"
           onChange={onChangeTitleAndCategory}
           placeholder="저장할 대화 제목을 입력해주세요"
-          name="title"
+          name="chatpostName"
         />
         <label>
           카테고리를 선택하세요
           <select name="categoryName" onChange={onChangeTitleAndCategory}>
             <option value={""}>없음</option>
-            {categories.map((category) => (
-              <option>{category.categoryName}</option>
+            {categories.map((category, idx: number) => (
+              <option key={idx}>{category.categoryName}</option>
             ))}
           </select>
         </label>
