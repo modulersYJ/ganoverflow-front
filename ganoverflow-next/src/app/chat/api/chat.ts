@@ -1,12 +1,7 @@
-import { POST, PUT } from "@/app/api/routeModule";
+import { POST, PUT, PATCH } from "@/app/api/routeModule";
 import { GET } from "@/app/api/routeModule";
 
-import {
-  IChat,
-  IChatPostSendDTO,
-  IFolderWithPostsDTO,
-} from "@/interfaces/chat";
-import { chatAPI as API } from "@/app/api/axiosInstanceManager";
+import { IChatPostSendDTO, IFolderWithPostsDTO } from "@/interfaces/chat";
 import { chatPostAPI, userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 
@@ -17,12 +12,12 @@ export const sendChatPost = async (
   if (authData === undefined) {
     throw new Error("authData is undefined");
   }
-  const response = await POST(
-    chatPostAPI,
-    "/",
-    chatPostBody,
-    GenerateAuthHeader(authData)
-  );
+  const response = await POST({
+    API: chatPostAPI,
+    endPoint: "/",
+    body: chatPostBody,
+    authHeaders: GenerateAuthHeader(authData),
+  });
 
   return response;
 };
@@ -68,13 +63,16 @@ export const putFoldersByUser = async (
     throw new Error("authData is undefined");
   }
 
-  const updatedFoldersWithPosts = await PUT(
-    userAPI,
-    "folders",
-    newFoldersWithPosts,
-    GenerateAuthHeader(authData),
-    userId
-  );
+  const updatedFoldersWithPosts = await PUT({
+    API: userAPI,
+    endPoint: "folders",
+    body: newFoldersWithPosts,
+    authHeaders: GenerateAuthHeader(authData),
+    params: userId,
+  });
+
+  return updatedFoldersWithPosts.data;
+};
 
   return updatedFoldersWithPosts.data;
 };

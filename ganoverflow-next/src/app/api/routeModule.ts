@@ -1,36 +1,4 @@
-import { AxiosInstance } from "axios";
-
-export async function POST(
-  API: AxiosInstance,
-  endPoint: string,
-  body?: any,
-  authHeaders?: any
-): Promise<any> {
-  const response = await API.post(endPoint, body, authHeaders);
-
-  if (response.status !== 201 && response.status !== 204) {
-    return `${response.status}: 오류좀보소`;
-  }
-  console.log("IN POST", response);
-  return response;
-}
-
-export async function PUT(
-  API: AxiosInstance,
-  endPoint: string,
-  body?: any,
-  authHeaders?: any,
-  params?: string
-): Promise<any> {
-  const url = params ? `${endPoint}/${params}` : endPoint;
-  const response = await API.put(url, body, authHeaders);
-
-  if (response.status !== 200 && response.status !== 204) {
-    return `${response.status}: 오류좀보소`;
-  }
-  console.log("IN PUT", response);
-  return response;
-}
+import { AxiosInstance, Method } from "axios";
 
 export async function GET(
   endPoint: string,
@@ -61,4 +29,79 @@ export async function GET(
   });
   const data = await res.json();
   return data;
+}
+
+interface IPostReqProps {
+  API: AxiosInstance;
+  endPoint: string;
+  authHeaders?: any;
+  body?: any;
+}
+
+interface IUpdateReqProps extends IPostReqProps {
+  params?: string;
+}
+
+export function POST({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+}: IPostReqProps): Promise<any> {
+  return REQUEST({ API, method: "POST", endPoint, authHeaders, body });
+}
+
+export function PUT({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: IUpdateReqProps): Promise<any> {
+  return REQUEST({ API, method: "PUT", endPoint, body, authHeaders, params });
+}
+
+export function PATCH({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: IUpdateReqProps): Promise<any> {
+  return REQUEST({ API, method: "PATCH", endPoint, body, authHeaders, params });
+}
+
+// POST, PUT, PATCH의 평가부 추상화
+async function REQUEST({
+  API,
+  method,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: {
+  API: AxiosInstance;
+  method: "POST" | "PUT" | "PATCH";
+  endPoint: string;
+  authHeaders?: any;
+  body?: any;
+  params?: string;
+}): Promise<any> {
+  const url = params ? `${endPoint}/${params}` : endPoint;
+
+  const response = await API.request({
+    url,
+    method,
+    data: body,
+    ...authHeaders,
+  });
+
+  const acceptedStatus = [200, 201, 204];
+
+  if (!acceptedStatus.includes(response.status)) {
+    return `${response.status}: 오류좀보소`;
+  }
+
+  console.log(`IN ${method}`, response);
+  return response;
 }
