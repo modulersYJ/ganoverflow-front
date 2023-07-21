@@ -74,5 +74,31 @@ export const putFoldersByUser = async (
   return updatedFoldersWithPosts.data;
 };
 
+export const updateChatpostName = async (
+  chatpostId: string,
+  chatpostName: string,
+  userId: string,
+  folderId: number,
+  authData: IAuthData
+): Promise<IFolderWithPostsDTO[]> => {
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+
+  const body = {
+    chatpostName,
+    userId,
+    folderId,
+  };
+
+  console.log("updateChatpostName body", body);
+
+  const updatedFoldersWithPosts = await PATCH({
+    API: chatPostAPI,
+    endPoint: "",
+    body,
+    authHeaders: GenerateAuthHeader(authData),
+    params: chatpostId,
+  });
   return updatedFoldersWithPosts.data;
 };

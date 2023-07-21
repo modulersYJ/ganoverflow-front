@@ -163,22 +163,6 @@ export default function ChatPage() {
     setChatSavedStatus("F");
     setQuestionInput("");
   };
-  //
-
-  // const onClickNewFolderBtn = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-  // const onClickDeleteChatpost = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-
-  // const onClickDeleteFolder = async (e: React.MouseEvent) => {
-  //   s;
-  // };
-
-  // const onDoubleClickChatpostName = async (e: React.MouseEvent) => {s}
-
-  // const onDoubleClickFolderName = async (e: React.MouseEvent) => {s}
 
   return (
     <>

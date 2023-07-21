@@ -20,16 +20,16 @@ export interface IChatPostSendDTO {
 interface IFolderWithPostsDTO {
   folderId: number;
   folderName: string;
-  chatposts: IChatPostWithFolder[];
+  chatposts: IChatPostBasicInfo[];
 }
 
-export interface IChatPostWithFolder {
-  chatPostId: number;
+export interface IChatPostBasicInfo {
+  chatPostId: string;
   chatpostName: string;
 }
 
 export interface ISerailzedChatposts {
-  chatPostId: number;
+  chatPostId: string;
   chatpostName: string;
   folderId: number;
   folderName: string;
