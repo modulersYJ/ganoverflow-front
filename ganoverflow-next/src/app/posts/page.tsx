@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { getAllChatPost } from "./api/chatposts";
+import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 
 export default async function PostPage() {
   const allPosts = await getAllChatPost();
   console.log("ap", allPosts[0]);
   return (
     <>
-      <div className="post-title text-xl ">GanOverflow - POSTS</div>
+      <div className="post-chatpostName text-xl ">GanOverflow - POSTS</div>
       <div className="grid">
         <table className="w-3/5 place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
@@ -32,18 +33,23 @@ export default async function PostPage() {
                   <td className="py-1">{post?.category ?? "카테고리"}</td>
                   <td className="py-1">
                     <Link href={`/posts/${post?.chatPostId}`}>
-                      {post?.title}
+                      {post?.chatpostName}
                     </Link>
                   </td>
                   <td className="py-1">
                     {post?.userId?.nickname ?? "작성자 없음"}
                   </td>
                   <td className="py-1">
-                    {post?.createdAt.slice(0, 10) ?? "2"}
+                    {parseDateWithSeconds(post?.createdAt)}
                   </td>
                   <td className="py-1">{post?.comments?.length ?? 0}</td>
                   <td className="py-1">{post?.viewCount}</td>
-                  <td className="py-1">{post?.likes}</td>
+                  <td className="py-1">
+                    {post?.stars.reduce(
+                      (acc: number, curr: any) => acc + curr.value,
+                      0
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (

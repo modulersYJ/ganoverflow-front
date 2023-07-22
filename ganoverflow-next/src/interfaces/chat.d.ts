@@ -7,27 +7,31 @@ export interface IChat {
 export interface IChatPair {
   question: string;
   answer: string;
-  isUser: boolean;
   isChecked: boolean;
 }
 
 export interface IChatPostSendDTO {
-  title: string;
+  chatpostName: string;
   chatPair: IChatPair[];
+  category?: string;
 }
 
 interface IFolderWithPostsDTO {
   folderId: number;
   folderName: string;
-  order: number;
-  userId: string;
-  chatposts: IChatPostWithFolder[];
+  chatposts: IChatPostBasicInfo[];
 }
 
-interface IChatPostWithFolder {
+export interface IChatPostBasicInfo {
   chatPostId: string;
-  title: string;
-  order: number;
-  userId: string;
-  folder: number;
+  chatpostName: string;
 }
+
+export interface ISerailzedChatposts {
+  chatPostId: string;
+  chatpostName: string;
+  folderId: number;
+  folderName: string;
+}
+
+export type TLoadThisChatHandler = (chatPairs: IChatPair[]) => void;

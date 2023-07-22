@@ -6,16 +6,22 @@ import {
   IChat,
   IChatPair,
   IFolderWithPostsDTO,
+  TLoadThisChatHandler,
 } from "@/interfaces/chat";
-import { useAuthDataHook } from "../utils/jwtHooks/getNewAccessToken";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { getFoldersByUser, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
-import { useRecoilValue } from "recoil";
-import { getLocalStorageItem } from "../utils/common/localStorage";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
-import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
+import {
+  IFetchStreamAnswerProps,
+  ITitleAndCategory,
+} from "@/interfaces/IProps/chat";
+import { foldersWithChatpostsState } from "@/atoms/folder";
+import { isLoadedChatState } from "@/atoms/chat";
 
 export default function ChatPage() {
   useAuthDataHook();
@@ -23,15 +29,20 @@ export default function ChatPage() {
   const [authData, setAuthData] = useState<IAuthData>();
 
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
-  const [title, setTitle] = useState("");
+  const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
+    chatpostName: "",
+  });
 
   const [isNowAnswering, setIsNowAnswering] = useState(false);
   const [chatSavedStatus, setChatSavedStatus] = useState<ChatSavedStatus>("F");
   const [questionInput, setQuestionInput] = useState("");
   const [chatPairs, setChatPairs] = useState<IChatPair[]>([]);
   const [checkCnt, setCheckCnt] = useState(0);
-  const [foldersData, setFoldersData] = useState<IFolderWithPostsDTO[]>([]);
+  const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
+    foldersWithChatpostsState
+  );
   const [currStream, setCurrStream] = useState<string>("");
+  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
 
   // foldersData - case 1)
   useEffect(() => {
@@ -92,7 +103,6 @@ export default function ChatPage() {
       {
         question: questionInput,
         answer: "",
-        isUser: true,
         isChecked: false,
       },
     ]);
@@ -126,8 +136,14 @@ export default function ChatPage() {
     setChatSavedStatus("ING");
   };
 
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+  const onChangeTitleAndCategory = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    console.log(e.target.value, e.target.name);
+    setTitleAndCategory({
+      ...titleAndCategory,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const onClickSaveChatpostExec = async (e: React.MouseEvent) => {
@@ -135,7 +151,8 @@ export default function ChatPage() {
       return aPair.isChecked === true;
     });
     const chatPostBody = {
-      title: title,
+      chatpostName: titleAndCategory.chatpostName,
+      category: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
     await sendChatPost(chatPostBody, authData);
@@ -148,12 +165,21 @@ export default function ChatPage() {
     setChatSavedStatus("F");
     setQuestionInput("");
   };
-  //
+
+  const loadThisChatHandler: TLoadThisChatHandler = async (
+    chatPairs: IChatPair[]
+  ) => {
+    setChatPairs(chatPairs as IChatPair[]);
+    //// todo: load한 chatPairs들에 대해, checkbox checked 설정
+    // setCheckCnt(0);
+    setChatSavedStatus("T");
+    setQuestionInput("");
+  };
 
   return (
     <>
       <ChatMain
-        onChangeTitle={onChangeTitle}
+        onChangeTitleAndCategory={onChangeTitleAndCategory}
         onChangeMessage={onChangeMessage}
         onClickSaveChatpostInit={onClickSaveChatpostInit}
         onClickSaveChatpostExec={onClickSaveChatpostExec}
@@ -169,7 +195,7 @@ export default function ChatPage() {
       <ChatSideBar
         onClickNewChatBtn={onClickNewChatBtn}
         chatSavedStatus={chatSavedStatus}
-        foldersData={foldersData}
+        loadThisChatHandler={loadThisChatHandler}
       />
     </>
   );
@@ -180,7 +206,7 @@ const fetchFolderData = async (
   setFoldersData: any,
   setAuthData: any
 ) => {
-  const user = await getLocalStorageItem("userData");
+  const user = await getSessionStorageItem("userData");
 
   const authData: IAuthData = {
     accessToken: accessToken,
@@ -201,7 +227,7 @@ const scrollDown = (scrollRef: any) => {
   }
 };
 
-// No need to cache 
+// No need to cache
 const fetchUpdateStreamAnswer = async ({
   prompt,
   currStream,

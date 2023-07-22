@@ -1,55 +1,4 @@
-import { AxiosInstance } from "axios";
-import { IAuthData, fetchAccessToken } from "@/app/api/jwt";
-
-export async function POST(
-  API: AxiosInstance,
-  endPoint: string,
-  body?: any,
-  authHeaders?: any
-): Promise<any> {
-  const response = await API.post(endPoint, body, authHeaders);
-
-  if (response.status !== 201 && response.status !== 204) {
-    return `${response.status}: 오류좀보소`;
-  }
-  console.log("IN POST", response);
-  return response;
-}
-
-//Access Token을 헤더에 넣어서 보내는 POST
-export async function AuthPOST(
-  API: AxiosInstance,
-  endPoint: string,
-  body: any,
-  authData: IAuthData
-): Promise<string> {
-  try {
-    const response = await API.post(endPoint, body, {
-      headers: {
-        Authorization: `Bearer ${authData.accessToken}`,
-      },
-    });
-
-    const res = response.data;
-    if (res.status !== 201 && res.status !== 204) {
-      console.log(res);
-      return `${res.status}: 오류좀보소`;
-    }
-    console.log(res);
-    return `${res}`;
-  } catch (error: any) {
-    if (error.response && error.response.data === "Expired token") {
-      // Access 토큰이 만료된 경우, 새로운 Access 토큰을 발급 후 재시도
-      const newAccessToken = await fetchAccessToken(authData.userId);
-      return AuthPOST(API, endPoint, body, {
-        accessToken: newAccessToken,
-        userId: authData.userId,
-      });
-    } else {
-      throw error;
-    }
-  }
-}
+import { AxiosInstance, Method } from "axios";
 
 export async function GET(
   endPoint: string,
@@ -77,8 +26,82 @@ export async function GET(
     method: "GET",
     ...headers,
     next: { revalidate: revalidateTime },
-    // body: body ? JSON.stringify(body) : null,
   });
   const data = await res.json();
   return data;
+}
+
+interface IPostReqProps {
+  API: AxiosInstance;
+  endPoint: string;
+  authHeaders?: any;
+  body?: any;
+}
+
+interface IUpdateReqProps extends IPostReqProps {
+  params?: string;
+}
+
+export function POST({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+}: IPostReqProps): Promise<any> {
+  return REQUEST({ API, method: "POST", endPoint, authHeaders, body });
+}
+
+export function PUT({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: IUpdateReqProps): Promise<any> {
+  return REQUEST({ API, method: "PUT", endPoint, body, authHeaders, params });
+}
+
+export function PATCH({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: IUpdateReqProps): Promise<any> {
+  return REQUEST({ API, method: "PATCH", endPoint, body, authHeaders, params });
+}
+
+// POST, PUT, PATCH의 평가부 추상화
+async function REQUEST({
+  API,
+  method,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: {
+  API: AxiosInstance;
+  method: "POST" | "PUT" | "PATCH";
+  endPoint: string;
+  authHeaders?: any;
+  body?: any;
+  params?: string;
+}): Promise<any> {
+  const url = params ? `${endPoint}/${params}` : endPoint;
+
+  const response = await API.request({
+    url,
+    method,
+    data: body,
+    ...authHeaders,
+  });
+
+  const acceptedStatus = [200, 201, 204];
+
+  if (!acceptedStatus.includes(response.status)) {
+    return `${response.status}: 오류좀보소`;
+  }
+
+  console.log(`IN ${method}`, response);
+  return response;
 }

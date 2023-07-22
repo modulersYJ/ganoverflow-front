@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "./api/login";
 import { ILogIn } from "@/interfaces/accounts";
@@ -11,7 +11,7 @@ import InputField from "@/components/ui/Accounts/InputField";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { accessTokenState } from "@/atoms/jwt";
 import { userState } from "@/atoms/user";
-import { getLocalStorageItem } from "@/app/utils/common/localStorage";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 const Login = () => {
   const access_token = useRecoilValue(accessTokenState);
@@ -23,6 +23,10 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(access_token);
+  }, [access_token]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,7 +40,7 @@ const Login = () => {
       setAccessToken(response.access_token); // Recoil 유저 상태 업데이트
       console.log("access_token state", access_token);
 
-      setUserState(getLocalStorageItem("userData"));
+      setUserState(getSessionStorageItem("userData"));
       router.push("/");
     } catch (error) {
       alert(`로그인 실패!, ${error}`);

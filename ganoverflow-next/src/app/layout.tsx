@@ -15,8 +15,8 @@ import { Inter } from "next/font/google";
 import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
-import { getLocalStorageItem } from "./utils/common/localStorage";
-import { useAuthDataHook } from "./utils/jwtHooks/getNewAccessToken";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -82,7 +82,7 @@ const Header = (): JSX.Element => {
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
-    const userData = getLocalStorageItem("userData");
+    const userData = getSessionStorageItem("userData");
     if (userData) {
       setUser(userData);
     }
@@ -220,16 +220,18 @@ const UserDropdownButton = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative flex flex-row justify-center group">
       <Link href="/" passHref>
         <button className="text-white font-bold hover:text-gray-400">
           {userData?.nickname}
           <span className="text-xs">님</span>
         </button>
       </Link>
-      <div className="absolute top-10 right-0 bg-white py-2 rounded-md shadow-lg">
+      <div className="hidden group-hover:block hover:block fixed top-[46px] bg-white py-2 rounded-md shadow-lg">
         <Link href="/accounts/my-page" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-200">마이페이지</span>
+          <span className="block w-32 px-4 py-2 hover:bg-gray-200">
+            마이페이지
+          </span>
         </Link>
         <button onClick={onClickLogOut}>
           <span className="block px-4 py-2 hover:bg-gray-200">로그아웃</span>
