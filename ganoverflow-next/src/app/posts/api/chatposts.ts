@@ -2,8 +2,8 @@ import { commentAPI, starAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 import { GET, POST } from "@/app/api/routeModule";
 
-export const getAllChatPost = async () => {
-  const response = await GET("chatposts");
+export const getAllChatPost = async ({ page }: { page: number }) => {
+  const response = await GET(`chatposts?page=${page}`);
   return response;
 };
 
