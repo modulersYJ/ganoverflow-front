@@ -1,15 +1,44 @@
 import Link from "next/link";
 import { getAllChatPost } from "./api/chatposts";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
+import { Pagination } from "./Pagination";
 
-export default async function PostPage() {
-  const allPosts = await getAllChatPost();
-  console.log("ap", allPosts[0]);
+export default async function PostPage({
+  searchParams,
+}: {
+  searchParams: { [page: string]: number };
+}) {
+  const currentPage = searchParams.page ?? 1;
+
+  const allPosts = await getAllChatPost({ page: currentPage });
+
+  // ! 페이징용 게시물수
+  const totalCount = allPosts.postCount;
+  const totalPage = Math.ceil(totalCount / 10);
+
+  const pagingButtons = Array.from({ length: totalPage + 2 }).map((e, idx) =>
+    idx.toString()
+  );
+  pagingButtons[0] = "<";
+  pagingButtons[pagingButtons.length - 1] = ">";
+
+  // ! 10개 미만이면 10개로 채워줘야 함.
+  while (allPosts.posts.length < 10) {
+    allPosts.posts.push({
+      post: "",
+      id: 0,
+      createdAt: "",
+      stars: [],
+      category: " ",
+      comments: [],
+    });
+  }
+
   return (
     <>
       <div className="post-chatpostName text-xl ">GanOverflow - POSTS</div>
       <div className="grid">
-        <table className="w-3/5 place-self-center">
+        <table className="w-3/5 h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
             <tr>
               <th className="p-2.5">번호</th>
@@ -23,10 +52,10 @@ export default async function PostPage() {
             </tr>
           </thead>
           <tbody>
-            {allPosts.length > 0 ? (
-              allPosts.map((post: any, id: number) => (
+            {allPosts.posts.length === 10 ? (
+              allPosts.posts.map((post: any, id: number) => (
                 <tr
-                  className="border border-x-0 border-spacing-2 border-zinc-500 hover:bg-slate-800"
+                  className="border border-x-0 border-spacing-2 border-zinc-500 hover:bg-slate-600"
                   key={id}
                 >
                   <td className="py-1">{post?.chatPostId}</td>
@@ -36,13 +65,11 @@ export default async function PostPage() {
                       {post?.chatpostName}
                     </Link>
                   </td>
-                  <td className="py-1">
-                    {post?.userId?.nickname ?? "작성자 없음"}
-                  </td>
+                  <td className="py-1">{post?.userId?.nickname ?? ""}</td>
                   <td className="py-1">
                     {parseDateWithSeconds(post?.createdAt)}
                   </td>
-                  <td className="py-1">{post?.comments?.length ?? 0}</td>
+                  <td className="py-1">{post?.comments?.length}</td>
                   <td className="py-1">{post?.viewCount}</td>
                   <td className="py-1">
                     {post?.stars.reduce(
@@ -57,6 +84,9 @@ export default async function PostPage() {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="pagination-wrapper">
+        <Pagination currentPage={currentPage} totalPage={totalPage} />
       </div>
     </>
   );
