@@ -37,16 +37,24 @@ export default function RootLayout({
   // home: boolean,
   // offFooter: boolean,
 }) {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
+  };
   return (
     <html
       lang="en"
-      className={`${inter.className} h-full scroll-smooth antialiased`}
+      className={`${inter.className} ${
+        isDarkMode ? "dark" : ""
+      } h-full scroll-smooth antialiased`}
     >
       <CapsulizedHead />
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
-          <Header />
-          <main className="grow pt-[44px] md:pt-[68px]">{children}</main>
+          <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+          <main className="grow pt-[44px] md:pt-[68px] bg-slate-300 dark:bg-slate-800 dark:text-slate-100">
+            {children}
+          </main>
           {/* {!offFooter &&  */}
           {/* <Footer /> */}
           {/* } */}
@@ -77,7 +85,13 @@ const CapsulizedHead = (): JSX.Element => {
   );
 };
 
-const Header = (): JSX.Element => {
+const Header = ({
+  toggleDarkMode,
+  isDarkMode,
+}: {
+  toggleDarkMode: () => void;
+  isDarkMode: boolean;
+}): JSX.Element => {
   const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
   const [user, setUser] = useRecoilState(userState);
 
@@ -137,15 +151,6 @@ const Header = (): JSX.Element => {
                 채팅
               </Link>
               <Link
-                href="/"
-                target="_blank"
-                // rel="noreferrer"
-                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
-                passHref
-              >
-                머시기
-              </Link>
-              <Link
                 href="/posts"
                 className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
                 passHref
@@ -166,6 +171,9 @@ const Header = (): JSX.Element => {
               >
                 CONTACT
               </Link>
+              <button className="text-zinc-200" onClick={toggleDarkMode}>
+                {isDarkMode === true ? "LIGHT" : "DARK"}
+              </button>
             </div>
           </div>
           <div className="col-sapn-1 self-center">
