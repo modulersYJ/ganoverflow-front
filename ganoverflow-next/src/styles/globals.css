@@ -94,8 +94,8 @@ body,
     "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
-  color: rgb(118, 118, 118);
-  background-color: #1c2128;
+  /* color: rgb(118, 118, 118);
+  background-color: #1c2128; */
 }
 
 /* Common */
