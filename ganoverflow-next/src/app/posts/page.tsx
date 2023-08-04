@@ -12,6 +12,8 @@ export default async function PostPage({
 
   const allPosts = await getAllChatPost({ page: currentPage });
 
+  console.log("ap0", allPosts.posts[0]);
+
   // ! 페이징용 게시물수
   const totalCount = allPosts.postCount;
   const totalPage = Math.ceil(totalCount / 10);
@@ -59,7 +61,9 @@ export default async function PostPage({
                   key={id}
                 >
                   <td className="py-1">{post?.chatPostId}</td>
-                  <td className="py-1">{post?.category ?? "카테고리"}</td>
+                  <td className="py-1">
+                    {post?.categoryName?.categoryName ?? "카테고리업슴"}
+                  </td>
                   <td className="py-1">
                     <Link href={`/posts/${post?.chatPostId}`}>
                       {post?.chatpostName}
