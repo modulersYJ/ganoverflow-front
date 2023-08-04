@@ -240,3 +240,9 @@ main {
 .cursor-pointer {
   cursor: pointer !important;
 }
+
+/* chatMain - answer 내 답변 간 문단구분 스타일 적용 */
+
+.answer-p + * {
+  margin-top: 30px;
+}
