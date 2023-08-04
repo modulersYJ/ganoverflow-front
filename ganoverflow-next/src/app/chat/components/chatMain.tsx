@@ -129,7 +129,7 @@ export const ChatMain = ({
                               if (!inline) {
                                 return (
                                   <SyntaxHighlighter
-                                    style={gruvboxDark}
+                                    style={gruvboxDark as any}
                                     language={language || "javascript"}
                                     PreTag="div"
                                     {...props}
