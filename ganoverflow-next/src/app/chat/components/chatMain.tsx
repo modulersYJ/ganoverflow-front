@@ -6,6 +6,17 @@ import { getAllCategories } from "../api/chat";
 import { SaveChatModal } from "./SaveChatModal";
 import { useRecoilState } from "recoil";
 import { isLoadedChatState } from "@/atoms/chat";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
+// light용
+// import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
+// import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+//dark 테마용 후보
+// import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+// import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
 
 interface ICategories {
   categoryName: string;
@@ -84,20 +95,61 @@ export const ChatMain = ({
                 index % 2 === 0 ? "bg-gray-700" : "bg-gray-800" // 홀짝 배경색 변경
               } flex flex-row`}
             >
-              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 md:w-2/5 m-auto">
+              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-full md:w-2/5 m-auto">
                 <div className="chatPairBox w-full flex flex-col justify-center self-center">
                   {chatLine.question && (
                     <div
                       key={index}
-                      className={`msgBox p-4 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
+                      className={`msgBox p-5 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
                     >
                       {chatLine.question}
                     </div>
                   )}
 
                   {chatLine.answer && (
-                    <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
-                      {chatLine.answer}
+                    <div className="msgBox p-5 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
+                      <div className="overflow-auto max-w-full rounded-md">
+                        <ReactMarkdown
+                          components={{
+                            p({ node, children }) {
+                              return <p className="answer-p">{children}</p>;
+                            },
+                            code({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }) {
+                              const match = /language-(\w+)/.exec(
+                                className || ""
+                              );
+                              const language = match ? match[1] : null;
+
+                              if (!inline) {
+                                return (
+                                  <SyntaxHighlighter
+                                    style={gruvboxDark as any}
+                                    language={language || "javascript"}
+                                    PreTag="div"
+                                    {...props}
+                                  >
+                                    {String(children).replace(/\n$/, "")}
+                                  </SyntaxHighlighter>
+                                );
+                              } else {
+                                return (
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                );
+                              }
+                            },
+                          }}
+                        >
+                          {chatLine.answer}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   )}
                 </div>

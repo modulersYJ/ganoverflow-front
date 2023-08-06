@@ -158,7 +158,7 @@ const PostUnit: React.FC<{
 }) => {
   return (
     <div
-      className={`postUnit w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-400  ${
+      className={`postUnit w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-600  ${
         isDefault ? "pl-1" : "pl-5"
       } cursor-pointer`}
       style={{ ...style, opacity }}
