@@ -1,7 +1,11 @@
 import { POST, PUT, PATCH } from "@/app/api/routeModule";
 import { GET } from "@/app/api/routeModule";
 
-import { IChatPostSendDTO, IFolderWithPostsDTO } from "@/interfaces/chat";
+import {
+  IChatPostPutDTO,
+  IChatPostSendDTO,
+  IFolderWithPostsDTO,
+} from "@/interfaces/chat";
 import { chatPostAPI, userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 
@@ -19,7 +23,26 @@ export const sendChatPost = async (
     authHeaders: GenerateAuthHeader(authData),
   });
 
-  return response;
+  return response.data;
+};
+
+export const putChatPost = async (
+  chatPostId: string | undefined,
+  chatPostBody: IChatPostPutDTO,
+  authData: IAuthData | undefined
+) => {
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+  const response = await PUT({
+    API: chatPostAPI,
+    endPoint: "/",
+    params: chatPostId,
+    body: chatPostBody,
+    authHeaders: GenerateAuthHeader(authData),
+  });
+
+  return response.data;
 };
 
 export const getAllChatPostsByUserId = async (

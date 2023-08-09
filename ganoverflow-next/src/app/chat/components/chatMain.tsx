@@ -5,7 +5,7 @@ import { IChatMainProps } from "@/interfaces/IProps/chat";
 import { getAllCategories } from "../api/chat";
 import { SaveChatModal } from "./SaveChatModal";
 import { useRecoilState } from "recoil";
-import { isLoadedChatState } from "@/atoms/chat";
+import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
@@ -18,15 +18,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
 
-interface ICategories {
-  categoryName: string;
-}
-
 export const ChatMain = ({
   onChangeTitleAndCategory,
   onChangeMessage,
   onChangeCheckBox,
   onClickNewChatBtn,
+  onClickContinueChat,
   onClickSaveChatpostInit,
   onClickSaveChatpostExec,
   onClickSubmitMsg,
@@ -37,8 +34,9 @@ export const ChatMain = ({
   scrollRef,
 }: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categories, setCategories] = useState<ICategories[]>([]);
-  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
+  const [categories, setCategories] = useState<{ categoryName: string }[]>([]);
+  const [loadChatStatus, setLoadChatStatus] =
+    useRecoilState(loadChatStatusState);
 
   return (
     <div className="flex flex-col h-full">
@@ -53,14 +51,11 @@ export const ChatMain = ({
         <></>
       )}
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        {isLoadedChat && (
+        {loadChatStatus.status === TLoadChatStatus.SHOWING && (
           <div className="mb-4">
             <button
               className="w-36 h-12 bg-sky-700 text-white rounded-lg"
-              onClick={() => {
-                setIsLoadedChat(false);
-                // setChatSavedStatus("F");
-              }}
+              onClick={onClickContinueChat}
             >
               채팅 이어하기
             </button>
@@ -153,15 +148,19 @@ export const ChatMain = ({
                     </div>
                   )}
                 </div>
-                <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
-                  <div className="flex flex-row justify-end w-full h-full">
-                    <CircularCheckbox
-                      isDisabled={chatSavedStatus}
-                      isChecked={!!chatLine.isChecked}
-                      onChangeCheckBox={() => onChangeCheckBox(index)}
-                    />
+                {!(loadChatStatus.status === TLoadChatStatus.SHOWING) ? (
+                  <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
+                    <div className="flex flex-row justify-end w-full h-full">
+                      <CircularCheckbox
+                        isDisabled={chatSavedStatus}
+                        isChecked={!!chatLine.isChecked}
+                        onChangeCheckBox={() => onChangeCheckBox(index)}
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           ))}
