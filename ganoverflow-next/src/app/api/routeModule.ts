@@ -87,7 +87,10 @@ async function REQUEST({
   body?: any;
   params?: string;
 }): Promise<any> {
-  const url = params ? `${endPoint}/${params}` : endPoint;
+  const cleanedEndPoint = endPoint.endsWith("/")
+    ? endPoint.slice(0, -1)
+    : endPoint;
+  const url = params ? `${cleanedEndPoint}/${params}` : cleanedEndPoint;
 
   const response = await API.request({
     url,
