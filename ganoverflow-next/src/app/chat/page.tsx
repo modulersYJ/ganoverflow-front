@@ -166,8 +166,19 @@ export default function ChatPage() {
     };
 
     if (loadChatStatus.status === TLoadChatStatus.UPDATING) {
+      const chatpostName =
+        titleAndCategory?.chatpostName === ""
+          ? loadChatStatus.loadedMeta?.title
+          : titleAndCategory?.chatpostName;
+      const categoryName =
+        titleAndCategory?.category === ""
+          ? loadChatStatus.loadedMeta?.category
+          : titleAndCategory?.category;
+
       const putChatPostBody = {
         ...chatPostBody,
+        chatpostName,
+        categoryName,
         folderId: loadChatStatus.loadedMeta?.folderId,
       };
       console.log("putChatPostBody", putChatPostBody);
