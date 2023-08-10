@@ -5,7 +5,7 @@ export const ErrorLottie = () => {
   return (
     <>
       <Lottie
-        style={{ width: "400px", height: "400px" }}
+        style={{ width: "100%", height: "400px" }}
         animationData={errorAnimation}
         loop={true}
       />
