@@ -106,7 +106,7 @@ export const ChatMain = ({
                       <div className="overflow-auto max-w-full rounded-md">
                         <ReactMarkdown
                           components={{
-                            p({ node, children }) {
+                            p({ node, children }: any) {
                               return <p className="answer-p">{children}</p>;
                             },
                             code({
@@ -115,7 +115,7 @@ export const ChatMain = ({
                               className,
                               children,
                               ...props
-                            }) {
+                            }: any) {
                               const match = /language-(\w+)/.exec(
                                 className || ""
                               );
@@ -124,7 +124,11 @@ export const ChatMain = ({
                               if (!inline) {
                                 return (
                                   <SyntaxHighlighter
-                                    style={gruvboxDark as any}
+                                    style={
+                                      gruvboxDark as {
+                                        [key: string]: React.CSSProperties;
+                                      }
+                                    }
                                     language={language || "javascript"}
                                     PreTag="div"
                                     {...props}
