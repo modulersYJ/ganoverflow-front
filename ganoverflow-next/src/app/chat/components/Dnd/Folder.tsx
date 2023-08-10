@@ -63,7 +63,7 @@ export const Folder = ({
             <Chatpost
               curChatpost={chatpost}
               curFolderId={curFolder.folderId}
-              key={chatpost.chatPostId}
+              key={`${chatpost.chatPostId}:${chatpost.chatpostName}`}
               isDefault={true}
               loadThisChatHandler={loadThisChatHandler}
             />
@@ -77,7 +77,7 @@ export const Folder = ({
               <Chatpost
                 curChatpost={chatpost}
                 curFolderId={curFolder.folderId}
-                key={chatpost.chatPostId}
+                key={`${chatpost.chatPostId}:${chatpost.chatpostName}`}
                 isDefault={false}
                 loadThisChatHandler={loadThisChatHandler}
               />

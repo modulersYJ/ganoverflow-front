@@ -1,4 +1,6 @@
+import { loadChatStatusState } from "@/atoms/chat";
 import { ISaveChatModalProps } from "@/interfaces/IProps/chat";
+import { useRecoilState } from "recoil";
 
 export const SaveChatModal = ({
   onChangeTitleAndCategory,
@@ -6,6 +8,9 @@ export const SaveChatModal = ({
   setIsModalOpen,
   onClickSaveChatpostExec,
 }: ISaveChatModalProps) => {
+  const [loadChatStatus, setLoadChatStatus] =
+    useRecoilState(loadChatStatusState);
+
   return (
     <div>
       <div className="fixed inset-0 bg-black opacity-50 z-20"></div>
@@ -13,12 +18,17 @@ export const SaveChatModal = ({
         <input
           className="h-11 w-full"
           onChange={onChangeTitleAndCategory}
+          defaultValue={loadChatStatus.loadedMeta?.title}
           placeholder="저장할 대화 제목을 입력해주세요"
           name="chatpostName"
         />
         <label>
           카테고리를 선택하세요
-          <select name="categoryName" onChange={onChangeTitleAndCategory}>
+          <select
+            name="category"
+            onChange={onChangeTitleAndCategory}
+            defaultValue={loadChatStatus.loadedMeta?.category}
+          >
             <option value={""}>없음</option>
             {categories.map((category, idx: number) => (
               <option key={idx}>{category.categoryName}</option>
