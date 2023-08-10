@@ -10,7 +10,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        morganBold: ["morganBold"],
+        morganBold: ["morganBold", "sans-serif"],
+        notoSansKR: ["Noto Sans KR", "sans-serif"],
+        oswald: ["Oswald", "sans-serif"],
       },
       boxShadow: {
         headerBox: "rgba(0, 0, 0, 0.4) 0px 0px 8px",

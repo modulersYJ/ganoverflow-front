@@ -128,6 +128,9 @@ body,
   }
 }
 
+/* Oswald 폰트 추가 */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap");
+
 /* ==Global== */
 * {
   font-family: "Noto Sans KR", sans-serif;
