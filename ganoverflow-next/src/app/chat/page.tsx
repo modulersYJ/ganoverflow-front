@@ -45,9 +45,16 @@ export default function ChatPage() {
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
 
+  // chat 첫 마운트 시, loadChatStatus 초기화
+  useEffect(() => {
+    console.log("loadChatStatus 초기화");
+    setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
+  }, []);
+
   // foldersData - case 1)
   useEffect(() => {
     if (accessToken) {
+      console.log("useEffect foldersData - case 1)");
       fetchFolderData(accessToken, setFoldersData, setAuthData);
     }
   }, [accessToken]);
@@ -55,6 +62,7 @@ export default function ChatPage() {
   // foldersData - case 2)
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
+      console.log("useEffect foldersData - case 2)");
       fetchFolderData(accessToken, setFoldersData, setAuthData);
     }
   }, [chatSavedStatus, accessToken]);
@@ -164,7 +172,7 @@ export default function ChatPage() {
       };
       console.log("putChatPostBody", putChatPostBody);
 
-      const updatedFolders = await putChatPost(
+      await putChatPost(
         loadChatStatus.loadedMeta?.chatPostId,
         putChatPostBody,
         authData
@@ -175,7 +183,7 @@ export default function ChatPage() {
       return;
     }
 
-    const updatedFolders = await sendChatPost(chatPostBody, authData);
+    await sendChatPost(chatPostBody, authData);
     setChatSavedStatus("T");
     return;
   };
@@ -261,6 +269,7 @@ const fetchFolderData = async (
   };
   setAuthData(authData);
   const chatFoldersByUser = await getFoldersByUser(user.id, authData);
+  console.log("fetched FolderData! - 요청 후 정합성", chatFoldersByUser);
   setFoldersData(chatFoldersByUser);
 };
 

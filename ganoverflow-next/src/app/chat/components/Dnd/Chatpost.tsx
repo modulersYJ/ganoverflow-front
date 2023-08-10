@@ -53,7 +53,7 @@ export const Chatpost = function Chatpost({
   // 클릭된 해당 포스트의 채팅을 로드
   useDidMountEffect(() => {
     loadThisChatHandler(
-      loadedChatPairs.map((chatPair) => {
+      loadedChatPairs?.map((chatPair) => {
         return {
           question: chatPair.question,
           answer: chatPair.answer,
