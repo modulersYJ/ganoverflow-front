@@ -8,15 +8,16 @@
 
 /* Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
-  width: 18px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--primary);
+  background: var(--secondary);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
+  width: 2px;
   background-color: var(--secondary);
   border-radius: 14px;
   border: 3px solid var(--primary);
@@ -241,4 +242,10 @@ main {
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+/* chatMain - answer 내 답변 간 문단구분 스타일 적용 */
+
+.answer-p + * {
+  margin-top: 30px;
 }

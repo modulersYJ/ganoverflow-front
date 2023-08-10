@@ -52,6 +52,7 @@ export const Container = memo(
     return (
       <div>
         <div
+          className=" clear-both flex flex-col "
           style={{
             overflow: "hidden",
             clear: "both",
