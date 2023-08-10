@@ -21,6 +21,7 @@ import {
 } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
+import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
   useAuthDataHook();
@@ -41,6 +42,7 @@ export default function ChatPage() {
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
     foldersWithChatpostsState
   );
+
   const [currStream, setCurrStream] = useState<string>("");
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
@@ -164,7 +166,6 @@ export default function ChatPage() {
       categoryName: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
-
     if (loadChatStatus.status === TLoadChatStatus.UPDATING) {
       const chatpostName =
         titleAndCategory?.chatpostName === ""
