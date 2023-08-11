@@ -3,16 +3,15 @@
 import { useState, FormEvent, useRef, useEffect } from "react";
 import {
   ChatSavedStatus,
-  IChat,
   IChatPair,
   IFolderWithPostsDTO,
   TLoadThisChatHandler,
 } from "@/interfaces/chat";
 import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
-import { getFoldersByUser, sendChatPost } from "./api/chat";
+import { getFoldersByUser, putChatPost, sendChatPost } from "./api/chat";
 import { ChatMain } from "./components/chatMain";
 import { accessTokenState } from "@/atoms/jwt";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { IAuthData } from "../api/jwt";
 import ChatSideBar from "./components/chatSideBar";
@@ -21,7 +20,8 @@ import {
   ITitleAndCategory,
 } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
-import { isLoadedChatState } from "@/atoms/chat";
+import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
+import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
   useAuthDataHook();
@@ -31,6 +31,7 @@ export default function ChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 제어 ref
   const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
     chatpostName: "",
+    category: "",
   });
 
   const [isNowAnswering, setIsNowAnswering] = useState(false);
@@ -41,12 +42,21 @@ export default function ChatPage() {
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
     foldersWithChatpostsState
   );
+
   const [currStream, setCurrStream] = useState<string>("");
-  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
+  const [loadChatStatus, setLoadChatStatus] =
+    useRecoilState(loadChatStatusState);
+
+  // chat 첫 마운트 시, loadChatStatus 초기화
+  useEffect(() => {
+    console.log("loadChatStatus 초기화");
+    setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
+  }, []);
 
   // foldersData - case 1)
   useEffect(() => {
     if (accessToken) {
+      console.log("useEffect foldersData - case 1)");
       fetchFolderData(accessToken, setFoldersData, setAuthData);
     }
   }, [accessToken]);
@@ -54,6 +64,7 @@ export default function ChatPage() {
   // foldersData - case 2)
   useEffect(() => {
     if (chatSavedStatus === "T" && accessToken) {
+      console.log("useEffect foldersData - case 2)");
       fetchFolderData(accessToken, setFoldersData, setAuthData);
     }
   }, [chatSavedStatus, accessToken]);
@@ -151,15 +162,46 @@ export default function ChatPage() {
       return aPair.isChecked === true;
     });
     const chatPostBody = {
-      chatpostName: titleAndCategory.chatpostName,
-      category: titleAndCategory?.category,
+      chatpostName: titleAndCategory?.chatpostName,
+      categoryName: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
+    if (loadChatStatus.status === TLoadChatStatus.UPDATING) {
+      const chatpostName =
+        titleAndCategory?.chatpostName === ""
+          ? loadChatStatus.loadedMeta?.title
+          : titleAndCategory?.chatpostName;
+      const categoryName =
+        titleAndCategory?.category === ""
+          ? loadChatStatus.loadedMeta?.category
+          : titleAndCategory?.category;
+
+      const putChatPostBody = {
+        ...chatPostBody,
+        chatpostName,
+        categoryName,
+        folderId: loadChatStatus.loadedMeta?.folderId,
+      };
+      console.log("putChatPostBody", putChatPostBody);
+
+      await putChatPost(
+        loadChatStatus.loadedMeta?.chatPostId,
+        putChatPostBody,
+        authData
+      );
+
+      setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
+      setChatSavedStatus("T");
+      return;
+    }
+
     await sendChatPost(chatPostBody, authData);
     setChatSavedStatus("T");
+    return;
   };
 
   const onClickNewChatBtn = async (e: React.MouseEvent) => {
+    setLoadChatStatus({ status: TLoadChatStatus.F });
     setChatPairs([]);
     setCheckCnt(0);
     setChatSavedStatus("F");
@@ -167,12 +209,36 @@ export default function ChatPage() {
   };
 
   const loadThisChatHandler: TLoadThisChatHandler = async (
-    chatPairs: IChatPair[]
+    chatPairs: IChatPair[],
+    folderId: number | undefined
   ) => {
+    setLoadChatStatus({
+      ...loadChatStatus,
+      loadedMeta: {
+        folderId: folderId,
+        chatPostId: loadChatStatus.loadedMeta?.chatPostId,
+        title: loadChatStatus.loadedMeta?.title,
+        category: loadChatStatus.loadedMeta?.category,
+      },
+    });
     setChatPairs(chatPairs as IChatPair[]);
-    //// todo: load한 chatPairs들에 대해, checkbox checked 설정
-    // setCheckCnt(0);
     setChatSavedStatus("T");
+    setQuestionInput("");
+  };
+
+  const onClickContinueChat = (e: React.MouseEvent) => {
+    setLoadChatStatus({
+      status: TLoadChatStatus.UPDATING,
+      loadedMeta: {
+        folderId: loadChatStatus.loadedMeta?.folderId,
+        chatPostId: loadChatStatus.loadedMeta?.chatPostId,
+        title: loadChatStatus.loadedMeta?.title,
+        category: loadChatStatus.loadedMeta?.category,
+      },
+    });
+
+    setCheckCnt(chatPairs.length);
+    setChatSavedStatus("F");
     setQuestionInput("");
   };
 
@@ -184,6 +250,7 @@ export default function ChatPage() {
         onClickSaveChatpostInit={onClickSaveChatpostInit}
         onClickSaveChatpostExec={onClickSaveChatpostExec}
         onClickNewChatBtn={onClickNewChatBtn}
+        onClickContinueChat={onClickContinueChat}
         onChangeCheckBox={onChangeCheckBox}
         chatSavedStatus={chatSavedStatus}
         checkCnt={checkCnt}
@@ -214,6 +281,7 @@ const fetchFolderData = async (
   };
   setAuthData(authData);
   const chatFoldersByUser = await getFoldersByUser(user.id, authData);
+  console.log("fetched FolderData! - 요청 후 정합성", chatFoldersByUser);
   setFoldersData(chatFoldersByUser);
 };
 

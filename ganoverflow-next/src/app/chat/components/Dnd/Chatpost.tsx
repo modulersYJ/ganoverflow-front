@@ -4,7 +4,7 @@ import {
   chatpostsWithFolderstate,
   foldersWithChatpostsState,
 } from "@/atoms/folder";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import ChatIcon from "@mui/icons-material/Chat";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -20,8 +20,8 @@ import { getOneChatPostById, updateChatpostName } from "../../api/chat";
 import { accessTokenState } from "@/atoms/jwt";
 import { IAuthData } from "@/app/api/jwt";
 import useDidMountEffect from "@/hooks/useDidMountEffect";
-import { isLoadedChatState } from "@/atoms/chat";
-
+import { loadChatStatusState } from "@/atoms/chat";
+import { TLoadChatStatus } from "@/atoms/chat";
 const style: React.CSSProperties = {
   cursor: "move",
   float: "left",
@@ -47,11 +47,21 @@ export const Chatpost = function Chatpost({
     curChatpost.chatpostName
   );
   const [loadedChatPairs, setLoadedChatPairs] = useState<IChatPair[]>([]);
-  const [isLoadedChat, setIsLodedChat] = useRecoilState(isLoadedChatState);
+  const [loadChatStatus, setLoadChatStatus] =
+    useRecoilState(loadChatStatusState);
 
   // 클릭된 해당 포스트의 채팅을 로드
   useDidMountEffect(() => {
-    loadThisChatHandler(loadedChatPairs);
+    loadThisChatHandler(
+      loadedChatPairs?.map((chatPair) => {
+        return {
+          question: chatPair.question,
+          answer: chatPair.answer,
+          isChecked: true,
+        };
+      }),
+      curFolderId
+    );
   }, [loadedChatPairs]);
 
   const userData = getSessionStorageItem("userData");
@@ -120,7 +130,15 @@ export const Chatpost = function Chatpost({
       authData as IAuthData
     );
 
-    setIsLodedChat(true);
+    setLoadChatStatus({
+      status: TLoadChatStatus.SHOWING,
+      loadedMeta: {
+        folderId: loadChatStatus.loadedMeta?.folderId,
+        chatPostId: curChatpost.chatPostId,
+        title: LoadedPost.chatpostName,
+        category: LoadedPost.categoryName?.categoryName,
+      },
+    });
     setLoadedChatPairs(LoadedPost.chatPair);
   };
 
@@ -158,7 +176,7 @@ const PostUnit: React.FC<{
 }) => {
   return (
     <div
-      className={`postUnit w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-400  ${
+      className={`postUnit w-[calc(100%-8px)] mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-600  ${
         isDefault ? "pl-1" : "pl-5"
       } cursor-pointer`}
       style={{ ...style, opacity }}

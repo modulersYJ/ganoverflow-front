@@ -35,7 +35,7 @@ export const Container = memo(
             userId: userData.id,
           }
         );
-
+        console.log(updatedFoldersWithPosts);
         setFoldersData(updatedFoldersWithPosts); // 데이터 정합성을 위한 folder state update
       };
 
@@ -43,8 +43,6 @@ export const Container = memo(
         setIsFolderUpdated(false);
         return;
       }
-
-      console.log("useDidMount!!!!");
       updateFolders();
       setIsFolderUpdated(true);
     }, [foldersData]);
@@ -52,6 +50,7 @@ export const Container = memo(
     return (
       <div>
         <div
+          className=" clear-both flex flex-col "
           style={{
             overflow: "hidden",
             clear: "both",

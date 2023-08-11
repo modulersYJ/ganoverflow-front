@@ -5,17 +5,25 @@ import { IChatMainProps } from "@/interfaces/IProps/chat";
 import { getAllCategories } from "../api/chat";
 import { SaveChatModal } from "./SaveChatModal";
 import { useRecoilState } from "recoil";
-import { isLoadedChatState } from "@/atoms/chat";
+import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-interface ICategories {
-  categoryName: string;
-}
+// light용
+// import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
+// import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+//dark 테마용 후보
+// import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+// import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
 
 export const ChatMain = ({
   onChangeTitleAndCategory,
   onChangeMessage,
   onChangeCheckBox,
   onClickNewChatBtn,
+  onClickContinueChat,
   onClickSaveChatpostInit,
   onClickSaveChatpostExec,
   onClickSubmitMsg,
@@ -26,8 +34,9 @@ export const ChatMain = ({
   scrollRef,
 }: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categories, setCategories] = useState<ICategories[]>([]);
-  const [isLoadedChat, setIsLoadedChat] = useRecoilState(isLoadedChatState);
+  const [categories, setCategories] = useState<{ categoryName: string }[]>([]);
+  const [loadChatStatus, setLoadChatStatus] =
+    useRecoilState(loadChatStatusState);
 
   return (
     <div className="flex flex-col h-full">
@@ -42,14 +51,11 @@ export const ChatMain = ({
         <></>
       )}
       <div className="fixed right-36 bottom-24 z-10 hidden lg:block">
-        {isLoadedChat && (
+        {loadChatStatus.status === TLoadChatStatus.SHOWING && (
           <div className="mb-4">
             <button
               className="w-36 h-12 bg-sky-700 text-white rounded-lg"
-              onClick={() => {
-                setIsLoadedChat(false);
-                // setChatSavedStatus("F");
-              }}
+              onClick={onClickContinueChat}
             >
               채팅 이어하기
             </button>
@@ -84,32 +90,81 @@ export const ChatMain = ({
                 index % 2 === 0 ? "bg-gray-700" : "bg-gray-800" // 홀짝 배경색 변경
               } flex flex-row`}
             >
-              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-3/5 md:w-2/5 m-auto">
+              <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-full md:w-2/5 m-auto">
                 <div className="chatPairBox w-full flex flex-col justify-center self-center">
                   {chatLine.question && (
                     <div
                       key={index}
-                      className={`msgBox p-4 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
+                      className={`msgBox p-5 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
                     >
                       {chatLine.question}
                     </div>
                   )}
 
                   {chatLine.answer && (
-                    <div className="msgBox p-4 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
-                      {chatLine.answer}
+                    <div className="msgBox p-5 max-w-sm text-xs bg-gray-500 self-start rounded-chat-answer mt-4 text-white">
+                      <div className="overflow-auto max-w-full rounded-md">
+                        <ReactMarkdown
+                          components={{
+                            p({ node, children }: any) {
+                              return <p className="answer-p">{children}</p>;
+                            },
+                            code({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }: any) {
+                              const match = /language-(\w+)/.exec(
+                                className || ""
+                              );
+                              const language = match ? match[1] : null;
+
+                              if (!inline) {
+                                return (
+                                  <SyntaxHighlighter
+                                    style={
+                                      gruvboxDark as {
+                                        [key: string]: React.CSSProperties;
+                                      }
+                                    }
+                                    language={language || "javascript"}
+                                    PreTag="div"
+                                    {...props}
+                                  >
+                                    {String(children).replace(/\n$/, "")}
+                                  </SyntaxHighlighter>
+                                );
+                              } else {
+                                return (
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                );
+                              }
+                            },
+                          }}
+                        >
+                          {chatLine.answer}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   )}
                 </div>
-                <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
-                  <div className="flex flex-row justify-end w-full h-full">
-                    <CircularCheckbox
-                      isDisabled={chatSavedStatus}
-                      isChecked={!!chatLine.isChecked}
-                      onChangeCheckBox={() => onChangeCheckBox(index)}
-                    />
+                {!(loadChatStatus.status === TLoadChatStatus.SHOWING) ? (
+                  <div className="checkboxContainer ml-12 w-full sm:w-3 sm:h-full">
+                    <div className="flex flex-row justify-end w-full h-full">
+                      <CircularCheckbox
+                        isDisabled={chatSavedStatus}
+                        isChecked={!!chatLine.isChecked}
+                        onChangeCheckBox={() => onChangeCheckBox(index)}
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           ))}

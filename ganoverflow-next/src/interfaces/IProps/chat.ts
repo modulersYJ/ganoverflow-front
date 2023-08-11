@@ -1,4 +1,4 @@
-import { ChatSavedStatus, IChatPair, IFolderWithPostsDTO, TLoadThisChatHandler } from "../chat";
+import { ChatSavedStatus, IChatPair, TLoadThisChatHandler } from "../chat";
 
 export interface IChatMainProps {
   onChangeTitleAndCategory: (
@@ -7,6 +7,7 @@ export interface IChatMainProps {
   onChangeMessage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeCheckBox: (index: number) => void;
   onClickNewChatBtn: (e: React.MouseEvent) => void;
+  onClickContinueChat: (e: React.MouseEvent) => void;
   onClickSaveChatpostInit: (e: React.MouseEvent) => void;
   onClickSaveChatpostExec: (e: React.MouseEvent) => void;
   onClickSubmitMsg: (e: React.FormEvent, prompt: string) => void;
@@ -20,9 +21,7 @@ export interface IChatMainProps {
 export interface IChatSideBarProps {
   onClickNewChatBtn: (e: React.MouseEvent) => void;
   chatSavedStatus: ChatSavedStatus;
-  loadThisChatHandler: TLoadThisChatHandler
-  // foldersData: IFolderWithPostsDTO[];
-  // foldersData: any;
+  loadThisChatHandler: TLoadThisChatHandler;
 }
 
 export interface IFetchStreamAnswerProps {
@@ -42,6 +41,6 @@ export interface ISaveChatModalProps {
 }
 
 export interface ITitleAndCategory {
-  chatpostName: string;
-  category?: string;
+  chatpostName: string | undefined;
+  category?: string | undefined;
 }
