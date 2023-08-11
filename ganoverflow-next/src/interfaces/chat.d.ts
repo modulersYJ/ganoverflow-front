@@ -11,9 +11,14 @@ export interface IChatPair {
 }
 
 export interface IChatPostSendDTO {
-  chatpostName: string;
+  chatpostName: string | undefined;
   chatPair: IChatPair[];
   category?: string;
+}
+
+// extend IChatPostSendDTO
+export interface IChatPostPutDTO extends IChatPostSendDTO {
+  folderId: number | undfined;
 }
 
 interface IFolderWithPostsDTO {
@@ -34,4 +39,7 @@ export interface ISerailzedChatposts {
   folderName: string;
 }
 
-export type TLoadThisChatHandler = (chatPairs: IChatPair[]) => void;
+export type TLoadThisChatHandler = (
+  chatPairs: IChatPair[],
+  folderId: number | undefined
+) => void;
