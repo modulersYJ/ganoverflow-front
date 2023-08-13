@@ -1,4 +1,6 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Firefox */
  {
@@ -16,48 +18,11 @@
   border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb {
+::- webkit-scrollbar-thumb {
   width: 2px;
   background-color: var(--secondary);
   border-radius: 14px;
   border: 3px solid var(--primary);
-}
-
-@tailwind components;
-@tailwind utilities;
-
-@layer utilities {
-  .fade-in {
-    animation: fadeIn 0.3s forwards;
-  }
-
-  .fade-out {
-    animation: fadeOut 0.3s forwards;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateX(-10%);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    100% {
-      opacity: 0;
-      transform: translateX(-10%);
-    }
-  }
 }
 
 :root {
@@ -115,9 +80,22 @@ body,
 }
 
 @font-face {
+  font-family: "morganSemiBold";
+
+  src: url("/fonts/Morganite-SemiBold.ttf") format("truetype");
+}
+
+
+@font-face {
   font-family: "morganBold";
 
   src: url("/fonts/Morganite-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "morganExtraBold";
+
+  src: url("/fonts/Morganite-ExtraBold.ttf") format("truetype");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -160,9 +138,14 @@ header {
 }
 
 .header-nav {
-  background-color: rgba(32, 32, 36, 0.9);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
+
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(7px) saturate(180%);
+  backdrop-filter: blur(7px) saturate(180%);
+}
+
+.dark .header-nav {
+  background-color: rgba(32, 32, 36, 0.7);
 }
 
 .nav-bar {
@@ -190,11 +173,21 @@ header {
   margin-right: 0.5rem;
 }
 
-.logo-text {
-  font-family: "MorganBold", sans-serif;
+.logo-text1 {
+  font-family: "MorganExtraBold", sans-serif;
   font-size: 2rem;
+  letter-spacing: 2px;
   color: white;
 }
+
+.logo-text2 {
+  font-family: "MorganExtraBold", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  color: white;
+}
+
+
 
 /* Footer */
 footer {
@@ -249,3 +242,77 @@ main {
 .answer-p + * {
   margin-top: 30px;
 }
+
+/* tail */
+
+/* [[ Tailwind Apply Classes ]] */
+
+@layer base {
+  /* 기본 스타일을 정의합니다. 이 레이어에 속하는 스타일은 기본적으로 Tailwind의 reset (Preflight) 이후에 적용됩니다. 예를 들어, HTML 요소의 기본 스타일을 설정하거나 오버라이드 할 때 이 레이어를 사용합니다.*/
+  h1 {
+    @apply text-black font-extrabold text-6xl;
+  }
+
+  h2 {
+    @apply text-black font-extrabold text-5xl;
+  }
+
+  .dark h1, .dark h2 {
+    @apply text-white;
+  }
+  
+  body {
+    @apply text-black font-normal text-sm;
+  }
+  
+  button {
+    @apply text-black font-medium text-sm;
+  }
+
+  .dark button {
+    @apply text-white
+  }
+
+  label, input, textarea, select {
+    @apply text-black text-sm font-normal;
+  }
+
+  .dark body {
+    @apply text-white font-normal text-sm;
+  }
+
+  .dark label, .dark input, .dark textarea, .dark select {
+    @apply text-white;
+  }
+}
+
+@layer components {
+  /* 재사용 가능한 UI 컴포넌트의 스타일을 정의합니다. base 레이어 이후, 그리고 utilities 레이어 전에 적용됩니다. */
+}
+@layer utilities {
+  /* 유틸리티 클래스를 정의하거나 확장합니다. 이 레이어의 스타일은 가장 마지막에 적용되므로, base와 components 레이어의 스타일을 오버라이드 할 수 있습니다. */
+
+  .tw-h1 {
+    @apply font-notoSansKR font-extrabold text-7xl;
+  }
+}
+
+.tw-h2 {
+  @apply font-notoSansKR font-extrabold text-5xl;
+}
+
+.tw-subtitle {
+  @apply font-notoSansKR font-bold text-3xl;
+}
+
+.tw-body1 {
+  @apply font-notoSansKR font-normal text-sm;
+}
+
+.tw-body2 {
+}
+
+/* components
+.tw-h2 .tw-btn {
+  @apply px-4 py-2 bg-blue-500 text-white font-bold rounded;
+} */

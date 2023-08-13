@@ -54,7 +54,7 @@ export const ChatMain = ({
         {loadChatStatus.status === TLoadChatStatus.SHOWING && (
           <div className="mb-4">
             <button
-              className="w-36 h-12 bg-sky-700 text-white rounded-lg"
+              className="w-36 h-12 bg-black !text-white dark:bg-white dark:!text-black font-bold text-md rounded-3xl"
               onClick={onClickContinueChat}
             >
               채팅 이어하기
@@ -64,7 +64,7 @@ export const ChatMain = ({
         {chatSavedStatus === "T" ? (
           <>
             <button
-              className="w-36 h-12 bg-blue-500 text-white rounded-lg"
+              className="w-36 h-12 bg-gray-700 text-white font-bold text-md rounded-3xl"
               onClick={onClickNewChatBtn}
             >
               새 채팅 시작
@@ -83,19 +83,22 @@ export const ChatMain = ({
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
-          {chatPairs.map((chatLine, index) => (
+          {chatPairs?.map((chatLine, index) => (
             <div
               key={index}
               className={`w-full py-5 ${
-                index % 2 === 0 ? "bg-gray-700" : "bg-gray-800" // 홀짝 배경색 변경
-              } flex flex-row`}
+                index % 2 === 0
+                  ? "bg-gray-300 dark:bg-[#2c2c33]"
+                  : "bg-gray-200 dark:bg-[#202024]" // 홀짝 배경색 변경
+              } flex flex-row
+              `}
             >
               <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-full md:w-2/5 m-auto">
                 <div className="chatPairBox w-full flex flex-col justify-center self-center">
                   {chatLine.question && (
                     <div
                       key={index}
-                      className={`msgBox p-5 max-w-sm text-xs ${"bg-blue-500 text-white self-end rounded-chat-question"} inline-block`}
+                      className={`msgBox p-5 max-w-sm text-xs ${"bg-primary text-white self-end rounded-chat-question"} inline-block`}
                     >
                       {chatLine.question}
                     </div>
@@ -170,7 +173,12 @@ export const ChatMain = ({
           ))}
         </div>
       </div>
-      <div className="promptConsole h-24 fixed bottom-0 w-full flex items-center justify-center bg-vert-dark-gradient ">
+      <div
+        className="promptConsole h-20 fixed bottom-0 w-full flex items-center justify-center
+       opacity-95 backdrop-blur-sm backdrop-saturate-100 bg-vert-light-gradient
+       dark:bg-transparent
+       dark:bg-vert-dark-gradient"
+      >
         <form
           onSubmit={(e) => {
             onClickSubmitMsg(e, questionInput);
@@ -180,7 +188,7 @@ export const ChatMain = ({
           {chatSavedStatus === "T" ? (
             <input
               onChange={onChangeMessage}
-              className="rounded-full bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
+              className="rounded-full bg-white dark:bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
               value={"새 채팅을 시작하세요"}
               disabled
             />
@@ -188,15 +196,16 @@ export const ChatMain = ({
             <input
               value={questionInput}
               onChange={onChangeMessage}
-              className="rounded-full bg-gray-500 text-gray-100 flex-grow mr-4 p-2 text-xs"
+              className="rounded-full bg-white dark:bg-gray-500 text-gray-100 flex-grow mr-4 p-2 text-xs"
               placeholder={"메시지를 입력하새우"}
             />
           )}
           <button
             type="submit"
-            className={`rounded-xl text-white p-2 text-xs min-w-[50px] ${
-              questionInput ? "bg-blue-500" : "bg-gray-500"
-            }`}
+            disabled={chatSavedStatus === "T"}
+            className={`rounded-2xl font-bold text-white py-2.5 px-5 text-xs min-w-[50px]
+            dark:
+            ${questionInput ? "bg-primary" : "bg-gray-500"}`}
           >
             제출
           </button>
@@ -219,14 +228,14 @@ const BtnSubmitSaveChat = ({
     <div>
       {checkCnt > 0 ? (
         <button
-          className="rounded-xl border-b-4 border-violet-800 h-14 flex flex-col justify-center opacity-85 "
+          className="rounded-3xl bg-gray-100 dark:bg-gray-700 h-14 flex flex-col justify-center opacity-85 "
           onClick={async (e) => {
             onClickHandler(e);
             setCategories(await getAllCategories());
           }}
         >
           <div className="m-4 flex flex-row">
-            <div className="rounded-full w-8 h-7 text-indigo-700 text-sm font-bold bg-violet-700">
+            <div className="rounded-full w-8 h-7 text-indigo-700 text-sm font-bold bg-primary dark:bg-gray-600">
               <div className="mt-1 text-white">+{checkCnt}</div>
             </div>
             <div className="mt-1 ml-3 text-sm font-semibold">채팅 저장하기</div>

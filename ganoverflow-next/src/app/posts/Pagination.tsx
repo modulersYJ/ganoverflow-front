@@ -34,15 +34,13 @@ export const Pagination = ({
   return (
     <>
       <Link href={`posts?page=1`}>
-        <button className="p-2 m-2 rounded bg-orange-200 text-neutral-900">
-          {"<"}
-        </button>
+        <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<"}</button>
       </Link>
-      {pagingButtons.map((e: string) => (
-        <Link href={`posts?page=${e}`}>
+      {pagingButtons.map((e: string, idx: number) => (
+        <Link href={`posts?page=${e}`} key={idx}>
           <button
-            className={`p-2 m-2 rounded bg-orange-200 text-neutral-900 ${
-              currentPage.toString() === e ? "bg-slate-100" : ""
+            className={`p-2 px-2.5 m-2 rounded bg-secondary ${
+              currentPage.toString() === e ? "bg-dark-primary" : ""
             }`}
           >
             {e}
@@ -50,9 +48,7 @@ export const Pagination = ({
         </Link>
       ))}
       <Link href={`posts?page=${totalPage}`}>
-        <button className="p-2 m-2 rounded bg-orange-200 text-neutral-900">
-          {">"}
-        </button>
+        <button className="p-2 px-2.5 m-2 rounded bg-primary">{">"}</button>
       </Link>
     </>
   );

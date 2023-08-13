@@ -90,7 +90,7 @@ export function CommentBox({
         />
         <div className="flex justify-end">
           <button
-            className="comment-submit w-32 h-8 bg-indigo-400 rounded-xl"
+            className="comment-submit w-32 h-8 bg-secondary rounded-xl"
             onClick={handleSubmit}
           >
             등록

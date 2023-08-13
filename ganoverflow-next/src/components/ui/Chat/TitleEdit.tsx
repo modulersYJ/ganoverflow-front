@@ -32,7 +32,7 @@ const TitleEdit: React.FC<TitleEditProps> = ({ initialName, onSave }) => {
 
   return isEditing ? (
     <input
-      className="bg-slate-800 w-10/12 px-1 pt-[3px] text-left text-xs"
+      className="bg-slate-800 text-white w-10/12 px-1 pt-[3px] text-left text-xs"
       type={"text"}
       value={name}
       onChange={onChangeName}
@@ -42,7 +42,7 @@ const TitleEdit: React.FC<TitleEditProps> = ({ initialName, onSave }) => {
     />
   ) : (
     <div
-      className="w-10/12 px-1 pt-[3px] text-sm text-left"
+      className="text-white w-10/12 px-1 pt-[3px] text-sm text-left"
       onDoubleClick={toggleEditing}
     >
       {name}

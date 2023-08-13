@@ -38,7 +38,9 @@ export default async function PostPage({
 
   return (
     <>
-      <div className="post-chatpostName text-xl ">GanOverflow - POSTS</div>
+      <div className="post-chatpostName text-xl my-7">
+        <h2 className="">Chats</h2>
+      </div>
       <div className="grid">
         <table className="w-3/5 h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
