@@ -1,6 +1,4 @@
-import {
-  IPostHeaderProps,
-} from "@/interfaces/IProps/posts";
+import { IPostHeaderProps } from "@/interfaces/IProps/posts";
 import { parseDate } from "@/utils/parseDate";
 
 export const PostDetailMain = ({ postData }: any) => {
@@ -54,7 +52,7 @@ const PostChatPair = ({ pairs }: any) => {
   return (
     <div className="post-chat-box min-h-[500px]">
       {pairs
-        .sort(({ pairOne, pairTwo }: any) => pairOne.order - pairTwo.order)
+        .sort(({ pairOne, pairTwo }: any) => pairOne?.order - pairTwo?.order)
         .map((pair: any, idx: number) => (
           <div key={idx}>
             <div>
