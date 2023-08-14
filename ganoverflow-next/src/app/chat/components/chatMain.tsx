@@ -55,6 +55,7 @@ export const ChatMain = ({
           <div className="mb-4">
             <button
               className="w-36 h-12 bg-black !text-white dark:bg-white dark:!text-black font-bold text-md rounded-3xl"
+
               onClick={onClickContinueChat}
             >
               채팅 이어하기
