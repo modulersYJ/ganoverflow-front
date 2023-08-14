@@ -16,12 +16,6 @@ export default async function PostPage({
   const totalCount = allPosts.postCount;
   const totalPage = Math.ceil(totalCount / 10);
 
-  const pagingButtons = Array.from({ length: totalPage + 2 }).map((e, idx) =>
-    idx.toString()
-  );
-  pagingButtons[0] = "<";
-  pagingButtons[pagingButtons.length - 1] = ">";
-
   // ! 10개 미만이면 10개로 채워줘야 함.
   while (allPosts.posts.length < 10) {
     allPosts.posts.push({
