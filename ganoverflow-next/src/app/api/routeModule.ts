@@ -40,6 +40,7 @@ interface IPostReqProps {
 
 interface IUpdateReqProps extends IPostReqProps {
   params?: string;
+  query?: string;
 }
 
 export function POST({
@@ -57,8 +58,17 @@ export function PUT({
   authHeaders,
   body,
   params,
+  query,
 }: IUpdateReqProps): Promise<any> {
-  return REQUEST({ API, method: "PUT", endPoint, body, authHeaders, params });
+  return REQUEST({
+    API,
+    method: "PUT",
+    endPoint,
+    body,
+    authHeaders,
+    params,
+    query,
+  });
 }
 
 export function PATCH({
@@ -79,6 +89,7 @@ async function REQUEST({
   authHeaders,
   body,
   params,
+  query,
 }: {
   API: AxiosInstance;
   method: "POST" | "PUT" | "PATCH";
@@ -86,11 +97,16 @@ async function REQUEST({
   authHeaders?: any;
   body?: any;
   params?: string;
+  query?: string;
 }): Promise<any> {
   const cleanedEndPoint = endPoint.endsWith("/")
     ? endPoint.slice(0, -1)
     : endPoint;
-  const url = params ? `${cleanedEndPoint}/${params}` : cleanedEndPoint;
+  let url = params ? `${cleanedEndPoint}/${params}` : cleanedEndPoint;
+
+  if (query) {
+    url = `${url}?${query}`;
+  }
 
   const response = await API.request({
     url,
