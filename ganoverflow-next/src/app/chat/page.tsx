@@ -21,6 +21,7 @@ import {
 } from "@/interfaces/IProps/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
+import { TIsSigned, isSignedState } from "@/atoms/sign";
 import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
@@ -46,11 +47,13 @@ export default function ChatPage() {
   const [currStream, setCurrStream] = useState<string>("");
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
+  const [isSigned, setIsSigned] = useRecoilState(isSignedState);
 
   // chat 첫 마운트 시, loadChatStatus 초기화
   useEffect(() => {
     console.log("loadChatStatus 초기화");
     setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
+    setIsSigned(TIsSigned.unknown);
   }, []);
 
   // foldersData - case 1)
@@ -167,6 +170,12 @@ export default function ChatPage() {
       categoryName: titleAndCategory?.category,
       chatPair: selectedPairs,
     };
+
+    if (!(await getSessionStorageItem("userData"))) {
+      setIsSigned(TIsSigned.F);
+      return;
+    }
+
     if (loadChatStatus.status === TLoadChatStatus.UPDATING) {
       const chatpostName =
         titleAndCategory?.chatpostName === ""

@@ -16,6 +16,7 @@ import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import { foldersWithChatpostsState } from "@/atoms/folder";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -51,7 +52,7 @@ export default function RootLayout({
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
           <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100">
+          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100 dark:bg-vert-dark-gradient">
             {children}
           </main>
           {/* {!offFooter &&  */}
@@ -184,7 +185,7 @@ const Header = ({
               {isDarkMode === true ? "Light" : "Dark"}
             </button>
             <div className="self-center">
-              <div className="hidden md:flex text-white font-bold hover:text-gray-400">
+              <div className="hidden md:flex font-bold hover:text-gray-400">
                 {user === null ? (
                   <Link href="/accounts/login" passHref>
                     로그인
@@ -219,6 +220,7 @@ const UserDropdownButton = ({
   userData: { id: string; nickname: string };
   onClickSetLogout: () => void;
 }) => {
+  // const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
   const setAccessState = useSetRecoilState(accessTokenState);
   const router = useRouter();
 
@@ -228,6 +230,7 @@ const UserDropdownButton = ({
 
     onClickSetLogout();
     setAccessState(null);
+    // setFoldersData([]);
 
     router.push("/");
     return response;

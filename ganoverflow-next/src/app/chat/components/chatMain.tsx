@@ -6,6 +6,7 @@ import { getAllCategories } from "../api/chat";
 import { SaveChatModal } from "./SaveChatModal";
 import { useRecoilState } from "recoil";
 import { TLoadChatStatus, loadChatStatusState } from "@/atoms/chat";
+import { TIsSigned, isSignedState } from "@/atoms/sign";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
@@ -17,6 +18,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 // import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
+import { LoginBoxModal } from "@/app/accounts/login/LoginBoxModal";
 
 export const ChatMain = ({
   onChangeTitleAndCategory,
@@ -37,9 +39,11 @@ export const ChatMain = ({
   const [categories, setCategories] = useState<{ categoryName: string }[]>([]);
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
+  const [isSigned, setIsSigned] = useRecoilState(isSignedState);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full ">
+      {isSigned === TIsSigned.F && <LoginBoxModal />}
       {isModalOpen ? (
         <SaveChatModal
           categories={categories}

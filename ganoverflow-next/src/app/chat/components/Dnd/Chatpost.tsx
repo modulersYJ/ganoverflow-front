@@ -68,7 +68,7 @@ export const Chatpost = function Chatpost({
   const accessToken = useRecoilValue(accessTokenState);
   const authData = {
     accessToken,
-    userId: userData.id,
+    userId: userData?.id,
   };
 
   const handleUpdatePostName = async (newName: string) => {
