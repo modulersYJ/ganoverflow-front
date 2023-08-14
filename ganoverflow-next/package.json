@@ -25,6 +25,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",
     "lottie-react": "^2.4.0",
+    "lottie-web": "^5.10.2",
     "next": "^13.4.12",
     "postcss": "8.4.24",
     "prismjs": "^1.29.0",
