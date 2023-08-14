@@ -23,7 +23,7 @@ const CircularCheckbox: React.FC<CheckboxProps> = ({
       />
 
       <span
-        className={`relative  w-6 h-6 rounded-full flex items-center justify-center border-2 border-primary ${
+        className={`z-0 relative  w-6 h-6 rounded-full flex items-center justify-center border-2 border-primary ${
           isChecked ? "bg-primary" : "bg-transparent"
         }`}
       >
