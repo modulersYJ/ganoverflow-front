@@ -74,12 +74,20 @@ export const ChatMain = ({
           <BtnSubmitSaveChat
             checkCnt={checkCnt}
             setCategories={setCategories}
-            onClickHandler={(e) => {
-              onClickSaveChatpostInit(e);
-              setIsModalOpen(true);
+            onClickHandler={async (e) => {
+              const willOpen = onClickSaveChatpostInit(e);
+
+              setIsModalOpen(await willOpen);
             }}
           />
         )}
+      </div>
+      <div className="chatmain-title h-10 flex flex-col justify-center border-b-solid border-b-[1px] border-b-gray-400">
+        <p className="font-normal text-md text-gray-500">
+          {loadChatStatus.loadedMeta?.title
+            ? loadChatStatus.loadedMeta?.title
+            : `새로운 채팅 시작`}
+        </p>
       </div>
       <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
         <div className="chatBox w-full" ref={scrollRef}>
@@ -188,7 +196,7 @@ export const ChatMain = ({
           {chatSavedStatus === "T" ? (
             <input
               onChange={onChangeMessage}
-              className="rounded-full bg-white dark:bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-300"
+              className="rounded-full bg-white dark:bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-500 dark:text-gray-300"
               value={"새 채팅을 시작하세요"}
               disabled
             />
@@ -196,14 +204,14 @@ export const ChatMain = ({
             <input
               value={questionInput}
               onChange={onChangeMessage}
-              className="rounded-full bg-white dark:bg-gray-500 text-gray-100 flex-grow mr-4 p-2 text-xs"
+              className="rounded-full bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs"
               placeholder={"메시지를 입력하새우"}
             />
           )}
           <button
             type="submit"
             disabled={chatSavedStatus === "T"}
-            className={`rounded-2xl font-bold text-white py-2.5 px-5 text-xs min-w-[50px]
+            className={`rounded-2xl font-bold text-white py-2.5 px-5 text-xs !min-w-[60px]
             dark:
             ${questionInput ? "bg-primary" : "bg-gray-500"}`}
           >

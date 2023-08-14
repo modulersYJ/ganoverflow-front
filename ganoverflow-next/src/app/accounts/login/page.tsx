@@ -48,39 +48,38 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen dark:bg-gray-700 bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          로그인
-        </h2>
-      </div>
-
+    <div className="my-12 flex flex-col justify-center sm:px-6 lg:px-8">
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={onClickLoginSubmit}>
-            <div>
-              <InputField
-                label="아이디"
-                type="text"
+        <div className="bg-white dark:bg-black py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 className="tw-subtitle">GOF에 로그인하세요</h2>
+          </div>
+          <form className="space-y-6 mt-8" onSubmit={onClickLoginSubmit}>
+            <div className="flex flex-col gap-2 mt-5">
+              <label className="text-sm text-left">아이디</label>
+              <input
+                className="h-11 w-full border-2px border-white rounded-md bg-zinc-100 dark:bg-[#121212] px-2 py-1 font-normal"
                 name="username"
                 value={formData.username}
+                placeholder="이메일을 입력해주세요"
                 onChange={handleChange}
               />
             </div>
-
-            <div>
-              <InputField
-                label="비밀번호"
-                type="password"
+            <div className="flex flex-col gap-2 mt-5">
+              <label className="text-sm text-left">비밀번호</label>
+              <input
+                className="h-11 w-full border-2px border-white rounded-md bg-zinc-100 dark:bg-[#121212] px-2 py-1 font-normal"
                 name="password"
                 value={formData.password}
+                placeholder="비밀번호를 입력해주세요"
                 onChange={handleChange}
+                type="password"
               />
             </div>
-            <div>
+            <div className="!mt-12">
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium bg-secondary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 !text-black"
               >
                 로그인
               </button>
@@ -89,19 +88,19 @@ const Login = () => {
           <div className="mt-5 flex justify-evenly">
             <button
               type="button"
-              className="text-sm text-gray-500 hover:text-gray-400"
+              className="text-sm !font-light text-gray-500 hover:text-gray-400"
             >
               아이디 찾기
             </button>
             <button
               type="button"
-              className="text-sm text-gray-500 hover:text-gray-400"
+              className="text-sm !font-light text-gray-500 hover:text-gray-400"
             >
               비밀번호 재설정
             </button>
             <button
               type="button"
-              className="text-sm text-gray-500 hover:text-gray-400"
+              className="text-sm !font-light text-gray-500 hover:text-gray-400"
             >
               <Link href="/accounts/register">회원가입</Link>
             </button>
@@ -116,22 +115,20 @@ const Login = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
+                <span className="px-2 bg-white dark:bg-black text-gray-500 dark:text-gray-300">
                   다른 방법으로 로그인
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-6 grid grid-cols-2 gap-3">
             <div>
               <SocialLoginButton provider="kakao" />
             </div>
-
-            <div>
+            {/* <div>
               <SocialLoginButton provider="naver" />
-            </div>
-
+            </div> */}
             <div>
               <SocialLoginButton provider="google" />
             </div>

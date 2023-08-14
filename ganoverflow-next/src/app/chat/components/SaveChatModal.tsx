@@ -1,5 +1,6 @@
 import { loadChatStatusState } from "@/atoms/chat";
 import { ISaveChatModalProps } from "@/interfaces/IProps/chat";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 
 export const SaveChatModal = ({
@@ -10,6 +11,23 @@ export const SaveChatModal = ({
 }: ISaveChatModalProps) => {
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
+  const [validationMessage, setValidationMessage] = useState<string>("");
+
+  const handleSaveWithValidation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const inputTitle = (
+      document.querySelector("[name='chatpostName']") as HTMLInputElement
+    ).value;
+
+    if (inputTitle.length <= 2) {
+      setValidationMessage("3글자 이상의 제목을 입력해주세요");
+      e.preventDefault();
+      return;
+    }
+
+    setValidationMessage("");
+    onClickSaveChatpostExec(e);
+    setIsModalOpen(false);
+  };
 
   return (
     <div>
@@ -20,16 +38,21 @@ export const SaveChatModal = ({
         <div className="flex flex-col gap-2 mt-5">
           <label className="text-sm text-left">제목</label>
           <input
-            className="h-11 w-full border-2px border-white rounded-sm dark:bg-[#121212] px-2 py-1 font-normal"
+            className="h-11 w-full border-2px border-white rounded-md dark:bg-[#121212] px-2 py-1 font-normal"
             onChange={onChangeTitleAndCategory}
             defaultValue={loadChatStatus.loadedMeta?.title}
             placeholder="저장할 대화 제목을 입력해주세요"
             name="chatpostName"
           />
+          {validationMessage && (
+            <span className="text-red-500 text-xs mt-1">
+              {validationMessage}
+            </span>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className=" text-sm text-left font-normal">
+          <label className=" text-sm text-left font-normal rounded-md">
             카테고리 선택
           </label>
           <select
@@ -54,10 +77,7 @@ export const SaveChatModal = ({
             취소
           </button>
           <button
-            onClick={(e) => {
-              onClickSaveChatpostExec(e);
-              setIsModalOpen(false);
-            }}
+            onClick={handleSaveWithValidation}
             className="px-5 py-2 w-1/3 bg-secondary outline-none rounded-md !text-black "
           >
             저장

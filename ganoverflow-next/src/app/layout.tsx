@@ -142,6 +142,7 @@ const Header = ({
                 alt="Gan Overflow Logo"
                 width={150}
                 height={31.55}
+                priority
               />
             </Link>
           </div>
@@ -168,17 +169,18 @@ const Header = ({
               >
                 기타
               </Link>
-              <Link
-                href="/"
+              <a
                 className="text-[#333336] hover:text-[#111112] dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
-                passHref
+                target="_blank"
+                href="https://github.com/modulersYJ"
+                rel="noopener noreferrer"
               >
                 modulers
-              </Link>
+              </a>
             </div>
           </div>
           <div className="flex flex-row col-sapn-1 self-center gap-6">
-            <button className="text-zinc-200 text-xs" onClick={toggleDarkMode}>
+            <button className="text-xs" onClick={toggleDarkMode}>
               {isDarkMode === true ? "Light" : "Dark"}
             </button>
             <div className="self-center">
@@ -232,21 +234,24 @@ const UserDropdownButton = ({
   };
 
   return (
-    <div className="relative flex flex-row justify-center group">
+    <div className="relative 2xl:mr-10 flex flex-row justify-center group py-4">
       <Link href="/" passHref>
         <button className="font-bold hover:text-gray-400">
           {userData?.nickname}
           <span className="text-xs">님</span>
         </button>
       </Link>
-      <div className="hidden group-hover:block hover:block fixed top-[46px] bg-white py-2 rounded-md shadow-lg">
+
+      <div className="w-30 hidden !text-sm group-hover:block hover:block fixed top-[46px] bg-zinc-100 dark:bg-gray-700 py-2 rounded-md shadow-lg !font-normal">
         <Link href="/accounts/my-page" passHref>
-          <span className="block w-32 px-4 py-2 hover:bg-gray-200">
+          <span className="block w-full px-4 py-2 hover:bg-gray-200 text-gray-600 dark:text-gray-300">
             마이페이지
           </span>
         </Link>
-        <button onClick={onClickLogOut}>
-          <span className="block px-4 py-2 hover:bg-gray-200">로그아웃</span>
+        <button onClick={onClickLogOut} className="w-full">
+          <span className="!font-normal !text-sm block px-4 py-2 hover:bg-gray-200 text-gray-600 dark:text-gray-300">
+            로그아웃
+          </span>
         </button>
       </div>
     </div>
@@ -322,7 +327,7 @@ const HamburgerButton = ({ onClickButton }: any): JSX.Element => {
   return (
     <button
       type="button"
-      className="md:hidden my-2 text-white focus:outline-none"
+      className="md:hidden my-2 focus:outline-none"
       aria-label="Toggle menu"
       onClick={onClickButton}
     >

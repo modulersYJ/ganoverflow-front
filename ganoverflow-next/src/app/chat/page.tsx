@@ -142,9 +142,10 @@ export default function ChatPage() {
   const onClickSaveChatpostInit = async (e: React.MouseEvent) => {
     if (isNowAnswering) {
       alert("답변중에는 저장할 수 없습니다!");
-      return;
+      return false;
     }
     setChatSavedStatus("ING");
+    return true;
   };
 
   const onChangeTitleAndCategory = (

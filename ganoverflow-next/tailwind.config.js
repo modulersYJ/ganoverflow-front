@@ -16,13 +16,13 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    textColor: {
-      primary: themes.primary,
-      secondary: themes.secondary,
-      black: "#000",
-      white: "#fff",
-    },
     extend: {
+      textColor: {
+        primary: themes.primary,
+        secondary: themes.secondary,
+        black: "#000",
+        white: "#fff",
+      },
       colors: {
         ...themes,
       },
