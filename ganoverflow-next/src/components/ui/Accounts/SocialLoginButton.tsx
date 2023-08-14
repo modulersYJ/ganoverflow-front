@@ -21,16 +21,10 @@ const SocialLoginButton: React.FC<Props> = ({ provider }) => {
   return (
     <button
       type="button"
-      className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      className="w-full flex justify-center gap-3 py-2.5 px-4 bg-transparent border-solid border rounded-full border-gray-300"
     >
-      <span className="sr-only">{labels[provider]}</span>
-      <Image
-        className="h-6 w-6"
-        src={images[provider]}
-        alt={provider}
-        width={50}
-        height={50}
-      />
+      <Image src={images[provider]} alt={provider} width={24} height={24} />
+      <span className="">{labels[provider]}</span>
     </button>
   );
 };
