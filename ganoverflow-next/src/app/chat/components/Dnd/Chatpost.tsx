@@ -68,7 +68,7 @@ export const Chatpost = function Chatpost({
   const accessToken = useRecoilValue(accessTokenState);
   const authData = {
     accessToken,
-    userId: userData.id,
+    userId: userData?.id,
   };
 
   const handleUpdatePostName = async (newName: string) => {
@@ -191,17 +191,17 @@ const PostUnit: React.FC<{
           },
         }}
       >
-        <div className="flex flex-row pb-1">
-          <div className="w-2/12 ">
-            <ChatIcon sx={{ fontSize: "17px" }} />
+        <div onClick={onClickLoadBtn} className="flex flex-row pb-1">
+          <div className="w-2/12 text-white pt-[2px]">
+            <ChatIcon sx={{ fontSize: "15px" }} />
           </div>
-          <div onClick={onClickLoadBtn} className="w-full">
+          <div className="w-full">
             <TitleEdit
               initialName={postData.chatpostName}
               onSave={handleUpdatePostName}
             />
           </div>
-          <button className="w-2/12" onClick={onClickDeleteBtn}>
+          <button className="w-2/12 z-10" onClick={onClickDeleteBtn}>
             <DeleteOutlineIcon
               className="deleteIcon"
               sx={{

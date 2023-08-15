@@ -22,15 +22,18 @@ const CircularCheckbox: React.FC<CheckboxProps> = ({
         disabled={isDisabled === "T" ? true : false}
       />
 
-      <span className="relative  w-6 h-6 rounded-full  bg-gray-200 flex items-center justify-center">
-        <span
-          className={`absolute inset-0 rounded-full 
-          ${
-            isChecked ? "bg-blue-500" : "bg-gray-400"
-          } flex items-center justify-center
-          `}
-        >
-          <CheckBoxIcon style={{ color: "white", fontSize: "16px" }} />
+      <span
+        className={`z-0 relative  w-6 h-6 rounded-full flex items-center justify-center border-2 border-primary ${
+          isChecked ? "bg-primary" : "bg-transparent"
+        }`}
+      >
+        <span className="absolute inset-0 rounded-full flex items-center justify-center">
+          <CheckBoxIcon
+            style={{
+              color: isChecked ? "white" : "rgb(66 200 60)",
+              fontSize: "16px",
+            }}
+          />
         </span>
       </span>
     </label>

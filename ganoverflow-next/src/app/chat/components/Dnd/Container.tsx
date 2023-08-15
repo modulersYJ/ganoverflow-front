@@ -28,11 +28,11 @@ export const Container = memo(
       const updateFolders = async () => {
         // folder 변경사항(폴더 추가, 제거, 포스트 소속 이동) 서버로 PUT
         const updatedFoldersWithPosts = await putFoldersByUser(
-          userData.id,
+          userData?.id,
           foldersData,
           {
             accessToken,
-            userId: userData.id,
+            userId: userData?.id,
           }
         );
         console.log(updatedFoldersWithPosts);
@@ -58,7 +58,7 @@ export const Container = memo(
             flexDirection: "column",
           }}
         >
-          {foldersData.map((folder: IFolderWithPostsDTO, idx: number) => (
+          {foldersData?.map((folder: IFolderWithPostsDTO, idx: number) => (
             <Folder
               curFolder={folder}
               key={folder.folderId}
@@ -71,3 +71,5 @@ export const Container = memo(
     );
   }
 );
+
+Container.displayName = "Container";

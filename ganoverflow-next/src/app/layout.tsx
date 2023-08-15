@@ -16,7 +16,7 @@ import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
-import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
+import { foldersWithChatpostsState } from "@/atoms/folder";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -52,7 +52,7 @@ export default function RootLayout({
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
           <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-          <main className="grow pt-[44px] md:pt-[68px] bg-slate-300 dark:bg-slate-800 dark:text-slate-100">
+          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100 dark:bg-vert-dark-gradient">
             {children}
           </main>
           {/* {!offFooter &&  */}
@@ -137,48 +137,55 @@ const Header = ({
       <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
         <div className="container mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-span-1">
-            <Link href="/" className="flex items-center" passHref>
-              <h1 className="logo-text ml-1 text-xl">Gan Overflow</h1>
+            <Link href="/" passHref>
+              <Image
+                src={isDarkMode ? "/gof-logo-dark.svg" : "/gof-logo-light.svg"}
+                alt="Gan Overflow Logo"
+                width={150}
+                height={31.55}
+                priority
+              />
             </Link>
           </div>
           <div className="col-sapn-1 self-center">
             <div className="hidden md:flex items-center">
               <Link
                 href="/chat"
-                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
+                className="text-[#404040] hover:text-black dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
                 passHref
               >
                 채팅
               </Link>
               <Link
                 href="/posts"
-                className="text-[#AEAEB2] font-inter text-sm px-4 py-5 font-semibold"
+                className="text-[#404040] hover:text-black dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
                 passHref
               >
                 게시판
               </Link>
               <Link
                 href="/"
-                className="text-[#AEAEB2] font-inter text-xs px-4 py-5 font-semibold"
+                className="text-[#404040] hover:text-black dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
                 passHref
               >
-                GAN Overflow
+                기타
               </Link>
-              <Link
-                href="/"
-                className="text-[#AEAEB2]  font-inter text-xs px-4 py-5 font-semibold"
-                passHref
+              <a
+                className="text-[#333336] hover:text-[#111112] dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
+                target="_blank"
+                href="https://github.com/modulersYJ"
+                rel="noopener noreferrer"
               >
-                CONTACT
-              </Link>
-              <button className="text-zinc-200" onClick={toggleDarkMode}>
-                {isDarkMode === true ? "LIGHT" : "DARK"}
-              </button>
+                modulers
+              </a>
             </div>
           </div>
-          <div className="col-sapn-1 self-center">
+          <div className="flex flex-row col-sapn-1 self-center gap-6">
+            <button className="text-xs" onClick={toggleDarkMode}>
+              {isDarkMode === true ? "Light" : "Dark"}
+            </button>
             <div className="self-center">
-              <div className="hidden md:flex text-white font-bold hover:text-gray-400">
+              <div className="hidden md:flex font-bold hover:text-gray-400">
                 {user === null ? (
                   <Link href="/accounts/login" passHref>
                     로그인
@@ -213,6 +220,7 @@ const UserDropdownButton = ({
   userData: { id: string; nickname: string };
   onClickSetLogout: () => void;
 }) => {
+  // const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
   const setAccessState = useSetRecoilState(accessTokenState);
   const router = useRouter();
 
@@ -222,27 +230,31 @@ const UserDropdownButton = ({
 
     onClickSetLogout();
     setAccessState(null);
+    // setFoldersData([]);
 
     router.push("/");
     return response;
   };
 
   return (
-    <div className="relative flex flex-row justify-center group">
+    <div className="relative 2xl:mr-10 flex flex-row justify-center group py-4">
       <Link href="/" passHref>
-        <button className="text-white font-bold hover:text-gray-400">
+        <button className="font-bold hover:text-gray-400">
           {userData?.nickname}
           <span className="text-xs">님</span>
         </button>
       </Link>
-      <div className="hidden group-hover:block hover:block fixed top-[46px] bg-white py-2 rounded-md shadow-lg">
+
+      <div className="w-30 hidden !text-sm group-hover:block hover:block fixed top-[46px] bg-zinc-100 dark:bg-gray-700 py-2 rounded-md shadow-lg !font-normal">
         <Link href="/accounts/my-page" passHref>
-          <span className="block w-32 px-4 py-2 hover:bg-gray-200">
+          <span className="block w-full px-4 py-2 hover:bg-gray-200 text-gray-600 dark:text-gray-300">
             마이페이지
           </span>
         </Link>
-        <button onClick={onClickLogOut}>
-          <span className="block px-4 py-2 hover:bg-gray-200">로그아웃</span>
+        <button onClick={onClickLogOut} className="w-full">
+          <span className="!font-normal !text-sm block px-4 py-2 hover:bg-gray-200 text-gray-600 dark:text-gray-300">
+            로그아웃
+          </span>
         </button>
       </div>
     </div>
@@ -318,7 +330,7 @@ const HamburgerButton = ({ onClickButton }: any): JSX.Element => {
   return (
     <button
       type="button"
-      className="md:hidden my-2 text-white focus:outline-none"
+      className="md:hidden my-2 focus:outline-none"
       aria-label="Toggle menu"
       onClick={onClickButton}
     >

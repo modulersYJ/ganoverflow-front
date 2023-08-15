@@ -8,7 +8,9 @@ export interface IChatMainProps {
   onChangeCheckBox: (index: number) => void;
   onClickNewChatBtn: (e: React.MouseEvent) => void;
   onClickContinueChat: (e: React.MouseEvent) => void;
-  onClickSaveChatpostInit: (e: React.MouseEvent) => void;
+
+  onClickSaveChatpostInit: (e: React.MouseEvent) => Promise<boolean>;
+
   onClickSaveChatpostExec: (e: React.MouseEvent) => void;
   onClickSubmitMsg: (e: React.FormEvent, prompt: string) => void;
   questionInput: string;

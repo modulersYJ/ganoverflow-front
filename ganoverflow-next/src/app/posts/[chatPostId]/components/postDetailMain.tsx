@@ -28,7 +28,7 @@ const PostHeader: React.FC<IPostHeaderProps> = ({
 }) => {
   return (
     <div className="post-chatpostName-box w-full border border-x-0 border-green-500 border-t-4 py-5 flex flex-col">
-      <h2 className="post-chatpostName text-start px-3 text-3xl text">
+      <h2 className="post-chatpostName tw-subtitle text-start px-3 text-3xl text py-3">
         {chatpostName}
       </h2>
       <div className="post-userdate-box flex flex-row justify-between">

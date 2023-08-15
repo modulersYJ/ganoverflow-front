@@ -60,9 +60,7 @@ IChatSideBarProps) {
               <CreateNewFolderIcon sx={{ fontSize: "14px" }} />
             </button>
           </div>
-          <div className="text-xs text-left my-3 ml-5 text-gray-400">
-            My Posts
-          </div>
+          <div className="text-xs text-left my-3 ml-5 text-white">My Posts</div>
           <div className="list-container overflow-y-auto h-screen pb-[200px]">
             <FolderFileNoOrderDND loadThisChatHandler={loadThisChatHandler} />
           </div>

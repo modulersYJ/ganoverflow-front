@@ -18,12 +18,6 @@ export default async function PostPage({
   const totalCount = allPosts.postCount;
   const totalPage = Math.ceil(totalCount / 10);
 
-  const pagingButtons = Array.from({ length: totalPage + 2 }).map((e, idx) =>
-    idx.toString()
-  );
-  pagingButtons[0] = "<";
-  pagingButtons[pagingButtons.length - 1] = ">";
-
   // ! 10개 미만이면 10개로 채워줘야 함.
   while (allPosts.posts.length < 10) {
     allPosts.posts.push({
@@ -37,8 +31,10 @@ export default async function PostPage({
   }
 
   return (
-    <>
-      <div className="post-chatpostName text-xl ">GanOverflow - POSTS</div>
+    <div className="bg-vert-light-gradient dark:bg-vert-dark-gradient">
+      <div className="post-chatpostName text-xl my-7">
+        <h2 className="">Chats</h2>
+      </div>
       <div className="grid">
         <table className="w-3/5 h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
@@ -92,6 +88,6 @@ export default async function PostPage({
       <div className="pagination-wrapper">
         <Pagination currentPage={currentPage} totalPage={totalPage} />
       </div>
-    </>
+    </div>
   );
 }
