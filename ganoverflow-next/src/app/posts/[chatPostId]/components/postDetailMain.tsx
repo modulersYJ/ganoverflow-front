@@ -5,7 +5,7 @@ export const PostDetailMain = ({ postData }: any) => {
   // TODO: any를 IChatPost 수정해서 넣어주기!
   return (
     <div className="grid">
-      <article className="post-detail-main w-3/5 place-self-center">
+      <article className="post-detail-main w-10/12 place-self-center">
         <PostHeader
           chatpostName={postData?.chatpostName}
           nickname={postData?.userId?.nickname}
@@ -54,14 +54,27 @@ const PostChatPair = ({ pairs }: any) => {
       {pairs
         .sort(({ pairOne, pairTwo }: any) => pairOne?.order - pairTwo?.order)
         .map((pair: any, idx: number) => (
-          <div key={idx}>
-            <div>
-              <div>Q</div>
-              <div>{pair.question}</div>
+          <div
+            key={idx}
+            className={`w-full py-5 ${
+              idx % 2 === 0
+                ? "bg-gray-300 dark:bg-[#2c2c33]"
+                : "bg-gray-200 dark:bg-[#202024]" // 홀짝 배경색 변경
+            } flex flex-col`}
+          >
+            <div className="chatPairContainer h-full flex flex-col items-center w-full py-1">
+              <div
+                className={`msgBox p-5 max-w-sm text-xs ${"bg-primary text-white self-end rounded-chat-question"} inline-block max-w-lg`}
+              >
+                {pair.question}
+              </div>
             </div>
-            <div>
-              <div>A</div>
-              <div>{pair.answer}</div>
+            <div className="chatPairContainer h-full flex flex-col items-center w-full">
+              <div
+                className={`overflow-auto max-w-full rounded-chat-answer bg-gray-500 p-5 ${" text-white self-start"}  max-w-lg`}
+              >
+                {pair.answer}
+              </div>
             </div>
           </div>
         ))}
