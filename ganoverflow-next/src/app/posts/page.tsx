@@ -31,7 +31,7 @@ export default async function PostPage({
   }
 
   return (
-    <div className="bg-vert-light-gradient dark:bg-vert-dark-gradient">
+    <div className="">
       <div className="post-chatpostName text-xl my-7">
         <h2 className="">Chats</h2>
       </div>

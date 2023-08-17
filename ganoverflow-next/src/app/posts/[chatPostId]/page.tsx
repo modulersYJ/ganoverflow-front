@@ -12,11 +12,11 @@ export default async function PostDetailPage({
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId); // todo: 해당 함수 반환값 인터페이스 정의
-  console.log("STARS ", postData.stars);
+  console.log("pd ", postData?.categoryName?.categoryName);
 
   return (
-    <div className="grid">
-      <article className="post-detail-main w-3/5 place-self-center">
+    <div className="grid  dark:bg-vert-dark-gradient bg-vert-light-gradient">
+      <article className="post-detail-main w-5/6 md:w-3/5 place-self-center my-4">
         <PostDetailMain postData={postData} />
         <LikeBox chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
