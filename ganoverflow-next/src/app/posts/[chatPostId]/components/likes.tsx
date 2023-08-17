@@ -5,6 +5,7 @@ import { getStars, postStar } from "@/app/posts/api/chatposts";
 import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useState, useEffect } from "react";
 import Error from "next/error";
+import { usePathname } from "next/navigation";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const userData = getSessionStorageItem("userData");
@@ -12,6 +13,8 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
 
   const [starCount, setStarCount] = useState(0);
   const [userDidLike, setUserDidLike] = useState<number>(0);
+
+  const [isShareBoxOpen, setIsShareBoxOpen] = useState<boolean>(false);
 
   // ^ stars fetch (GET) : 처음에 한번
   useEffect(() => {
@@ -83,8 +86,8 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
 
   return (
     <>
-      <div className="flex justify-center my-6">
-        <div className="post-likes w-full h-32 flex justify-center items-center rounded bg-slate-400">
+      <div className="post-likes w-full h-32 flex flex-col justify-center rounded bg-slate-400 my-6">
+        <div className="flex justify-center items-center">
           <button
             name="up"
             className={`rounded-lg p-2 mx-8 h-12 bg-slate-300 hover:bg-slate-50`}
@@ -164,7 +167,72 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
             )}
           </button>
         </div>
+        <div className="likes-share pt-2">
+          <button
+            className="share-button text-white"
+            onClick={() => setIsShareBoxOpen(!isShareBoxOpen)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2em"
+              viewBox="0 0 576 512"
+              fill="rgb(200,200,200)"
+            >
+              <path d="M352 224H305.5c-45 0-81.5 36.5-81.5 81.5c0 22.3 10.3 34.3 19.2 40.5c6.8 4.7 12.8 12 12.8 20.3c0 9.8-8 17.8-17.8 17.8h-2.5c-2.4 0-4.8-.4-7.1-1.4C210.8 374.8 128 333.4 128 240c0-79.5 64.5-144 144-144h80V34.7C352 15.5 367.5 0 386.7 0c8.6 0 16.8 3.2 23.2 8.9L548.1 133.3c7.6 6.8 11.9 16.5 11.9 26.7s-4.3 19.9-11.9 26.7l-139 125.1c-5.9 5.3-13.5 8.2-21.4 8.2H384c-17.7 0-32-14.3-32-32V224zM80 96c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16H400c8.8 0 16-7.2 16-16V384c0-17.7 14.3-32 32-32s32 14.3 32 32v48c0 44.2-35.8 80-80 80H80c-44.2 0-80-35.8-80-80V112C0 67.8 35.8 32 80 32h48c17.7 0 32 14.3 32 32s-14.3 32-32 32H80z" />
+            </svg>
+            공유
+          </button>
+        </div>
+        {isShareBoxOpen === true ? (
+          <ShareBox setIsShareBoxOpen={setIsShareBoxOpen} />
+        ) : (
+          ""
+        )}
       </div>
     </>
+  );
+};
+
+const ShareBox = ({
+  setIsShareBoxOpen,
+}: {
+  setIsShareBoxOpen: (prev: boolean) => void;
+}) => {
+  const url = usePathname();
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 링크가 복사되었습니다.");
+    } catch (e) {
+      alert("복사에 실패하였습니다");
+    }
+  };
+
+  return (
+    <div className="absolute left-1/4 bottom-1/4 z-10  border-2 border-primary">
+      <div className="flex flex-row w-full justify-between bg-primary p-2">
+        <h3 className="text-white text-xl">공유하기</h3>
+        <button
+          className="dark:text-black"
+          onClick={() => setIsShareBoxOpen(false)}
+        >
+          X
+        </button>
+      </div>
+      <div className="p-2">
+        <div className="flex flex-row ">
+          <div className="w-80 text-start border border-gray-200 px-2 bg-gray-400 text-gray-100 py-1">
+            https://ganoverflow.com{url}
+          </div>
+          <button
+            className="border border-gray-200 hover:bg-secondary hover:text-white px-2 py-1"
+            onClick={() => handleCopyClipBoard(`https://ganoverflow.com${url}`)}
+          >
+            URL 복사
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
