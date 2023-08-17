@@ -4,6 +4,7 @@ import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "@/app/posts/api/chatposts";
 import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useState, useEffect } from "react";
+import Error from "next/error";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const userData = getSessionStorageItem("userData");
@@ -62,14 +63,21 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
       }
     }
 
-    const res = await postStar({
-      chatPostId: chatPostId,
-      authData: await authData,
-      value: value,
-    });
-    if (res.status === 201) {
-      setStarCount(res.data.count);
-      setUserDidLike(value);
+    try {
+      const res = await postStar({
+        chatPostId: chatPostId,
+        authData: await authData,
+        value: value,
+      });
+      if (res.status === 201) {
+        setStarCount(res.data.count);
+        setUserDidLike(value);
+      }
+    } catch (e: any) {
+      console.log(e);
+      if (e?.response?.status === 401) {
+        alert("로그인이 필요합니다");
+      }
     }
   };
 

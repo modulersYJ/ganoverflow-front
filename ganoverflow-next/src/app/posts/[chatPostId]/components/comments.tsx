@@ -35,18 +35,26 @@ export function CommentBox({
       alert("댓글을 입력하세요");
       return;
     }
-    const res = await postComment(
-      { content: commentData },
-      await authData,
-      chatPostId
-    );
-    if (res.status === 201) {
-      setCommentData("");
-      alert("등록이 완료되었습니다.");
-      router.refresh();
-    } else {
-      console.log("res ", res);
-      alert("등록 실패");
+
+    try {
+      const res = await postComment(
+        { content: commentData },
+        await authData,
+        chatPostId
+      );
+      if (res.status === 201) {
+        setCommentData("");
+        alert("등록이 완료되었습니다.");
+        router.refresh();
+      } else {
+        console.log("res ", res);
+        alert("등록 실패");
+      }
+    } catch (e: any) {
+      console.log(e);
+      if (e?.response?.status === 401) {
+        alert("로그인이 필요합니다");
+      }
     }
   };
 

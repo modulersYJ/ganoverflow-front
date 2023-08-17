@@ -15,7 +15,7 @@ export default async function PostDetailPage({
   console.log("STARS ", postData.stars);
 
   return (
-    <div className="grid">
+    <div className="grid  dark:bg-vert-dark-gradient bg-vert-light-gradient">
       <article className="post-detail-main w-5/6 md:w-3/5 place-self-center">
         <PostDetailMain postData={postData} />
         <LikeBox chatPostId={chatPostId} />

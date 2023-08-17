@@ -35,6 +35,7 @@ export const PostDetailMain = ({ postData }: any) => {
           createdAt={postData?.createdAt}
           viewCount={postData?.viewCount}
           commentCount={postData?.comments?.length}
+          category={postData?.category}
         />
         <PostChatPair pairs={postData?.chatPair} />
       </article>
@@ -48,9 +49,10 @@ const PostHeader: React.FC<IPostHeaderProps> = ({
   createdAt,
   viewCount,
   commentCount,
+  category,
 }) => {
   return (
-    <div className="post-chatpostName-box border border-x-0 border-green-500 border-t-4 py-5 flex flex-col">
+    <div className="post-chatpostName-box border border-x-0 border-green-500 border-t-4 py-5 flex flex-col my-4">
       <h2 className="post-chatpostName tw-subtitle text-start px-3 text-3xl text py-3">
         {chatpostName}
       </h2>
@@ -59,7 +61,10 @@ const PostHeader: React.FC<IPostHeaderProps> = ({
           <div className="post-user px-3 border border-0 border-r-2">
             {nickname}
           </div>
-          <div className="post-date px-3">{parseDate(createdAt)}</div>
+          <div className="post-date px-3 border border-0 border-r-2">
+            {parseDate(createdAt)}
+          </div>
+          <div className="post-category px-3">{category ?? "카테고리"}</div>
         </div>
         <div className="post-stats w-1/3 space-x-2">
           <span>조회수 {viewCount}</span>
