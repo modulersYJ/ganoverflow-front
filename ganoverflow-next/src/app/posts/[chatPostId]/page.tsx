@@ -16,7 +16,7 @@ export default async function PostDetailPage({
 
   return (
     <div className="grid">
-      <article className="post-detail-main w-3/5 place-self-center">
+      <article className="post-detail-main w-5/6 md:w-3/5 place-self-center">
         <PostDetailMain postData={postData} />
         <LikeBox chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
