@@ -89,7 +89,11 @@ export const Pagination = ({
           </button>
         </Link>
       ))}
-      <Link href={`posts?page=${currentPage * 1 + 5}`}>
+      <Link
+        href={`posts?page=${
+          totalPage > currentPage * 1 + 5 ? currentPage * 1 + 5 : totalPage
+        }`}
+      >
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
           onClick={handleNextFive}

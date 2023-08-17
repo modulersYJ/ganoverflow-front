@@ -35,7 +35,7 @@ export const PostDetailMain = ({ postData }: any) => {
           createdAt={postData?.createdAt}
           viewCount={postData?.viewCount}
           commentCount={postData?.comments?.length}
-          category={postData?.category}
+          category={postData?.categoryName?.categoryName}
         />
         <PostChatPair pairs={postData?.chatPair} />
       </article>
