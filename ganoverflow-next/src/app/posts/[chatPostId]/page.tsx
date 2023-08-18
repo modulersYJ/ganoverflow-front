@@ -1,4 +1,3 @@
-import { parseDate } from "@/utils/parseDate";
 import { getOneChatPost } from "../api/chatposts";
 import { CommentBox } from "./components/comments";
 import { LikeBox } from "./components/likes";

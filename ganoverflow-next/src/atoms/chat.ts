@@ -1,3 +1,4 @@
+import { ChatSavedStatus, IChatPair } from "@/interfaces/chat";
 import { atom } from "recoil";
 
 export enum TLoadChatStatus {
@@ -24,4 +25,26 @@ export const loadChatStatusState = atom<LoadChatStatusStateType>({
     status: TLoadChatStatus.F,
     loadedMeta: undefined,
   },
+});
+
+/* Chat - Sidebar 공유 상태 */
+// ChatSavedStatus 상태
+export const chatSavedStatusState = atom<ChatSavedStatus>({
+  key: "chatSavedStatusState",
+  default: "F",
+});
+
+export const chatPairsState = atom<IChatPair[]>({
+  key: "chatPairsState",
+  default: [],
+});
+
+export const checkCntState = atom<number>({
+  key: "checkCntState",
+  default: 0,
+});
+
+export const questionInputState = atom<string>({
+  key: "questionInputState",
+  default: "",
 });

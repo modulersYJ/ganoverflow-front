@@ -44,13 +44,12 @@ export const Pagination = ({
     <>
       <Link href={`posts?page=1`}>
         <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<"}</button>
-
       </Link>
       {pagingButtons.map((e: string, idx: number) => (
         <Link href={`posts?page=${e}`} key={idx}>
           <button
-            className={`p-2 px-2.5 m-2 rounded bg-secondary ${
-              currentPage.toString() === e ? "bg-dark-primary" : ""
+            className={`p-2 px-2.5 m-2 rounded  ${
+              currentPage.toString() == e ? "bg-primary" : "bg-secondary"
             }`}
           >
             {e}
@@ -59,7 +58,6 @@ export const Pagination = ({
       ))}
       <Link href={`posts?page=${totalPage}`}>
         <button className="p-2 px-2.5 m-2 rounded bg-primary">{">"}</button>
-
       </Link>
     </>
   );
