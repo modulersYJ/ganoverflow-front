@@ -50,7 +50,7 @@ const TitleEdit: React.FC<TitleEditProps> = ({ initialName, onSave }) => {
     />
   ) : (
     <div
-      className="text-white w-full px-1 pt-[3px] text-xs text-left"
+      className="text-white w-full px-1 pt-[3px] text-xs text-left whitespace-nowrap"
       onDoubleClick={toggleEditing}
     >
       {name.length > 10 ? name.substring(0, 10) + ".." : name}

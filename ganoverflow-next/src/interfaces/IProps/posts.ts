@@ -7,6 +7,7 @@ export interface IPostHeaderProps {
   createdAt: string;
   viewCount: number;
   commentCount: number;
+  category: string;
 }
 
 export interface IPostChatPairProps {
