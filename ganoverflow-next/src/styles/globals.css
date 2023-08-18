@@ -85,7 +85,6 @@ body,
   src: url("/fonts/Morganite-SemiBold.ttf") format("truetype");
 }
 
-
 @font-face {
   font-family: "morganBold";
 
@@ -138,7 +137,6 @@ header {
 }
 
 .header-nav {
-
   background-color: rgba(255, 255, 255, 0.7);
   -webkit-backdrop-filter: blur(7px) saturate(180%);
   backdrop-filter: blur(7px) saturate(180%);
@@ -186,8 +184,6 @@ header {
   letter-spacing: 1px;
   color: white;
 }
-
-
 
 /* Footer */
 footer {
@@ -257,23 +253,27 @@ main {
     @apply text-black font-extrabold text-5xl;
   }
 
-  .dark h1, .dark h2 {
+  .dark h1,
+  .dark h2 {
     @apply text-white;
   }
-  
+
   body {
     @apply text-black font-normal text-sm;
   }
-  
+
   button {
     @apply text-black font-medium text-sm;
   }
 
   .dark button {
-    @apply text-white
+    @apply text-white;
   }
 
-  label, input, textarea, select {
+  label,
+  input,
+  textarea,
+  select {
     @apply text-black text-sm font-normal;
   }
 
@@ -281,13 +281,19 @@ main {
     @apply text-white font-normal text-sm;
   }
 
-  .dark label, .dark input, .dark textarea, .dark select {
+  .dark label,
+  .dark input,
+  .dark textarea,
+  .dark select {
     @apply text-white;
   }
 }
 
 @layer components {
   /* 재사용 가능한 UI 컴포넌트의 스타일을 정의합니다. base 레이어 이후, 그리고 utilities 레이어 전에 적용됩니다. */
+  .mypage-box {
+    @apply border rounded m-4 w-4/5 h-96;
+  }
 }
 @layer utilities {
   /* 유틸리티 클래스를 정의하거나 확장합니다. 이 레이어의 스타일은 가장 마지막에 적용되므로, base와 components 레이어의 스타일을 오버라이드 할 수 있습니다. */
