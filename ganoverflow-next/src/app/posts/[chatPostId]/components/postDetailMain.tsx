@@ -1,28 +1,9 @@
 import { IPostHeaderProps } from "@/interfaces/IProps/posts";
 import { parseDate } from "@/utils/parseDate";
 import hljs from "highlight.js/lib/core";
-
-const md = require("markdown-it")({
-  highlight: function (str: string, lang: string) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(str, { language: lang }).value;
-      } catch (__) {}
-    }
-
-    return ""; // use external default escaping
-  },
-  linkify: true,
-  html: true,
-  breaks: true,
-});
-
-md.use(require("markdown-it-anchor").default);
-md.use(require("markdown-it-table-of-contents"), {
-  includeLevel: [2, 3, 4, 5, 6],
-  containerHeaderHtml: "<h6>Table of Contents</h6>",
-  listType: "ol",
-});
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
+import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best
 
 export const PostDetailMain = ({ postData }: any) => {
   // TODO: any를 IChatPost 수정해서 넣어주기!
@@ -101,9 +82,42 @@ const PostChatPair = ({ pairs }: any) => {
               <div
                 className={`overflow-auto max-w-full rounded-chat-answer bg-gray-500 p-5 ${" text-white self-start"}  max-w-lg`}
               >
-                <div
-                  dangerouslySetInnerHTML={{ __html: md.render(pair.answer) }}
-                />
+                <ReactMarkdown
+                  components={{
+                    p({ node, children }: any) {
+                      return <p className="answer-p">{children}</p>;
+                    },
+                    code({ node, inline, className, children, ...props }: any) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      const language = match ? match[1] : null;
+
+                      if (!inline) {
+                        return (
+                          <SyntaxHighlighter
+                            style={
+                              gruvboxDark as {
+                                [key: string]: React.CSSProperties;
+                              }
+                            }
+                            language={language || "javascript"}
+                            PreTag="div"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        );
+                      } else {
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                    },
+                  }}
+                >
+                  {pair.answer}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
