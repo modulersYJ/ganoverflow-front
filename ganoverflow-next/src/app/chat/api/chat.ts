@@ -122,7 +122,7 @@ export const putFoldersByUser = async (
     return updatedFoldersWithPosts.data;
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
-      alert("Error 404: Resource not found");
+      console.log("Error 404: Resource not found");
       return [];
     }
     throw new Error("Error updating folders - maybe unauthorized sideEffect");
