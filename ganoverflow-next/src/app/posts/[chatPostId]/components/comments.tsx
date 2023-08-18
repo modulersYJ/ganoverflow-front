@@ -35,18 +35,26 @@ export function CommentBox({
       alert("댓글을 입력하세요");
       return;
     }
-    const res = await postComment(
-      { content: commentData },
-      await authData,
-      chatPostId
-    );
-    if (res.status === 201) {
-      setCommentData("");
-      alert("등록이 완료되었습니다.");
-      router.refresh();
-    } else {
-      console.log("res ", res);
-      alert("등록 실패");
+
+    try {
+      const res = await postComment(
+        { content: commentData },
+        await authData,
+        chatPostId
+      );
+      if (res.status === 201) {
+        setCommentData("");
+        alert("등록이 완료되었습니다.");
+        router.refresh();
+      } else {
+        console.log("res ", res);
+        alert("등록 실패");
+      }
+    } catch (e: any) {
+      console.log(e);
+      if (e?.response?.status === 401) {
+        alert("로그인이 필요합니다");
+      }
     }
   };
 
@@ -85,12 +93,12 @@ export function CommentBox({
           name="comment"
           onChange={handleChange}
           value={commentData}
-          className="border border-gray-300 w-full h-40 p-2 my-3 bg-gray-600"
+          className="border border-gray-300 w-full h-40 p-2 my-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
           placeholder="댓글을 입력해 주세요"
         />
         <div className="flex justify-end">
           <button
-            className="comment-submit w-32 h-8 bg-secondary rounded-xl"
+            className="comment-submit w-32 h-8 bg-secondary hover:bg-primary hover:text-white rounded-xl"
             onClick={handleSubmit}
           >
             등록

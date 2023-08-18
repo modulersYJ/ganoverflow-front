@@ -40,10 +40,42 @@ export const Pagination = ({
     pagingButtons[4] = (totalPage * 1).toString();
   }
 
+  const handlePrevFive = () => {
+    if (pagingButtons[0] === "1") {
+      return;
+    }
+
+    pagingButtons[0] = (parseInt(pagingButtons[0]) - 5).toString();
+    pagingButtons[1] = (parseInt(pagingButtons[1]) - 5).toString();
+    pagingButtons[2] = (parseInt(pagingButtons[2]) - 5).toString();
+    pagingButtons[3] = (parseInt(pagingButtons[3]) - 5).toString();
+    pagingButtons[4] = (parseInt(pagingButtons[4]) - 5).toString();
+  };
+
+  const handleNextFive = () => {
+    if (pagingButtons[4] === totalPage.toString()) {
+      return;
+    }
+
+    pagingButtons[0] = (parseInt(pagingButtons[0]) + 5).toString();
+    pagingButtons[1] = (parseInt(pagingButtons[1]) + 5).toString();
+    pagingButtons[2] = (parseInt(pagingButtons[2]) + 5).toString();
+    pagingButtons[3] = (parseInt(pagingButtons[3]) + 5).toString();
+    pagingButtons[4] = (parseInt(pagingButtons[4]) + 5).toString();
+  };
+
   return (
     <>
       <Link href={`posts?page=1`}>
-        <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<"}</button>
+        <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<<"}</button>
+      </Link>
+      <Link href={`posts?page=${currentPage - 5 > 0 ? currentPage - 5 : 1}`}>
+        <button
+          className="p-2 px-2.5 m-2 rounded bg-primary"
+          onClick={handlePrevFive}
+        >
+          {"<"}
+        </button>
       </Link>
       {pagingButtons.map((e: string, idx: number) => (
         <Link href={`posts?page=${e}`} key={idx}>
@@ -57,8 +89,20 @@ export const Pagination = ({
           </button>
         </Link>
       ))}
+      <Link
+        href={`posts?page=${
+          totalPage > currentPage * 1 + 5 ? currentPage * 1 + 5 : totalPage
+        }`}
+      >
+        <button
+          className="p-2 px-2.5 m-2 rounded bg-primary"
+          onClick={handleNextFive}
+        >
+          {">"}
+        </button>
+      </Link>
       <Link href={`posts?page=${totalPage}`}>
-        <button className="p-2 px-2.5 m-2 rounded bg-primary">{">"}</button>
+        <button className="p-2 px-2.5 m-2 rounded bg-primary">{">>"}</button>
       </Link>
     </>
   );
