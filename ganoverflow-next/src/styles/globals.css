@@ -292,7 +292,7 @@ main {
 @layer components {
   /* 재사용 가능한 UI 컴포넌트의 스타일을 정의합니다. base 레이어 이후, 그리고 utilities 레이어 전에 적용됩니다. */
   .mypage-box {
-    @apply border rounded m-4 w-4/5 h-96;
+    @apply border rounded m-4 w-4/5 p-2;
   }
 }
 @layer utilities {
