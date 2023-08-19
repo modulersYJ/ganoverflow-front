@@ -16,15 +16,23 @@ export const GetHandleSaveChatpostInit = (
   };
 };
 
-export const GetHandleContinueChat = (
-  loadChatStatus: any,
-  chatPairs: SetterOrUpdater<IChatPair[]>,
-  setLoadChatStatus: SetterOrUpdater<any>,
-  setCheckCnt: SetterOrUpdater<number>,
-  setChatSavedStatus: SetterOrUpdater<ChatSavedStatus>,
-  setQuestionInput: SetterOrUpdater<string>
-) => {
+export const GetHandleContinueChat = ({
+  loadChatStatus,
+  chatPairs,
+  setLoadChatStatus,
+  setCheckCnt,
+  setChatSavedStatus,
+  setQuestionInput,
+}: {
+  loadChatStatus: any;
+  chatPairs: IChatPair[];
+  setLoadChatStatus: SetterOrUpdater<any>;
+  setCheckCnt: SetterOrUpdater<number>;
+  setChatSavedStatus: SetterOrUpdater<ChatSavedStatus>;
+  setQuestionInput: SetterOrUpdater<string>;
+}) => {
   return () => {
+    console.log("채팅 이어하기 - chatPairs!", chatPairs);
     setLoadChatStatus({
       status: TLoadChatStatus.UPDATING,
       loadedMeta: {

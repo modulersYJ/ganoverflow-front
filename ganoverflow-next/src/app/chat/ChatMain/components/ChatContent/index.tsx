@@ -27,7 +27,7 @@ const ChatContent = ({ scrollRef }: any) => {
     <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
       <div className="chatBox w-full" ref={scrollRef}>
         {chatPairs?.map((chatLine: IChatPair, index: number) => (
-          <ChatPairWrapper key={index} index={index}>
+          <ChatPairWrapper key={`${index}:${chatLine.question}`} index={index}>
             <div className="chatPairBox w-full flex flex-col justify-center self-center">
               {chatLine.question && (
                 <MsgBox isQuestion={true}>{chatLine.question}</MsgBox>
