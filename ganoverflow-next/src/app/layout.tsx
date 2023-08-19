@@ -60,7 +60,7 @@ export default function RootLayout({
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
           <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100 dark:bg-vert-dark-gradient">
+          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100">
             {children}
           </main>
           {/* {!offFooter &&  */}
@@ -143,7 +143,7 @@ const Header = ({
   return (
     <header>
       <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
-        <div className="container mx-auto px-6 py-1 flex justify-between">
+        <div className="mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-span-1">
             <Link href="/" passHref>
               <Image

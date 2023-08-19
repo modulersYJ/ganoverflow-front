@@ -29,12 +29,12 @@ const PromptConsole = ({
   const chatSavedStatus = useRecoilValue(chatSavedStatusState);
   const setChatPairs = useSetRecoilState(chatPairsState);
 
-  const onClickSubmitMsg = GetHandleSubmitMsg(
+  const onClickSubmitMsg = GetHandleSubmitMsg({
     isNowAnswering,
     currStream,
     setIsNowAnswering,
-    setCurrStream
-  );
+    setCurrStream,
+  });
   const onChangeQuestionInput = GetHandleQuestionInput(setQuestionInput);
 
   // UPDATE states, using streaming answer
@@ -56,7 +56,7 @@ const PromptConsole = ({
     <div className="promptConsole h-20 fixed bottom-0 w-full flex items-center justify-center opacity-95 backdrop-blur-sm backdrop-saturate-100 bg-vert-light-gradient dark:bg-transparent dark:bg-vert-dark-gradient">
       <form
         onSubmit={(e) => {
-          onClickSubmitMsg(e, questionInput);
+          onClickSubmitMsg({ e, prompt: questionInput, isContextMode: true });
         }}
         className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
       >
