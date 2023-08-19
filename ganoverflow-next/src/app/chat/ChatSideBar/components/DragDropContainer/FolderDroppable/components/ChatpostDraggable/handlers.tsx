@@ -1,5 +1,9 @@
 import { useDrag } from "react-dnd";
-import { getOneChatPostById, updateChatpostName } from "@/app/chat/api/chat";
+import {
+  deleteChatpost,
+  getOneChatPostById,
+  updateChatpostName,
+} from "@/app/chat/api/chat";
 import { IAuthData } from "@/app/api/jwt";
 import { TLoadChatStatus } from "@/atoms/chat";
 import {
@@ -60,25 +64,25 @@ const getHandleUpdateChatpostName =
   };
 
 const getHandleDeleteChatpost =
-  (
-    curChatpost: IChatPostBasicInfo,
-    folderId: IFolderWithPostsDTO["folderId"],
-    folders: IFolderWithPostsDTO[],
-    setFolders: React.Dispatch<React.SetStateAction<IFolderWithPostsDTO[]>>
-  ) =>
-  () => {
-    setFolders(
-      folders.map((folder) =>
-        folder.folderId === folderId
-          ? {
-              ...folder,
-              chatposts: folder.chatposts.filter(
-                (chatpost) => curChatpost.chatPostId !== chatpost.chatPostId
-              ),
-            }
-          : { ...folder }
-      )
-    );
+  ({
+    authData,
+    curChatpost,
+    setFolders,
+  }: {
+    authData: IAuthData;
+    curChatpost: IChatPostBasicInfo;
+    setFolders: React.Dispatch<React.SetStateAction<IFolderWithPostsDTO[]>>;
+  }) =>
+  async () => {
+    try {
+      const updatedFolders = await deleteChatpost({
+        authData,
+        chatpostId: curChatpost.chatPostId,
+      });
+      setFolders(updatedFolders);
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
 const getHandleLoadThisPost =

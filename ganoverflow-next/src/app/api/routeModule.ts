@@ -1,4 +1,4 @@
-import { AxiosInstance, Method } from "axios";
+import { AxiosInstance } from "axios";
 
 export async function GET(
   endPoint: string,
@@ -71,6 +71,23 @@ export function PATCH({
   return REQUEST({ API, method: "PATCH", endPoint, body, authHeaders, params });
 }
 
+export function DELETE({
+  API,
+  endPoint,
+  authHeaders,
+  body,
+  params,
+}: IUpdateReqProps): Promise<any> {
+  return REQUEST({
+    API,
+    method: "DELETE",
+    endPoint,
+    body,
+    authHeaders,
+    params,
+  });
+}
+
 // POST, PUT, PATCH의 평가부 추상화
 async function REQUEST({
   API,
@@ -81,7 +98,7 @@ async function REQUEST({
   params,
 }: {
   API: AxiosInstance;
-  method: "POST" | "PUT" | "PATCH";
+  method: "POST" | "PUT" | "PATCH" | "DELETE";
   endPoint: string;
   authHeaders?: any;
   body?: any;

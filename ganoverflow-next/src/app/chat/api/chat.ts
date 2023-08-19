@@ -1,4 +1,4 @@
-import { POST, PUT, PATCH } from "@/app/api/routeModule";
+import { POST, PUT, PATCH, DELETE } from "@/app/api/routeModule";
 import { GET } from "@/app/api/routeModule";
 
 import {
@@ -126,6 +126,58 @@ export const putFoldersByUser = async (
       return [];
     }
     throw new Error("Error updating folders - maybe unauthorized sideEffect");
+  }
+};
+
+//
+export const deleteChatpost = async ({
+  authData,
+  chatpostId,
+}: {
+  authData: IAuthData;
+  chatpostId: string;
+}): Promise<any> => {
+  if (authData === undefined) {
+    throw new Error("authData is undefined");
+  }
+
+  try {
+    const updatedFolders = await DELETE({
+      API: chatPostAPI,
+      endPoint: "",
+      params: chatpostId,
+      body: { userId: authData.userId },
+      authHeaders: GenerateAuthHeader(authData),
+    });
+
+    return updatedFolders.data;
+  } catch (error: any) {
+    throw new Error(`Failed to delete chatpost: ${error.message}`);
+  }
+};
+
+export const deleteChatpostsByFolder = async ({
+  authData,
+  folderId,
+}: {
+  authData: IAuthData;
+  folderId: IFolderWithPostsDTO["folderId"];
+}) => {
+  if (authData === undefined) {
+    alert("authData is undefined");
+    return [];
+  }
+
+  try {
+    const updatedFolders = await DELETE({
+      API: chatPostAPI,
+      endPoint: "removeAllByFolderId",
+      body: { folderId, userId: authData.userId },
+      authHeaders: GenerateAuthHeader(authData),
+    });
+    return updatedFolders.data;
+  } catch (error: any) {
+    throw new Error(`Failed to delete chatposts: ${error.message}`);
   }
 };
 
