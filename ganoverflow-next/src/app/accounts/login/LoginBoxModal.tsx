@@ -7,7 +7,7 @@ export const LoginBoxModal = () => {
 
   return (
     <div className="LoginBoxModal z-30 fixed inset-0 flex justify-center items-center">
-      <div className="z-30 relative max-w-lg">
+      <div className="z-30 relative max-w-lg animate-popIn origin-bottom">
         <LoginBox modalType />
       </div>
       <div

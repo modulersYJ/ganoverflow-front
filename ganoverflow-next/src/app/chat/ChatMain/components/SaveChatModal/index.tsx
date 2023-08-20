@@ -53,7 +53,7 @@ const SaveChatModal = ({
   return (
     <div>
       <div className="fixed inset-0 bg-black opacity-40 z-20"></div>
-      <dialog className="fixed bg-gray-100 dark:bg-black top-1/4 flex flex-col w-1/3 justify-between gap-6 px-20 py-10 outline-none text-lg font-semibold rounded-md z-30">
+      <dialog className="fixed animate-popIn origin-bottom bg-gray-100 dark:bg-black top-1/4 flex flex-col w-1/3 justify-between gap-6 px-20 py-10 outline-none text-lg font-semibold rounded-md z-30">
         <h2 className="tw-subtitle">채팅 저장하기</h2>
         <div className="flex flex-col gap-2 mt-5">
           <label className="text-sm text-left">제목</label>

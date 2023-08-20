@@ -13,7 +13,7 @@ export const BtnSubmitSaveChat = ({
     <div>
       {checkCnt > 0 ? (
         <button
-          className="rounded-3xl bg-gray-100 dark:bg-gray-700 h-14 flex flex-col justify-center opacity-85 "
+          className="rounded-3xl animate-popIn origin-bottom bg-gray-100 dark:bg-gray-700 h-14 flex flex-col justify-center opacity-85 "
           onClick={async (e) => {
             onClickHandler(e);
             setCategories(await getAllCategories());

@@ -57,8 +57,8 @@ export const GetHandleSubmitMsg = ({
 
     const cmdTypeCute = "Say cutely";
     const cmdLanguageKorean = "Answer in Korean";
-    const systemCmds = [cmdLanguageKorean]; // system command 적용
-    const prompts = promptsChain.appendSystemCommands(systemCmds).get();
+    const systemCmds = []; // system command 적용
+    const prompts = promptsChain.get(); // .appendSystemCommands(systemCmds).get();
 
     // 사용자 질문만 먼저 업데이트 -> view에 마운트
     setChatPairs((prevChat: any) => [

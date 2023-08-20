@@ -52,13 +52,14 @@ const DragDropContainer = memo(() => {
     <div className="list-container overflow-y-auto h-screen pb-[200px]">
       <DndProvider backend={HTML5Backend}>
         <div className="clear-both flex flex-col">
-          {foldersData?.map((folder: IFolderWithPostsDTO, idx: number) => (
-            <FolderDroppable
-              curFolder={folder}
-              key={folder.folderId}
-              idx={idx}
-            />
-          ))}
+          {Array.isArray(foldersData) &&
+            foldersData.map((folder: IFolderWithPostsDTO, idx: number) => (
+              <FolderDroppable
+                curFolder={folder}
+                key={folder.folderId}
+                idx={idx}
+              />
+            ))}
         </div>
       </DndProvider>
     </div>

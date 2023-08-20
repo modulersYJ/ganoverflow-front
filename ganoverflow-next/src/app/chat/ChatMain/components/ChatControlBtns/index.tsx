@@ -7,7 +7,7 @@ import {
   questionInputState,
 } from "@/atoms/chat";
 import { BtnSubmitSaveChat } from "./BtnSubmitSaveChat";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { GetHandleContinueChat, GetHandleSaveChatpostInit } from "./handlers";
 import { Dispatch, SetStateAction } from "react";
 
@@ -33,21 +33,22 @@ const ChatControlsBtns = ({
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
   const [checkCnt, setCheckCnt] = useRecoilState(checkCntState);
-  const chatPairs = useSetRecoilState(chatPairsState);
+  const chatPairs = useRecoilValue(chatPairsState);
   const setQuestionInput = useSetRecoilState(questionInputState);
 
   const onClickSaveChatpostInit = GetHandleSaveChatpostInit(
     isNowAnswering,
     setChatSavedStatus
   );
-  const onClickContinueChat = GetHandleContinueChat(
+
+  const onClickContinueChat = GetHandleContinueChat({
     loadChatStatus,
     chatPairs,
     setLoadChatStatus,
     setCheckCnt,
     setChatSavedStatus,
-    setQuestionInput
-  );
+    setQuestionInput,
+  });
 
   return (
     <div className="fixed right-36 bottom-24 z-10 hidden lg:block">

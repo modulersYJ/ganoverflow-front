@@ -48,6 +48,15 @@ module.exports = {
         "chat-question": "20px 20px 0px 20px",
         "chat-answer": "20px 20px 20px 0px",
       },
+      keyframes: {
+        popIn: {
+          "0%": { transform: "scale(0)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
+      animation: {
+        popIn: "popIn 0.1s ease-out",
+      },
     },
     plugins: [],
     variants: {
