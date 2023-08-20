@@ -1,6 +1,5 @@
 import { IAuthData } from "@/app/api/jwt";
-import { ChatSavedStatus, IChatPair, TLoadThisChatHandler } from "../chat";
-import { ChatGPTAgent, ChatGPTMessage } from "@/utils/openAI/openAIStream";
+import { ChatGPTMessage } from "@/utils/openAI/chatGPT";
 
 export interface IChatMainProps {
   authData: IAuthData | undefined;
