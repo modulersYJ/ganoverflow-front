@@ -1,21 +1,22 @@
-import { OpenAIStream, OpenAIStreamPayload } from "@/utils/openAIStream";
+import { ChatGPTMessage } from "@/utils/openAI/chatGPT";
+import { OpenAIStream, OpenAIStreamPayload } from "@/utils/openAI/openAIStream";
 
 if (!process.env.OPENAI_API_KEY) {
   throw new Error("Missing env var from OpenAI");
 }
 
 export async function POST(req: Request): Promise<Response> {
-  const { prompt } = (await req.json()) as {
-    prompt?: string;
+  const { prompts } = (await req.json()) as {
+    prompts?: ChatGPTMessage[];
   };
 
-  if (!prompt) {
-    return new Response("No prompt in the request", { status: 400 });
+  if (!prompts) {
+    return new Response("No prompts in the request", { status: 400 });
   }
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: prompt }],
+    messages: prompts,
     temperature: 0.7,
     top_p: 1,
     frequency_penalty: 0,

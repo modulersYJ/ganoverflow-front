@@ -17,6 +17,14 @@ import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { foldersWithChatpostsState } from "@/atoms/folder";
+import {
+  TLoadChatStatus,
+  chatPairsState,
+  chatSavedStatusState,
+  checkCntState,
+  loadChatStatusState,
+  questionInputState,
+} from "@/atoms/chat";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -52,7 +60,7 @@ export default function RootLayout({
       <RecoilRoot>
         <body className="flex min-h-full flex-col">
           <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100 dark:bg-vert-dark-gradient">
+          <main className="grow pt-[44px] md:pt-[68px] bg-light dark:bg-[#202024] dark:text-slate-100">
             {children}
           </main>
           {/* {!offFooter &&  */}
@@ -135,7 +143,7 @@ const Header = ({
   return (
     <header>
       <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
-        <div className="container mx-auto px-6 py-1 flex justify-between">
+        <div className="mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-span-1">
             <Link href="/" passHref>
               <Image
@@ -220,8 +228,14 @@ const UserDropdownButton = ({
   userData: { id: string; nickname: string };
   onClickSetLogout: () => void;
 }) => {
-  // const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
+  const setChatPairs = useSetRecoilState(chatPairsState);
+  const setCheckCnt = useSetRecoilState(checkCntState);
+  const setChatSavedStatus = useSetRecoilState(chatSavedStatusState);
+  const setQuestionInput = useSetRecoilState(questionInputState);
+  const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
   const setAccessState = useSetRecoilState(accessTokenState);
+  const setLoadChatStatus = useSetRecoilState(loadChatStatusState);
+
   const router = useRouter();
 
   const onClickLogOut = async () => {
@@ -230,9 +244,13 @@ const UserDropdownButton = ({
 
     onClickSetLogout();
     setAccessState(null);
-    // setFoldersData([]);
+    setFoldersData([]);
+    setChatPairs([]);
+    setCheckCnt(0);
+    setChatSavedStatus("F");
+    setQuestionInput("");
+    setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
 
-    router.push("/");
     return response;
   };
 
