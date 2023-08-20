@@ -17,6 +17,14 @@ import { userState } from "@/atoms/user";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { foldersWithChatpostsState } from "@/atoms/folder";
+import {
+  TLoadChatStatus,
+  chatPairsState,
+  chatSavedStatusState,
+  checkCntState,
+  loadChatStatusState,
+  questionInputState,
+} from "@/atoms/chat";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -220,8 +228,14 @@ const UserDropdownButton = ({
   userData: { id: string; nickname: string };
   onClickSetLogout: () => void;
 }) => {
-  // const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
+  const setChatPairs = useSetRecoilState(chatPairsState);
+  const setCheckCnt = useSetRecoilState(checkCntState);
+  const setChatSavedStatus = useSetRecoilState(chatSavedStatusState);
+  const setQuestionInput = useSetRecoilState(questionInputState);
+  const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
   const setAccessState = useSetRecoilState(accessTokenState);
+  const setLoadChatStatus = useSetRecoilState(loadChatStatusState);
+
   const router = useRouter();
 
   const onClickLogOut = async () => {
@@ -230,9 +244,13 @@ const UserDropdownButton = ({
 
     onClickSetLogout();
     setAccessState(null);
-    // setFoldersData([]);
+    setFoldersData([]);
+    setChatPairs([]);
+    setCheckCnt(0);
+    setChatSavedStatus("F");
+    setQuestionInput("");
+    setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
 
-    router.push("/");
     return response;
   };
 

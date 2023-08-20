@@ -1,16 +1,19 @@
-import { isSignedState } from "@/atoms/sign";
-import LoginBox from "./LoginComp";
-import { useRecoilState } from "recoil";
+import { TIsSigned, isSignedState } from "@/atoms/sign";
+import LoginBox from "./LoginBox";
+import { useSetRecoilState } from "recoil";
 
 export const LoginBoxModal = () => {
-  const [isSigned, setIsSigned] = useRecoilState(isSignedState);
+  const setIsSigned = useSetRecoilState(isSignedState);
 
   return (
-    <div className="LoginBoxModal z-30 fixed w-full">
-      <div className="z-30 relative w-full">
-        <LoginBox />
+    <div className="LoginBoxModal z-30 fixed inset-0 flex justify-center items-center">
+      <div className="z-30 relative max-w-lg">
+        <LoginBox modalType />
       </div>
-      <div className="z-20 fixed inset-0 bg-black opacity-40" />
+      <div
+        className="z-20 fixed inset-0 bg-black opacity-40"
+        onClick={() => setIsSigned(TIsSigned.unknown)}
+      />
     </div>
   );
 };

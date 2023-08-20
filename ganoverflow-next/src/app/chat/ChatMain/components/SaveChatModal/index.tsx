@@ -1,34 +1,54 @@
-import { loadChatStatusState } from "@/atoms/chat";
-import { ISaveChatModalProps } from "@/interfaces/IProps/chat";
+import {
+  chatPairsState,
+  chatSavedStatusState,
+  loadChatStatusState,
+} from "@/atoms/chat";
+import {
+  ISaveChatModalProps,
+  ITitleAndCategory,
+} from "@/interfaces/IProps/chat";
 
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  GetHandleChangeTitleAndCategory,
+  GetHandleSaveChatpostExec,
+  GetHandleSaveWithValidation,
+} from "./handlers";
 
-export const SaveChatModal = ({
-  onChangeTitleAndCategory,
+const SaveChatModal = ({
+  authData,
   categories,
   setIsModalOpen,
-  onClickSaveChatpostExec,
 }: ISaveChatModalProps) => {
+  const [validationMessage, setValidationMessage] = useState<string>("");
+  const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
+    chatpostName: "",
+    category: "",
+  });
+
   const [loadChatStatus, setLoadChatStatus] =
     useRecoilState(loadChatStatusState);
-  const [validationMessage, setValidationMessage] = useState<string>("");
+  const chatPairs = useRecoilValue(chatPairsState);
+  const setChatSavedStatus = useSetRecoilState(chatSavedStatusState);
 
-  const handleSaveWithValidation = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const inputTitle = (
-      document.querySelector("[name='chatpostName']") as HTMLInputElement
-    ).value;
+  const onChangeTitleAndCategory = GetHandleChangeTitleAndCategory(
+    titleAndCategory,
+    setTitleAndCategory
+  );
 
-    if (inputTitle.length <= 2) {
-      setValidationMessage("3글자 이상의 제목을 입력해주세요");
-      e.preventDefault();
-      return;
-    }
-
-    setValidationMessage("");
-    onClickSaveChatpostExec(e);
-    setIsModalOpen(false);
-  };
+  const onClickSaveWithValidation = GetHandleSaveWithValidation({
+    onClickSaveChatpostExec: GetHandleSaveChatpostExec(
+      authData,
+      chatPairs,
+      loadChatStatus,
+      titleAndCategory,
+      setLoadChatStatus,
+      setChatSavedStatus
+    ),
+    setIsModalOpen,
+    setValidationMessage,
+  });
 
   return (
     <div>
@@ -52,7 +72,7 @@ export const SaveChatModal = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className=" text-sm text-left font-normal rounded-md">
+          <label className="text-sm text-left font-normal rounded-md">
             카테고리 선택
           </label>
           <select
@@ -77,7 +97,7 @@ export const SaveChatModal = ({
             취소
           </button>
           <button
-            onClick={handleSaveWithValidation}
+            onClick={onClickSaveWithValidation}
             className="px-5 py-2 w-1/3 bg-secondary outline-none rounded-md !text-black "
           >
             저장
@@ -87,3 +107,5 @@ export const SaveChatModal = ({
     </div>
   );
 };
+
+export default SaveChatModal;

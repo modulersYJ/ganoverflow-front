@@ -8,6 +8,8 @@ import {
 } from "@/interfaces/chat";
 import { chatPostAPI, userAPI } from "@/app/api/axiosInstanceManager";
 import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
+import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 export const sendChatPost = async (
   chatPostBody: IChatPostSendDTO,
@@ -71,15 +73,25 @@ export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
   console.log("getFoldersByUser authData:", authData);
 
   if (authData === undefined) {
-    throw new Error("authData is undefined");
+    return { error: "authData is undefined" };
   }
-  const response = await GET("user/folders", {
-    params: userId,
-    headers: GenerateAuthHeader(authData),
-    revalidateTime: NaN,
-  });
 
-  return response;
+  try {
+    const response = await GET("user/folders", {
+      params: userId,
+      headers: GenerateAuthHeader(authData),
+      revalidateTime: NaN,
+    });
+
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      console.log("Error 404: Resource not found");
+      return [];
+    }
+    console.log("Error fetching folders");
+    return [];
+  }
 };
 
 export const getAllCategories = async () => {
@@ -94,24 +106,33 @@ export const putFoldersByUser = async (
   authData: IAuthData
 ): Promise<IFolderWithPostsDTO[]> => {
   if (authData === undefined) {
-    throw new Error("authData is undefined");
+    alert("authData is undefined");
+    return [];
   }
 
-  const updatedFoldersWithPosts = await PUT({
-    API: userAPI,
-    endPoint: "folders",
-    body: newFoldersWithPosts,
-    authHeaders: GenerateAuthHeader(authData),
-    params: userId,
-  });
+  try {
+    const updatedFoldersWithPosts = await PUT({
+      API: userAPI,
+      endPoint: "folders",
+      body: newFoldersWithPosts,
+      authHeaders: GenerateAuthHeader(authData),
+      params: userId,
+    });
 
-  return updatedFoldersWithPosts.data;
+    return updatedFoldersWithPosts.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      console.log("Error 404: Resource not found");
+      return [];
+    }
+    throw new Error("Error updating folders - maybe unauthorized sideEffect");
+  }
 };
 
 export const updateChatpostName = async (
   chatpostId: string,
   chatpostName: string,
-  userId: string,
+  userId: string | null,
   folderId: number,
   authData: IAuthData
 ): Promise<IFolderWithPostsDTO[]> => {
@@ -135,4 +156,61 @@ export const updateChatpostName = async (
     params: chatpostId,
   });
   return updatedFoldersWithPosts.data;
+};
+
+// No need to cache
+export const fetchUpdateStreamAnswer = async ({
+  prompt,
+  currStream,
+  setCurrStream,
+  setIsNowAnswering,
+}: IFetchStreamAnswerProps) => {
+  const response = await fetch("/chat/api", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      prompt,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const data = response.body;
+  if (!data) {
+    return;
+  }
+
+  const reader = data.getReader();
+  const decoder = new TextDecoder();
+  let done = false;
+  while (!done) {
+    const { value, done: doneReading } = await reader.read();
+    done = doneReading;
+    const chunkValue = decoder.decode(value);
+
+    setCurrStream((prev: string) => prev + chunkValue);
+    console.log("currStream 1: ", currStream);
+  }
+  setIsNowAnswering(false);
+};
+
+export const fetchFolderData = async (
+  accessToken: string,
+  setFoldersData: any,
+  setAuthData: any
+) => {
+  const user = await getSessionStorageItem("userData");
+
+  const authData: IAuthData = {
+    accessToken: accessToken,
+    userId: user.id,
+  };
+  setAuthData(authData);
+  const chatFoldersByUser = await getFoldersByUser(user.id, authData);
+  console.log("fetched FolderData! - 요청 후 정합성", chatFoldersByUser);
+  setFoldersData(chatFoldersByUser);
 };

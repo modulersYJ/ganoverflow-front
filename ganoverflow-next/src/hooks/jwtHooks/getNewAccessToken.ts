@@ -7,7 +7,7 @@ import { IAuthData, fetchAccessToken } from "@/app/api/jwt";
 import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "../../utils/common/sessionStorage";
 
-export const getNewAccessTokenHook = async () => {
+export const GetNewAccessTokenHook = async () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export const getNewAccessTokenHook = async () => {
       const newAT = await fetchAccessToken(userId);
       setAccessToken(newAT);
     };
-
+    console.log("refreshed accessToken!");
     callFetchAccessToken();
   }, []);
 
@@ -32,7 +32,7 @@ export const getNewAccessTokenHook = async () => {
 };
 
 export const useAuthDataHook = async (): Promise<IAuthData> => {
-  const accessToken = await getNewAccessTokenHook();
+  const accessToken = await GetNewAccessTokenHook();
   const user = await getSessionStorageItem("userData");
 
   if (user === null || user === undefined) {
