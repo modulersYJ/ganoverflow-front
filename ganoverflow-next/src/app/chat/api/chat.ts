@@ -160,7 +160,7 @@ export const updateChatpostName = async (
 
 // No need to cache
 export const fetchUpdateStreamAnswer = async ({
-  prompt,
+  prompts,
   currStream,
   setCurrStream,
   setIsNowAnswering,
@@ -171,7 +171,7 @@ export const fetchUpdateStreamAnswer = async ({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      prompt,
+      prompts,
     }),
   });
 

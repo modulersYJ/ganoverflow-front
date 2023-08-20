@@ -8,7 +8,7 @@ const ChatPairWrapper = ({
   return (
     <div
       key={index}
-      className={`w-full py-5 ${
+      className={`w-full py-5 dark:border-b-2 border-b-[#2c2c33] ${
         index % 2 === 0
           ? "bg-gray-300 dark:bg-[#2c2c33]"
           : "bg-gray-200 dark:bg-[#202024]" // 홀짝 배경색 변경

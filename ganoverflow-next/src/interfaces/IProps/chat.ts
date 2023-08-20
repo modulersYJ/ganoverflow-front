@@ -1,5 +1,5 @@
 import { IAuthData } from "@/app/api/jwt";
-import { ChatSavedStatus, IChatPair, TLoadThisChatHandler } from "../chat";
+import { ChatGPTMessage } from "@/utils/openAI/chatGPT";
 
 export interface IChatMainProps {
   authData: IAuthData | undefined;
@@ -11,8 +11,14 @@ export interface IChatSideBarProps {
   onClickNewChatBtn: (e: React.MouseEvent) => void;
 }
 
+export enum TPromptRole {
+  user = "user",
+  assistant = "assistant",
+  system = "system",
+}
+
 export interface IFetchStreamAnswerProps {
-  prompt: string;
+  prompts: ChatGPTMessage[];
   currStream: string;
   setCurrStream: any;
   setIsNowAnswering: any;
