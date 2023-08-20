@@ -72,12 +72,11 @@ const ChatpostDraggable: React.FC<IChatpostDraggableProps> = ({
     setChatpostName,
     setFoldersWithPosts
   );
-  const onClickDeleteChatpostBtn = getHandleDeleteChatpost(
+  const onClickDeleteChatpostBtn = getHandleDeleteChatpost({
+    authData,
     curChatpost,
-    curFolderId,
-    foldersWithPosts,
-    setFoldersWithPosts
-  );
+    setFolders: setFoldersWithPosts,
+  });
   const onClickLoadThisPost = getHandleLoadThisPost(
     curChatpost,
     authData,

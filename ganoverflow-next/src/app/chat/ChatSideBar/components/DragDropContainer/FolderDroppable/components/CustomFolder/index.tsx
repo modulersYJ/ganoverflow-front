@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { IFolderWithPostsDTO } from "@/interfaces/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 import TitleEdit from "@/components/ui/Chat/TitleEdit";
@@ -15,12 +15,21 @@ import {
   FolderUtilityButtons,
   TFolderBtnProps,
 } from "./components";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import { accessTokenState } from "@/atoms/jwt";
 
 const CustomFolder: React.FC<{
   curFolder: IFolderWithPostsDTO;
   isFolderSpread: boolean;
   onClickToggleFolderSpread: any;
 }> = ({ curFolder, isFolderSpread, onClickToggleFolderSpread }) => {
+  const userData = getSessionStorageItem("userData");
+  const accessToken = useRecoilValue(accessTokenState);
+  const authData = {
+    accessToken,
+    userId: userData?.id,
+  };
+
   const [isDeleteFolderClicked, setIsDeleteFolderClicked] =
     useState<boolean>(false);
   const [folderName, setFolderName] = useState<string>(curFolder.folderName);
@@ -45,7 +54,11 @@ const CustomFolder: React.FC<{
     isDeleteFolderClicked,
     setFoldersWithPosts,
     foldersWithPosts,
-    onClickDeleteFolder: getDeleteFolderHandler(setFoldersWithPosts, curFolder),
+    onClickDeleteFolder: getDeleteFolderHandler({
+      authData,
+      curFolderId: curFolder.folderId,
+      setFoldersWithPosts,
+    }),
     curFolder,
     SxConfirmIcons: SxIcon,
     onClickToggleFolderSpread: onClickToggleFolderSpread,
