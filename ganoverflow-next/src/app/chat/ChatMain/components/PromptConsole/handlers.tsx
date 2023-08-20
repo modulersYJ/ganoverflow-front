@@ -3,7 +3,6 @@ import { chatPairsState, questionInputState } from "@/atoms/chat";
 import { IChatPair } from "@/interfaces/chat";
 import {
   ChatGPTAgent,
-  ChatGPTMessage,
   ChatGPTMessageChain,
 } from "@/utils/openAI/chatGPT";
 import { Dispatch, FormEvent, SetStateAction } from "react";
