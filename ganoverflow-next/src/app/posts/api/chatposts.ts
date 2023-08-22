@@ -1,5 +1,4 @@
 import { commentAPI, starAPI } from "@/app/api/axiosInstanceManager";
-import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 import { GET, POST } from "@/app/api/routeModule";
 
 export const getAllChatPost = async ({ page }: { page: number }) => {
@@ -16,14 +15,13 @@ export const getOneChatPost = async (chatPostId: string) => {
 
 export const postComment = async (
   commentData: { content: string },
-  authData: IAuthData,
   chatPostId: string
 ) => {
   const res = await POST({
     API: commentAPI,
     endPoint: `${chatPostId}`,
     body: commentData,
-    authHeaders: GenerateAuthHeader(authData),
+    isAuth: true,
   });
   return res;
 };
@@ -41,21 +39,18 @@ export const getStars = async (chatPostId: string) => {
 export const postStar = async ({
   chatPostId,
   value,
-  authData,
 }: {
   chatPostId: string;
   value: number;
-  authData: IAuthData;
 }) => {
   const body = {
     chatPostId: chatPostId,
     like: value,
   };
-  const authHeaders = GenerateAuthHeader(authData);
   const res = await POST({
     API: starAPI,
     endPoint: "",
-    authHeaders: authHeaders,
+    isAuth: true,
     body,
   });
   return res;

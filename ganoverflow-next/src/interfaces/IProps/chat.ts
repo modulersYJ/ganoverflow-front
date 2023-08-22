@@ -1,8 +1,6 @@
-import { IAuthData } from "@/app/api/jwt";
 import { ChatGPTMessage } from "@/utils/openAI/chatGPT";
 
 export interface IChatMainProps {
-  authData: IAuthData | undefined;
   onClickNewChatBtn: (e: React.MouseEvent) => void;
   scrollRef: React.RefObject<HTMLDivElement>;
 }
@@ -25,7 +23,6 @@ export interface IFetchStreamAnswerProps {
 }
 
 export interface ISaveChatModalProps {
-  authData: IAuthData | undefined;
   categories: { categoryName: string }[];
   setIsModalOpen: (value: boolean) => void;
 }

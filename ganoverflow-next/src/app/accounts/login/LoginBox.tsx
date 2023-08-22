@@ -1,21 +1,18 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "./api/login";
 import { ILogIn } from "@/interfaces/accounts";
 import Link from "next/link";
 import SocialLoginButton from "@/components/ui/Accounts/SocialLoginButton";
 
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { accessTokenState } from "@/atoms/jwt";
+import { useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { TIsSigned, isSignedState } from "@/atoms/sign";
 
 const LoginBox = ({ modalType = false }: { modalType?: boolean }) => {
-  const access_token = useRecoilValue(accessTokenState);
-  const setAccessToken = useSetRecoilState(accessTokenState);
   const setUserState = useSetRecoilState(userState);
   const setIsSigned = useSetRecoilState(isSignedState);
 
@@ -24,10 +21,6 @@ const LoginBox = ({ modalType = false }: { modalType?: boolean }) => {
     password: "",
   });
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(access_token);
-  }, [access_token]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +31,6 @@ const LoginBox = ({ modalType = false }: { modalType?: boolean }) => {
     try {
       const response = await login(formData);
       console.log("res login", response);
-      setAccessToken(response.access_token); // Recoil 유저 상태 업데이트
-      console.log("access_token state", access_token);
 
       setUserState(getSessionStorageItem("userData"));
       setIsSigned(TIsSigned.T);

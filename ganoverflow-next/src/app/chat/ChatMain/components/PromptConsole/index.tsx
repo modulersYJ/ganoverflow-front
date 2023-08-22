@@ -78,7 +78,7 @@ const PromptConsole = ({
         <button
           type="submit"
           disabled={chatSavedStatus === "T"}
-          className={`rounded-2xl font-bold text-white py-2.5 px-5 text-xs !min-w-[60px]
+          className={`rounded-2xl font-bold text-white text-xs !min-w-[60px] px-0 py-2.5 md:px-5 
             dark:
             ${questionInput ? "bg-primary" : "bg-gray-500"}`}
         >

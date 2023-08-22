@@ -16,11 +16,7 @@ import {
   GetHandleSaveWithValidation,
 } from "./handlers";
 
-const SaveChatModal = ({
-  authData,
-  categories,
-  setIsModalOpen,
-}: ISaveChatModalProps) => {
+const SaveChatModal = ({ categories, setIsModalOpen }: ISaveChatModalProps) => {
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [titleAndCategory, setTitleAndCategory] = useState<ITitleAndCategory>({
     chatpostName: "",
@@ -39,7 +35,6 @@ const SaveChatModal = ({
 
   const onClickSaveWithValidation = GetHandleSaveWithValidation({
     onClickSaveChatpostExec: GetHandleSaveChatpostExec(
-      authData,
       chatPairs,
       loadChatStatus,
       titleAndCategory,

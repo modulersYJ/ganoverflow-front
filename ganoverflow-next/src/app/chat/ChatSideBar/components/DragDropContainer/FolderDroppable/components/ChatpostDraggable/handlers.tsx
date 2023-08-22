@@ -4,7 +4,6 @@ import {
   getOneChatPostById,
   updateChatpostName,
 } from "@/app/chat/api/chat";
-import { IAuthData } from "@/app/api/jwt";
 import { TLoadChatStatus } from "@/atoms/chat";
 import {
   IChatPair,
@@ -12,6 +11,10 @@ import {
   IFolderWithPostsDTO,
 } from "@/interfaces/chat";
 import { SetterOrUpdater } from "recoil";
+import {
+  TUserData,
+  getSessionStorageItem,
+} from "@/utils/common/sessionStorage";
 
 /* 참조투명한 함수형 컴포넌트 구성요소로 분해/결합 */
 const useChatpostDrag = (
@@ -43,21 +46,26 @@ const useChatpostDrag = (
 };
 
 const getHandleUpdateChatpostName =
-  (
-    chatpost: IChatPostBasicInfo,
-    folderId: IFolderWithPostsDTO["folderId"],
-    authData: IAuthData,
-    setName: React.Dispatch<React.SetStateAction<string>>,
-    setFolders: React.Dispatch<React.SetStateAction<IFolderWithPostsDTO[]>>
-  ) =>
+  ({
+    chatpost,
+    folderId,
+    userId,
+    setName,
+    setFolders,
+  }: {
+    chatpost: IChatPostBasicInfo;
+    folderId: IFolderWithPostsDTO["folderId"];
+    userId: TUserData["id"];
+    setName: React.Dispatch<React.SetStateAction<string>>;
+    setFolders: React.Dispatch<React.SetStateAction<IFolderWithPostsDTO[]>>;
+  }) =>
   async (newName: string) => {
     setName(newName);
     const newFoldersWithPost = await updateChatpostName(
       chatpost.chatPostId,
       newName,
-      authData.userId,
-      folderId,
-      authData
+      userId,
+      folderId
     );
     setFolders(newFoldersWithPost);
     return newFoldersWithPost;
@@ -65,18 +73,16 @@ const getHandleUpdateChatpostName =
 
 const getHandleDeleteChatpost =
   ({
-    authData,
     curChatpost,
     setFolders,
   }: {
-    authData: IAuthData;
     curChatpost: IChatPostBasicInfo;
     setFolders: React.Dispatch<React.SetStateAction<IFolderWithPostsDTO[]>>;
   }) =>
   async () => {
     try {
       const updatedFolders = await deleteChatpost({
-        authData,
+        userId: getSessionStorageItem("userData").userId,
         chatpostId: curChatpost.chatPostId,
       });
       setFolders(updatedFolders);
@@ -88,12 +94,12 @@ const getHandleDeleteChatpost =
 const getHandleLoadThisPost =
   (
     chatpost: IChatPostBasicInfo,
-    authData: IAuthData,
+
     setStatus: any,
     setPairs: React.Dispatch<React.SetStateAction<IChatPair[]>>
   ) =>
   async () => {
-    const LoadedPost = await getOneChatPostById(chatpost.chatPostId, authData);
+    const LoadedPost = await getOneChatPostById(chatpost.chatPostId);
     setStatus({
       status: TLoadChatStatus.SHOWING,
       loadedMeta: {
