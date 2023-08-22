@@ -1,15 +1,12 @@
 import { fetchUpdateStreamAnswer } from "@/app/chat/api/chat";
 import { chatPairsState, questionInputState } from "@/atoms/chat";
 import { IChatPair } from "@/interfaces/chat";
-import {
-  ChatGPTAgent,
-  ChatGPTMessageChain,
-} from "@/utils/openAI/chatGPT";
+import { ChatGPTAgent, ChatGPTMessageChain } from "@/utils/openAI/chatGPT";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { useRecoilState } from "recoil";
 
 export const GetHandleQuestionInput = (setQuestionInput: any) => {
-  return (e: React.ChangeEvent<HTMLInputElement>) => {
+  return (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setQuestionInput(e.target.value);
   };
 };

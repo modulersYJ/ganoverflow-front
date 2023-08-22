@@ -35,7 +35,27 @@ const PromptConsole = ({
     setIsNowAnswering,
     setCurrStream,
   });
+
   const onChangeQuestionInput = GetHandleQuestionInput(setQuestionInput);
+
+  const adjustTextareaHeight = (target: HTMLTextAreaElement) => {
+    target.style.height = "32px";
+    const maxHeight = 64;
+    const minHeight = 32;
+    const scrollHeight = target.scrollHeight;
+
+    if (scrollHeight > minHeight) {
+      target.style.height = Math.min(scrollHeight, maxHeight) + "px";
+    } else {
+      target.style.height = minHeight + "px";
+    }
+  };
+  const onChangeQuestionInputWithTextareaSize = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    adjustTextareaHeight(event.target);
+    onChangeQuestionInput(event);
+  };
 
   // UPDATE states, using streaming answer
   useEffect(() => {
@@ -62,16 +82,15 @@ const PromptConsole = ({
       >
         {chatSavedStatus === "T" ? (
           <input
-            onChange={onChangeQuestionInput}
             className="rounded-full bg-white dark:bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-500 dark:text-gray-300"
             value={"새 채팅을 시작하세요"}
             disabled
           />
         ) : (
-          <input
+          <textarea
             value={questionInput}
-            onChange={onChangeQuestionInput}
-            className="rounded-full bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs"
+            onChange={onChangeQuestionInputWithTextareaSize}
+            className="rounded-full bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs h-[32px] overflow-hidden outline-secondary"
             placeholder={"메시지를 입력하새우"}
           />
         )}
