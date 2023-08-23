@@ -13,8 +13,8 @@ const SocialLoginButton: React.FC<Props> = ({ provider }) => {
   };
 
   const labels = {
-    kakao: "카카오로 로그인",
-    naver: "네이버로 로그인",
+    kakao: "카카오 로그인",
+    naver: "네이버 로그인",
     google: "구글로 로그인",
   };
 
