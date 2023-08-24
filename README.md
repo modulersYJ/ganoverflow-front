@@ -1,6 +1,7 @@
 # GAN-OVERFLOW
 
-![gof-thumbnail](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/edf725b8-089e-4591-9c1f-e083e092afb1)
+[![gof-thumbnail](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/edf725b8-089e-4591-9c1f-e083e092afb1)]([https:lynmp.com](https://www.ganoverflow.com/))
+*클릭하여 GANoverflow를 시작하세요!*
 
 <br><br>
 
