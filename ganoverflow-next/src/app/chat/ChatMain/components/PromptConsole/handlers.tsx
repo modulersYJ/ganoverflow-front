@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import _ from "lodash";
 
 export const GetHandleQuestionInput = (setQuestionInput: any) => {
-  return (e: React.ChangeEvent<HTMLInputElement>) => {
+  return (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setQuestionInput(e.target.value);
   };
 };

@@ -42,23 +42,39 @@ const MarkdownWrapper = ({ children }: any) => {
       <ReactMarkdown
         components={{
           p({ node, children }: { children: React.ReactNode; node: any }) {
-            return <p className="answer-p !text-left ml-1">{children}</p>;
+            return (
+              <p className="answer-p !text-left ml-1 font-light">{children}</p>
+            );
           },
           ol({ node, children }: { children: React.ReactNode; node: any }) {
             return (
-              <ol className="answer-ol font-bold mb-2 ml-1">{children}</ol>
+              <ol className="answer-ol mb-2 gap-4 flex flex-col">{children}</ol>
             );
           },
           li({ node, children }: { children: React.ReactNode; node: any }) {
             return <li className="answer-li text-left">{children}</li>;
           },
+          strong({ node, children }: { children: React.ReactNode; node: any }) {
+            return (
+              <strong className="answer-strong text-secondary">
+                {children}
+              </strong>
+            );
+          },
+
           code: codeComponent,
         }}
       >
-        {children}
+        {transformStringToMarkdown(children)}
       </ReactMarkdown>
     </div>
   );
 };
 
 export default MarkdownWrapper;
+
+const transformStringToMarkdown = (text: string) => {
+  // 1. 부제목 식별, strong 변환
+  const transformed = text.replace(/(\d\.) ([^:]+):/g, "$1 **$2**:");
+  return transformed;
+};
