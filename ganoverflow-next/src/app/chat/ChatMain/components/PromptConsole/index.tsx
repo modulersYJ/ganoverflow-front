@@ -78,7 +78,7 @@ const PromptConsole = ({
         onSubmit={(e) => {
           onClickSubmitMsg({ e, prompt: questionInput, isContextMode: false });
         }}
-        className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
+        className="w-full max-w-[90%] sm:max-w-[70%] md:max-w-[40%] flex items-center "
       >
         {chatSavedStatus === "T" ? (
           <input
@@ -90,7 +90,7 @@ const PromptConsole = ({
           <textarea
             value={questionInput}
             onChange={onChangeQuestionInputWithTextareaSize}
-            className="rounded-full bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs h-[32px] overflow-hidden outline-secondary"
+            className="rounded-full resize-none bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs h-[32px] overflow-hidden outline-secondary"
             placeholder={"메시지를 입력하새우"}
           />
         )}
