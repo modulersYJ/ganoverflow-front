@@ -1,6 +1,6 @@
-import { IAuthData } from "@/app/api/jwt";
 import { deleteChatpostsByFolder } from "@/app/chat/api/chat";
 import { IFolderWithPostsDTO } from "@/interfaces/chat";
+import { TUserData } from "@/utils/common/sessionStorage";
 import { Dispatch, SetStateAction } from "react";
 import { SetterOrUpdater } from "recoil";
 
@@ -29,17 +29,17 @@ export const getToggleDeleteBtnShowHandler =
 
 export const getDeleteFolderHandler =
   ({
-    authData,
+    userId,
     curFolderId,
     setFoldersWithPosts,
   }: {
-    authData: IAuthData;
+    userId: TUserData["id"];
     curFolderId: IFolderWithPostsDTO["folderId"];
     setFoldersWithPosts: SetterOrUpdater<IFolderWithPostsDTO[]>;
   }) =>
   async () => {
     const updatedFolder = await deleteChatpostsByFolder({
-      authData,
+      userId,
       folderId: curFolderId,
     });
     setFoldersWithPosts(updatedFolder);

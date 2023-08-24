@@ -7,22 +7,18 @@ import {
   IFolderWithPostsDTO,
 } from "@/interfaces/chat";
 import { chatPostAPI, userAPI } from "@/app/api/axiosInstanceManager";
-import { GenerateAuthHeader, IAuthData } from "@/app/api/jwt";
 import { IFetchStreamAnswerProps } from "@/interfaces/IProps/chat";
-import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import {
+  TUserData,
+  getSessionStorageItem,
+} from "@/utils/common/sessionStorage";
 
-export const sendChatPost = async (
-  chatPostBody: IChatPostSendDTO,
-  authData: IAuthData | undefined
-) => {
-  if (authData === undefined) {
-    throw new Error("authData is undefined");
-  }
+export const sendChatPost = async (chatPostBody: IChatPostSendDTO) => {
   const response = await POST({
     API: chatPostAPI,
     endPoint: "/",
     body: chatPostBody,
-    authHeaders: GenerateAuthHeader(authData),
+    isAuth: true,
   });
 
   return response.data;
@@ -30,56 +26,43 @@ export const sendChatPost = async (
 
 export const putChatPost = async (
   chatPostId: string | undefined,
-  chatPostBody: IChatPostPutDTO,
-  authData: IAuthData | undefined
+  chatPostBody: IChatPostPutDTO
 ) => {
-  if (authData === undefined) {
-    throw new Error("authData is undefined");
-  }
   const response = await PUT({
     API: chatPostAPI,
     endPoint: "/",
     params: chatPostId,
     body: chatPostBody,
-    authHeaders: GenerateAuthHeader(authData),
+    isAuth: true,
   });
 
   return response.data;
 };
 
 export const getAllChatPostsByUserId = async (
-  userId: string,
-  authData: IAuthData
+  userId: TUserData["id"] | null
 ) => {
   const response = await GET("chatposts/my-chats", {
     params: userId,
-    headers: GenerateAuthHeader(authData),
+    isAuth: true,
   });
   return response;
 };
 
-export const getOneChatPostById = async (
-  chatpostId: string,
-  authData: IAuthData
-) => {
+export const getOneChatPostById = async (chatpostId: string) => {
   const response = await GET("chatposts", {
     params: chatpostId,
-    headers: GenerateAuthHeader(authData),
+    isAuth: true,
   });
   return response;
 };
 
-export const getFoldersByUser = async (userId: string, authData: IAuthData) => {
-  console.log("getFoldersByUser authData:", authData);
-
-  if (authData === undefined) {
-    return { error: "authData is undefined" };
-  }
-
+export const getFoldersByUser = async (userId: TUserData["id"] | null) => {
   try {
     const response = await GET("user/folders", {
       params: userId,
-      headers: GenerateAuthHeader(authData),
+      isAuth: true,
+
       revalidateTime: NaN,
     });
 
@@ -101,21 +84,15 @@ export const getAllCategories = async () => {
 
 // 포스트 소속 변경 or 폴더 추가/제거 시
 export const putFoldersByUser = async (
-  userId: string,
-  newFoldersWithPosts: IFolderWithPostsDTO[],
-  authData: IAuthData
+  userId: TUserData["id"] | null | undefined,
+  newFoldersWithPosts: IFolderWithPostsDTO[]
 ): Promise<IFolderWithPostsDTO[]> => {
-  if (authData === undefined) {
-    alert("authData is undefined");
-    return [];
-  }
-
   try {
     const updatedFoldersWithPosts = await PUT({
       API: userAPI,
       endPoint: "folders",
       body: newFoldersWithPosts,
-      authHeaders: GenerateAuthHeader(authData),
+      isAuth: true,
       params: userId,
     });
 
@@ -131,23 +108,19 @@ export const putFoldersByUser = async (
 
 //
 export const deleteChatpost = async ({
-  authData,
+  userId,
   chatpostId,
 }: {
-  authData: IAuthData;
+  userId: TUserData["id"] | null;
   chatpostId: string;
 }): Promise<any> => {
-  if (authData === undefined) {
-    throw new Error("authData is undefined");
-  }
-
   try {
     const updatedFolders = await DELETE({
       API: chatPostAPI,
       endPoint: "",
       params: chatpostId,
-      body: { userId: authData.userId },
-      authHeaders: GenerateAuthHeader(authData),
+      body: { userId: userId },
+      isAuth: true,
     });
 
     return updatedFolders.data;
@@ -157,23 +130,18 @@ export const deleteChatpost = async ({
 };
 
 export const deleteChatpostsByFolder = async ({
-  authData,
   folderId,
+  userId,
 }: {
-  authData: IAuthData;
   folderId: IFolderWithPostsDTO["folderId"];
+  userId: TUserData["id"];
 }) => {
-  if (authData === undefined) {
-    alert("authData is undefined");
-    return [];
-  }
-
   try {
     const updatedFolders = await DELETE({
       API: chatPostAPI,
       endPoint: "removeAllByFolderId",
-      body: { folderId, userId: authData.userId },
-      authHeaders: GenerateAuthHeader(authData),
+      body: { folderId, userId: userId },
+      isAuth: true,
     });
     return updatedFolders.data;
   } catch (error: any) {
@@ -184,14 +152,9 @@ export const deleteChatpostsByFolder = async ({
 export const updateChatpostName = async (
   chatpostId: string,
   chatpostName: string,
-  userId: string | null,
-  folderId: number,
-  authData: IAuthData
+  userId: TUserData["id"] | null,
+  folderId: number
 ): Promise<IFolderWithPostsDTO[]> => {
-  if (authData === undefined) {
-    throw new Error("authData is undefined");
-  }
-
   const body = {
     chatpostName,
     userId,
@@ -204,7 +167,7 @@ export const updateChatpostName = async (
     API: chatPostAPI,
     endPoint: "",
     body,
-    authHeaders: GenerateAuthHeader(authData),
+    isAuth: true,
     params: chatpostId,
   });
   return updatedFoldersWithPosts.data;
@@ -250,19 +213,10 @@ export const fetchUpdateStreamAnswer = async ({
   setIsNowAnswering(false);
 };
 
-export const fetchFolderData = async (
-  accessToken: string,
-  setFoldersData: any,
-  setAuthData: any
-) => {
+export const fetchFolderData = async (setFoldersData: any) => {
   const user = await getSessionStorageItem("userData");
 
-  const authData: IAuthData = {
-    accessToken: accessToken,
-    userId: user.id,
-  };
-  setAuthData(authData);
-  const chatFoldersByUser = await getFoldersByUser(user.id, authData);
+  const chatFoldersByUser = await getFoldersByUser(user?.id);
   console.log("fetched FolderData! - 요청 후 정합성", chatFoldersByUser);
   setFoldersData(chatFoldersByUser);
 };

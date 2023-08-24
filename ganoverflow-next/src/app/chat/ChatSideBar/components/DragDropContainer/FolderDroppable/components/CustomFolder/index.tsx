@@ -16,20 +16,12 @@ import {
   TFolderBtnProps,
 } from "./components";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
-import { accessTokenState } from "@/atoms/jwt";
 
 const CustomFolder: React.FC<{
   curFolder: IFolderWithPostsDTO;
   isFolderSpread: boolean;
   onClickToggleFolderSpread: any;
 }> = ({ curFolder, isFolderSpread, onClickToggleFolderSpread }) => {
-  const userData = getSessionStorageItem("userData");
-  const accessToken = useRecoilValue(accessTokenState);
-  const authData = {
-    accessToken,
-    userId: userData?.id,
-  };
-
   const [isDeleteFolderClicked, setIsDeleteFolderClicked] =
     useState<boolean>(false);
   const [folderName, setFolderName] = useState<string>(curFolder.folderName);
@@ -55,7 +47,7 @@ const CustomFolder: React.FC<{
     setFoldersWithPosts,
     foldersWithPosts,
     onClickDeleteFolder: getDeleteFolderHandler({
-      authData,
+      userId: getSessionStorageItem("userData").id,
       curFolderId: curFolder.folderId,
       setFoldersWithPosts,
     }),

@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { IFolderWithPostsDTO } from "@/interfaces/chat";
 import { foldersWithChatpostsState } from "@/atoms/folder";
-import { useSignedCheck } from "@/hooks/jwtHooks/useSignedCheck";
+import { useSignedCheck } from "@/hooks/useSignedCheck";
 
 export const GetHandleNewFolderBtn = () => {
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
