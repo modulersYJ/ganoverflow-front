@@ -1,7 +1,7 @@
-# GAN-OVERFLOW
+# GAN overflow
 
-[![gof-thumbnail](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/edf725b8-089e-4591-9c1f-e083e092afb1)]([https:lynmp.com](https://www.ganoverflow.com/))
-*클릭하여 GANoverflow를 시작하세요!*
+[![gof-thumbnail](https://github-production-user-asset-6210df.s3.amazonaws.com/65459616/262915829-edf725b8-089e-4591-9c1f-e083e092afb1.gif)](https://www.ganoverflow.com/)
+*클릭하여 GAN overflow를 시작하세요!*
 
 <br><br>
 
