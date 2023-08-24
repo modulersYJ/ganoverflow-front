@@ -1,15 +1,13 @@
 import { fetchUpdateStreamAnswer } from "@/app/chat/api/chat";
 import { chatPairsState, questionInputState } from "@/atoms/chat";
 import { IChatPair } from "@/interfaces/chat";
-import {
-  ChatGPTAgent,
-  ChatGPTMessageChain,
-} from "@/utils/openAI/chatGPT";
+import { ChatGPTAgent, ChatGPTMessageChain } from "@/utils/openAI/chatGPT";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { useRecoilState } from "recoil";
+import _ from "lodash";
 
 export const GetHandleQuestionInput = (setQuestionInput: any) => {
-  return (e: React.ChangeEvent<HTMLInputElement>) => {
+  return (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setQuestionInput(e.target.value);
   };
 };
@@ -48,19 +46,17 @@ export const GetHandleSubmitMsg = ({
     }
     setIsNowAnswering(true);
     setQuestionInput("");
-    setCurrStream(""); // 초기화
+    setCurrStream("");
 
-    // 맥락모드 에 따른 대화 구성 (함수형 프로그래밍 기반 체이닝 방식 구현)
-    const promptsChain = isContextMode
-      ? composePromptsForContext(prompt, chatPairs)
-      : new ChatGPTMessageChain().pushChat(ChatGPTAgent.user, prompt);
+    //
+    const systemCmds: string[] = []; // 배열에 시스템커맨드 넣어주면 자동적용되어요
 
-    const cmdTypeCute = "Say cutely";
-    const cmdLanguageKorean = "Answer in Korean";
-    const systemCmds = []; // system command 적용
-    const prompts = promptsChain.get(); // .appendSystemCommands(systemCmds).get();
+    const prompts = _(true) // lodash 체이닝 (true=시작의 의미, 로직영향X)
+      .thru(() => getInitialPromptsChain(isContextMode, prompt, chatPairs))
+      .thru((chain) => applySystemCommandsIfNotEmpty(chain, systemCmds))
+      .value()
+      .get();
 
-    // 사용자 질문만 먼저 업데이트 -> view에 마운트
     setChatPairs((prevChat: any) => [
       ...prevChat,
       {
@@ -79,21 +75,36 @@ export const GetHandleSubmitMsg = ({
   };
 };
 
+
+//
 const composePromptsForContext = (
   prompt: string,
   chatPairs: IChatPair[]
 ): ChatGPTMessageChain => {
-  const promptsChain = new ChatGPTMessageChain();
+  let promptsChain = new ChatGPTMessageChain();
 
-  // 사전 대화들을 맥락에 추가
   chatPairs.forEach((chatPair) => {
-    promptsChain.pushChatPairs(chatPair.question, chatPair.answer);
+    promptsChain = promptsChain.pushChatPairs(
+      chatPair.question,
+      chatPair.answer
+    );
   });
 
-  // 마지막으로 주어진 prompt를 user로 추가
-  promptsChain.pushChat(ChatGPTAgent.user, prompt);
+  promptsChain = promptsChain.pushChat(ChatGPTAgent.user, prompt);
 
-  console.log("chatPairs!!!: ", chatPairs);
-  console.log("prompts!!!: ", ...promptsChain.get());
   return promptsChain;
 };
+
+const getInitialPromptsChain = (
+  isContext: boolean,
+  userPrompt: string,
+  pairs: IChatPair[]
+) =>
+  isContext
+    ? composePromptsForContext(userPrompt, pairs)
+    : new ChatGPTMessageChain().pushChat(ChatGPTAgent.user, userPrompt);
+
+const applySystemCommandsIfNotEmpty = (
+  chain: ChatGPTMessageChain,
+  cmds: string[]
+) => (cmds.length > 0 ? chain.appendSystemCommands(cmds) : chain);

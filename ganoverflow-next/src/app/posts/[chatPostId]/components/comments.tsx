@@ -2,7 +2,6 @@
 
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getComments, postComment } from "../../api/chatposts";
-import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useRouter } from "next/navigation";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 
@@ -20,7 +19,6 @@ export function CommentBox({
   }[];
 }) {
   console.log("🚀 ~ file: comments.tsx:22 ~ comments:", comments);
-  const authData = useAuthDataHook();
   const router = useRouter();
   const commentCount = comments?.length;
   const [commentData, setCommentData] = useState("");
@@ -37,11 +35,7 @@ export function CommentBox({
     }
 
     try {
-      const res = await postComment(
-        { content: commentData },
-        await authData,
-        chatPostId
-      );
+      const res = await postComment({ content: commentData }, chatPostId);
       if (res.status === 201) {
         setCommentData("");
         alert("등록이 완료되었습니다.");

@@ -2,14 +2,12 @@
 
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "@/app/posts/api/chatposts";
-import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useState, useEffect } from "react";
 import Error from "next/error";
 import { usePathname } from "next/navigation";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const userData = getSessionStorageItem("userData");
-  const authData = useAuthDataHook();
 
   const [starCount, setStarCount] = useState(0);
   const [userDidLike, setUserDidLike] = useState<number>(0);
@@ -29,15 +27,6 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   }, []);
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    // TODO 로그인 안돼있으면 에러처리 (alert)
-    if (
-      !(await authData) ||
-      (await authData).accessToken === "토큰 갱신에 실패했습니다."
-    ) {
-      alert("로그인을 해주세요");
-      return;
-    }
-
     let value = 0;
 
     const { name } = e.target as HTMLButtonElement;
@@ -69,7 +58,6 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
     try {
       const res = await postStar({
         chatPostId: chatPostId,
-        authData: await authData,
         value: value,
       });
       if (res.status === 201) {

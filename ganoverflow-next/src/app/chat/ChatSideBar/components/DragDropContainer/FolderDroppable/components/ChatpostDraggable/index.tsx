@@ -13,7 +13,6 @@ import {
 } from "@/interfaces/chat";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
-import { accessTokenState } from "@/atoms/jwt";
 import useDidMountEffect from "@/hooks/useDidMountEffect";
 import { loadChatStatusState } from "@/atoms/chat";
 
@@ -42,7 +41,6 @@ const ChatpostDraggable: React.FC<IChatpostDraggableProps> = ({
   curFolderId,
   loadThisChatHandler,
 }) => {
-  const userData = getSessionStorageItem("userData");
   const [chatpostName, setChatpostName] = useState<string>(
     curChatpost.chatpostName
   );
@@ -54,32 +52,25 @@ const ChatpostDraggable: React.FC<IChatpostDraggableProps> = ({
   const setFoldersWithPostsByDnd = useSetRecoilState(chatpostsWithFolderstate);
   const setLoadChatStatus = useSetRecoilState(loadChatStatusState);
 
-  const accessToken = useRecoilValue(accessTokenState);
-  const authData = {
-    accessToken,
-    userId: userData?.id,
-  };
-
   const { isDragging, drag } = useChatpostDrag(
     setFoldersWithPostsByDnd,
     curChatpost,
     curFolderId
   );
-  const handleUpdatePostName = getHandleUpdateChatpostName(
-    curChatpost,
-    curFolderId,
-    authData,
-    setChatpostName,
-    setFoldersWithPosts
-  );
+
+  const handleUpdatePostName = getHandleUpdateChatpostName({
+    chatpost: curChatpost,
+    folderId: curFolderId,
+    userId: getSessionStorageItem("userData").id,
+    setName: setChatpostName,
+    setFolders: setFoldersWithPosts,
+  });
   const onClickDeleteChatpostBtn = getHandleDeleteChatpost({
-    authData,
     curChatpost,
     setFolders: setFoldersWithPosts,
   });
   const onClickLoadThisPost = getHandleLoadThisPost(
     curChatpost,
-    authData,
     setLoadChatStatus,
     setLoadedChatPairs
   );

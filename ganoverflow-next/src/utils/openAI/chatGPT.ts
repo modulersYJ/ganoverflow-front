@@ -9,41 +9,48 @@ export interface ChatGPTMessage {
   content: string;
 }
 
-// 함수형 기반 구현
 export class ChatGPTMessageChain {
-  constructor(private messages: ChatGPTMessage[] = []) {}
+  private messages: ChatGPTMessage[];
+
+  constructor(messages: ChatGPTMessage[] = []) {
+    // 배열을 직접 복사하여 외부에서의 변경 방지
+    this.messages = [...messages];
+  }
 
   appendSystemCommands(systemCmds: string[]): ChatGPTMessageChain {
-    systemCmds.forEach((cmd) => {
-      this.messages.push({
-        role: ChatGPTAgent.system,
-        content: cmd,
-      });
-    });
-    return this;
+    const newMessages = systemCmds.map((cmd) => ({
+      role: ChatGPTAgent.system,
+      content: cmd,
+    }));
+    return new ChatGPTMessageChain([...this.messages, ...newMessages]);
   }
 
   pushChatPairs(userMsg: string, assistantMsg: string): ChatGPTMessageChain {
-    this.messages.push({
+    const newUserMessage = {
       role: ChatGPTAgent.user,
       content: userMsg,
-    });
-    this.messages.push({
+    };
+    const newAssistantMessage = {
       role: ChatGPTAgent.assistant,
       content: assistantMsg,
-    });
-    return this;
+    };
+    return new ChatGPTMessageChain([
+      ...this.messages,
+      newUserMessage,
+      newAssistantMessage,
+    ]);
   }
 
   pushChat(role: ChatGPTAgent, content: string): ChatGPTMessageChain {
-    this.messages.push({
+    const newMessage = {
       role: role,
       content: content,
-    });
-    return this;
+    };
+    return new ChatGPTMessageChain([...this.messages, newMessage]);
   }
 
   get(): ChatGPTMessage[] {
-    return this.messages;
+    // 배열을 직접 복사하여 외부에서의 변경 방지
+    return [...this.messages];
   }
 }

@@ -6,7 +6,6 @@ import {
   isFolderUpdatedState,
 } from "@/atoms/folder";
 import React from "react";
-import { accessTokenState } from "@/atoms/jwt";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import useDidMountEffect from "@/hooks/useDidMountEffect";
 import { putFoldersByUser } from "@/app/chat/api/chat";
@@ -15,7 +14,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const DragDropContainer = memo(() => {
-  const accessToken = useRecoilValue(accessTokenState);
   const userData = getSessionStorageItem("userData");
 
   const [foldersData, setFoldersData] = useRecoilState<IFolderWithPostsDTO[]>(
@@ -31,10 +29,6 @@ const DragDropContainer = memo(() => {
       const updatedFoldersWithPosts = await putFoldersByUser(
         userData?.id,
         foldersData,
-        {
-          accessToken,
-          userId: userData?.id,
-        }
       );
       console.log(updatedFoldersWithPosts);
       setFoldersData(updatedFoldersWithPosts); // 데이터 정합성을 위한 folder state update

@@ -1,17 +1,9 @@
 "use client";
 import Link from "next/link";
 import { getMypageData } from "./api/mypage";
-import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
 import { useEffect, useState } from "react";
-import { GenerateAuthHeader } from "@/app/api/jwt";
-import { useRecoilValue } from "recoil";
-import { accessTokenState } from "@/atoms/jwt";
-import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 export default function Mypage() {
-  const accessToken = useRecoilValue(accessTokenState);
-  const user = getSessionStorageItem("userData");
-
   const [mypageData, setMyPageData] = useState({
     hi: "dd",
     myPosts: [
@@ -24,12 +16,7 @@ export default function Mypage() {
     ],
   });
   useEffect(() => {
-    getMypageData({
-      authData: {
-        accessToken: accessToken,
-        userId: user?.id,
-      },
-    }).then((data) => setMyPageData(data));
+    getMypageData().then((data) => setMyPageData(data));
   }, []);
 
   return (
@@ -48,8 +35,11 @@ export default function Mypage() {
           <h3 className="p-2 text-xl font-bold">좋아요 한 chat</h3>
           <div>
             <ul>
-              {mypageData?.favoritePosts?.map((post) => (
-                <li className="p-2 w-full border border-slate-100 hover:bg-secondary">
+              {mypageData?.favoritePosts?.map((post, idx: number) => (
+                <li
+                  key={idx}
+                  className="p-2 w-full border border-slate-100 hover:bg-secondary"
+                >
                   <Link href={`/posts/${post?.chatPostId}`}>
                     {post?.chatpostName}
                   </Link>
@@ -65,8 +55,11 @@ export default function Mypage() {
           <h3 className="p-2 text-xl font-bold">내가 작성한 chat</h3>
           <div>
             <ul>
-              {mypageData?.myPosts?.map((post) => (
-                <li className="p-2 w-full border border-slate-100 hover:bg-secondary">
+              {mypageData?.myPosts?.map((post, idx: number) => (
+                <li
+                  key={idx}
+                  className="p-2 w-full border border-slate-100 hover:bg-secondary"
+                >
                   <Link href={`/posts/${post?.chatPostId}`} className="">
                     {post?.chatpostName}
                   </Link>

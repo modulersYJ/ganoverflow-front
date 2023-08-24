@@ -1,13 +1,14 @@
 import { Inter } from "next/font/google";
+import Landing from "./landing";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MainPage() {
   return (
-    <main
-      className={`${inter.className} flex min-h-screen w-full flex-col items-center p-8`}
+    <div
+      className={`${inter.className} flex min-h-screen w-full flex-col items-center p-8 bg-black`}
     >
-      <h1 className="mb-4 text-3xl">main</h1>
-    </main>
+      <Landing />
+    </div>
   );
 }
