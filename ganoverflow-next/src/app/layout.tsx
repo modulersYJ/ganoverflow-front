@@ -12,7 +12,12 @@ import { logout } from "./accounts/login/api/login";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 
-import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
+import {
+  RecoilRoot,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { userState } from "@/atoms/user";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { foldersWithChatpostsState } from "@/atoms/folder";
@@ -25,6 +30,8 @@ import {
   questionInputState,
 } from "@/atoms/chat";
 import { setAccessToken } from "./api/jwt";
+import { LoginBoxModal } from "./accounts/login/LoginBoxModal";
+import { TIsSigned, isSignedState } from "@/atoms/sign";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -100,6 +107,8 @@ const Header = ({
   toggleDarkMode: () => void;
   isDarkMode: boolean;
 }): JSX.Element => {
+  const [isSigned, setIsSigned] = useRecoilState(isSignedState);
+
   const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
   const [user, setUser] = useRecoilState(userState);
 
@@ -112,6 +121,7 @@ const Header = ({
 
   const onClickSetLogout = async () => {
     setUser(null);
+    setIsSigned(TIsSigned.unknown);
   };
   console.log("userData: ", user);
 
@@ -142,6 +152,7 @@ const Header = ({
 
   return (
     <header>
+      {isSigned === TIsSigned.F && <LoginBoxModal />}
       <nav className="header-nav shadow-headerBox fixed w-full top-0 z-50">
         <div className="mx-auto px-6 py-1 flex justify-between">
           <div className="flex items-center col-span-1">

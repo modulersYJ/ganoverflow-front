@@ -2,8 +2,20 @@
 import Link from "next/link";
 import { getMypageData } from "./api/mypage";
 import { useEffect, useState } from "react";
+import { useSignedCheck } from "@/hooks/useSignedCheck";
+import { TIsSigned, isSignedState } from "@/atoms/sign";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useRouter } from "next/navigation";
 
 export default function Mypage() {
+  const isSigned = useRecoilValue(isSignedState);
+  const router = useRouter();
+  useEffect(() => {
+    if (isSigned !== TIsSigned.T) {
+      router.push("/accounts/login");
+    }
+  }, [isSigned]);
+
   const [mypageData, setMyPageData] = useState({
     hi: "dd",
     myPosts: [

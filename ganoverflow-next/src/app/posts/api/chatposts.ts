@@ -17,13 +17,20 @@ export const postComment = async (
   commentData: { content: string },
   chatPostId: string
 ) => {
-  const res = await POST({
-    API: commentAPI,
-    endPoint: `${chatPostId}`,
-    body: commentData,
-    isAuth: true,
-  });
-  return res;
+  try {
+    const res = await POST({
+      API: commentAPI,
+      endPoint: `${chatPostId}`,
+      body: commentData,
+      isAuth: true,
+    });
+    return res;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      console.log("Error 401: 로그인 하세요!");
+      return [];
+    }
+  }
 };
 
 export const getComments = async (chatPostId: string) => {
@@ -47,11 +54,18 @@ export const postStar = async ({
     chatPostId: chatPostId,
     like: value,
   };
-  const res = await POST({
-    API: starAPI,
-    endPoint: "",
-    isAuth: true,
-    body,
-  });
-  return res;
+  try {
+    const res = await POST({
+      API: starAPI,
+      endPoint: "",
+      isAuth: true,
+      body,
+    });
+    return res;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      console.log("Error 401: 로그인 하세요!");
+      return [];
+    }
+  }
 };
