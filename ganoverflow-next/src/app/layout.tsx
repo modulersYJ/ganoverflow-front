@@ -320,13 +320,28 @@ const Footer = () => {
 
 const SideCanvas = ({ onClickClose, isOffCanvasOpen, user }: any) => {
   return (
-    <div className={`side-canvas ${isOffCanvasOpen ? "open" : ""}`}>
+    <div
+      className={`side-canvas ${
+        isOffCanvasOpen ? "open" : ""
+      } flex flex-col gap-3 `}
+    >
+      <button onClick={onClickClose}>
+        <Link href={"/chat"}>채팅</Link>
+      </button>
+      <button onClick={onClickClose}>
+        <Link href={"/posts"}>게시판</Link>
+      </button>
+      <button onClick={onClickClose}>
+        <Link href="https://github.com/modulersYJ">modulers</Link>
+      </button>
+      <button onClick={onClickClose}>
+        <Link href="/">홈</Link>
+      </button>
       <button className="text-white" onClick={onClickClose}>
         닫기
       </button>
       {user === null ? (
         <div>
-          {" "}
           <Link
             href="/"
             className="block px-4 py-2 text-white font-inter text-sm"
@@ -344,7 +359,7 @@ const SideCanvas = ({ onClickClose, isOffCanvasOpen, user }: any) => {
         </div>
       ) : (
         <Link
-          href="/"
+          href="/accounts/my-page"
           passHref
           className="block px-4 py-2 text-white font-inter text-sm"
         >
