@@ -22,7 +22,6 @@ const ChatMain = ({ onClickNewChatBtn, scrollRef }: IChatMainProps) => {
 
   return (
     <div className="flex flex-col h-full ">
-      {isSigned === TIsSigned.F && <LoginBoxModal />}
       {isModalOpen && (
         <SaveChatModal
           categories={categories}
