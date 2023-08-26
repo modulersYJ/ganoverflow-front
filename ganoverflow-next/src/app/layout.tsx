@@ -223,6 +223,7 @@ const Header = ({
                 isOffCanvasOpen={isOffCanvasOpen}
                 onClickClose={onClickHamburger}
                 user={user}
+                onClickSetLogout={onClickSetLogout}
               />
             </div>
           </div>
@@ -318,15 +319,33 @@ const Footer = () => {
   );
 };
 
-const SideCanvas = ({ onClickClose, isOffCanvasOpen, user }: any) => {
+const SideCanvas = ({
+  onClickClose,
+  isOffCanvasOpen,
+  user,
+  onClickSetLogout,
+}: any) => {
   return (
-    <div className={`side-canvas ${isOffCanvasOpen ? "open" : ""}`}>
-      <button className="text-white" onClick={onClickClose}>
-        닫기
+    <div
+      className={`side-canvas ${
+        isOffCanvasOpen ? "open" : ""
+      } flex flex-col gap-3 `}
+    >
+      <button onClick={onClickClose}>
+        <Link href="/">홈</Link>
       </button>
+      <button onClick={onClickClose}>
+        <Link href={"/chat"}>채팅</Link>
+      </button>
+      <button onClick={onClickClose}>
+        <Link href={"/posts"}>게시판</Link>
+      </button>
+      <button onClick={onClickClose}>
+        <Link href="https://github.com/modulersYJ">modulers</Link>
+      </button>
+
       {user === null ? (
         <div>
-          {" "}
           <Link
             href="/"
             className="block px-4 py-2 text-white font-inter text-sm"
@@ -343,14 +362,27 @@ const SideCanvas = ({ onClickClose, isOffCanvasOpen, user }: any) => {
           </Link>
         </div>
       ) : (
-        <Link
-          href="/"
-          passHref
-          className="block px-4 py-2 text-white font-inter text-sm"
-        >
-          {user?.nickname}
-        </Link>
+        <>
+          <Link
+            href="/accounts/my-page"
+            passHref
+            className="block px-4 py-2 text-white font-inter text-sm"
+          >
+            {user?.nickname}
+          </Link>
+          <button
+            onClick={() => {
+              onClickClose();
+              onClickSetLogout();
+            }}
+          >
+            로그아웃
+          </button>
+        </>
       )}
+      <button className="text-white" onClick={onClickClose}>
+        닫기
+      </button>
     </div>
   );
 };

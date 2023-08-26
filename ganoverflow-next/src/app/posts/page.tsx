@@ -38,15 +38,15 @@ export default async function PostPage({
       <div className="grid">
         <table className="w-3/5 h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
-            <tr>
+            <tr className="whitespace-nowrap">
               <th className="p-2.5">번호</th>
-              <th className="p-2.5">카테고리</th>
+              <th className="p-2.5 hidden md:block">카테고리</th>
               <th className="p-2.5">제목</th>
               <th className="p-2.5">글쓴이</th>
-              <th className="p-2.5">작성일</th>
+              <th className="p-2.5 hidden md:block">작성일</th>
               <th className="p-2.5">댓글</th>
               <th className="p-2.5">조회수</th>
-              <th className="p-2.5">추천</th>
+              <th className="p-2.5 hidden md:block">추천</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +57,7 @@ export default async function PostPage({
                   key={id}
                 >
                   <td className="py-1">{post?.chatPostId}</td>
-                  <td className="py-1">
+                  <td className="py-1 hidden md:block">
                     {post?.categoryName?.categoryName ?? "카테고리업슴"}
                   </td>
                   <td className="py-1">
@@ -66,12 +66,12 @@ export default async function PostPage({
                     </Link>
                   </td>
                   <td className="py-1">{post?.userId?.nickname ?? ""}</td>
-                  <td className="py-1">
+                  <td className="py-1 hidden md:block">
                     {parseDateWithSeconds(post?.createdAt)}
                   </td>
                   <td className="py-1">{post?.comments?.length}</td>
                   <td className="py-1">{post?.viewCount}</td>
-                  <td className="py-1">
+                  <td className="py-1 hidden md:block">
                     {post?.stars.reduce(
                       (acc: number, curr: any) => acc + curr.value,
                       0
