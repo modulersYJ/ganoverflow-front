@@ -1,7 +1,6 @@
-import { IAuthData } from "@/app/api/jwt";
 import { putChatPost, sendChatPost } from "@/app/chat/api/chat";
 import { TLoadChatStatus } from "@/atoms/chat";
-import { useSignedCheck } from "@/hooks/jwtHooks/useSignedCheck";
+import { useSignedCheck } from "@/hooks/useSignedCheck";
 import { ITitleAndCategory } from "@/interfaces/IProps/chat";
 import { ChatSavedStatus, IChatPair } from "@/interfaces/chat";
 import { Dispatch, SetStateAction } from "react";
@@ -21,7 +20,6 @@ export const GetHandleChangeTitleAndCategory = (
 };
 
 export const GetHandleSaveChatpostExec = (
-  authData: IAuthData | undefined,
   chatPairs: IChatPair[],
   loadChatStatus: any,
   titleAndCategory: ITitleAndCategory,
@@ -65,18 +63,14 @@ export const GetHandleSaveChatpostExec = (
       };
       console.log("putChatPostBody", putChatPostBody);
 
-      await putChatPost(
-        loadChatStatus.loadedMeta?.chatPostId,
-        putChatPostBody,
-        authData
-      );
+      await putChatPost(loadChatStatus.loadedMeta?.chatPostId, putChatPostBody);
 
       setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
       setChatSavedStatus("T");
       return;
     }
 
-    await sendChatPost(chatPostBody, authData);
+    await sendChatPost(chatPostBody);
     setChatSavedStatus("T");
     return;
   };

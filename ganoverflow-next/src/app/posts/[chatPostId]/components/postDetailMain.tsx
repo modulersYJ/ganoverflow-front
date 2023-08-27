@@ -1,6 +1,5 @@
 import { IPostHeaderProps } from "@/interfaces/IProps/posts";
 import { parseDate } from "@/utils/parseDate";
-import hljs from "highlight.js/lib/core";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism"; // best

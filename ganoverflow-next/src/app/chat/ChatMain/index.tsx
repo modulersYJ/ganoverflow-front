@@ -13,11 +13,7 @@ import {
 } from "./components";
 import { LoginBoxModal } from "@/app/accounts/login/LoginBoxModal";
 
-const ChatMain = ({
-  authData,
-  onClickNewChatBtn,
-  scrollRef,
-}: IChatMainProps) => {
+const ChatMain = ({ onClickNewChatBtn, scrollRef }: IChatMainProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState<{ categoryName: string }[]>([]);
   const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
@@ -29,7 +25,6 @@ const ChatMain = ({
       {isSigned === TIsSigned.F && <LoginBoxModal />}
       {isModalOpen && (
         <SaveChatModal
-          authData={authData}
           categories={categories}
           setIsModalOpen={setIsModalOpen}
         />
