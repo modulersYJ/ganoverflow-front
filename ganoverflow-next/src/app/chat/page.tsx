@@ -34,7 +34,6 @@ export default function ChatPage() {
   useEffect(() => {
     console.log("loadChatStatus 초기화");
     setLoadChatStatus({ status: TLoadChatStatus.F, loadedMeta: undefined });
-    setIsSigned(TIsSigned.unknown);
   }, []);
 
   // foldersData - case 1) - accessToken 관리체계 리팩 이후 필요한지 의문(일단킵)
