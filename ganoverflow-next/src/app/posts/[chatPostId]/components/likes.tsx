@@ -5,8 +5,11 @@ import { getStars, postStar } from "@/app/posts/api/chatposts";
 import { useState, useEffect } from "react";
 import Error from "next/error";
 import { usePathname } from "next/navigation";
+import { useSignedCheck } from "@/hooks/useSignedCheck";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
+  const checkUserSigned = useSignedCheck();
+
   const userData = getSessionStorageItem("userData");
 
   const [starCount, setStarCount] = useState(0);
@@ -27,10 +30,11 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   }, []);
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!checkUserSigned()) return;
+
     let value = 0;
 
     const { name } = e.target as HTMLButtonElement;
-
     // ! 한번도 안눌렀거나 따봉 / 붐따 취소해서 userDidLiked가 0인 경우
     if (userDidLike === 0) {
       if (name === "up") {
@@ -55,20 +59,15 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
       }
     }
 
-    try {
-      const res = await postStar({
-        chatPostId: chatPostId,
-        value: value,
-      });
-      if (res.status === 201) {
-        setStarCount(res.data.count);
-        setUserDidLike(value);
-      }
-    } catch (e: any) {
-      console.log(e);
-      if (e?.response?.status === 401) {
-        alert("로그인이 필요합니다");
-      }
+    const res = await postStar({
+      chatPostId: chatPostId,
+      value: value,
+    });
+    if (res.status === 201) {
+      setStarCount(res.data.count);
+      setUserDidLike(value);
+    } else {
+      console.log("등록 실패: ", res);
     }
   };
 
@@ -79,7 +78,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
           <button
             name="up"
             className={`rounded-lg p-2 mx-8 h-12 bg-slate-300 hover:bg-slate-50`}
-            onClickCapture={handleLike}
+            onClick={handleLike}
           >
             {userDidLike === 1 ? (
               <svg
@@ -120,7 +119,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
           <button
             name="down"
             className={`bg-slate-300 rounded-lg p-2 mx-8 h-12 hover:bg-slate-50`}
-            onClick={(e) => handleLike(e)}
+            onClick={handleLike}
           >
             {userDidLike === -1 ? (
               <svg

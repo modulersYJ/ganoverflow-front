@@ -66,9 +66,11 @@ export const Pagination = ({
 
   return (
     <>
-      <Link href={`posts?page=1`}>
-        <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<<"}</button>
-      </Link>
+      <div className="md:inline hidden">
+        <Link href={`posts?page=1`}>
+          <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<<"}</button>
+        </Link>
+      </div>
       <Link href={`posts?page=${currentPage - 5 > 0 ? currentPage - 5 : 1}`}>
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
@@ -101,9 +103,11 @@ export const Pagination = ({
           {">"}
         </button>
       </Link>
-      <Link href={`posts?page=${totalPage}`}>
-        <button className="p-2 px-2.5 m-2 rounded bg-primary">{">>"}</button>
-      </Link>
+      <div className="md:inline hidden">
+        <Link href={`posts?page=${totalPage}`}>
+          <button className="p-2 px-2.5 m-2 rounded bg-primary">{">>"}</button>
+        </Link>
+      </div>
     </>
   );
 };
