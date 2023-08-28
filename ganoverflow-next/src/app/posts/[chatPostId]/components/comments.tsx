@@ -1,26 +1,20 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { getComments, postComment } from "../../api/chatposts";
-import { useAuthDataHook } from "@/hooks/jwtHooks/getNewAccessToken";
+import { postComment } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
+import { useSignedCheck } from "@/hooks/useSignedCheck";
 
 export function CommentBox({
   chatPostId,
   comments,
 }: {
   chatPostId: string;
-  comments: {
-    commentId: number;
-    content: string;
-    createdAt: string;
-    delYn: string;
-    user: { username: string; nickname: string };
-  }[];
+  comments: TComments;
 }) {
-  console.log("🚀 ~ file: comments.tsx:22 ~ comments:", comments);
-  const authData = useAuthDataHook();
+  const checkUserSigned = useSignedCheck();
+
   const router = useRouter();
   const commentCount = comments?.length;
   const [commentData, setCommentData] = useState("");
@@ -31,30 +25,20 @@ export function CommentBox({
   };
 
   const handleSubmit = async () => {
+    if (!checkUserSigned()) return;
+
     if (commentData === "") {
       alert("댓글을 입력하세요");
       return;
     }
 
-    try {
-      const res = await postComment(
-        { content: commentData },
-        await authData,
-        chatPostId
-      );
-      if (res.status === 201) {
-        setCommentData("");
-        alert("등록이 완료되었습니다.");
-        router.refresh();
-      } else {
-        console.log("res ", res);
-        alert("등록 실패");
-      }
-    } catch (e: any) {
-      console.log(e);
-      if (e?.response?.status === 401) {
-        alert("로그인이 필요합니다");
-      }
+    const res = await postComment({ content: commentData }, chatPostId);
+    if (res.status === 201) {
+      setCommentData("");
+      router.refresh();
+    } else {
+      console.log("등록 실패: ", res);
+      
     }
   };
 
@@ -108,3 +92,11 @@ export function CommentBox({
     </>
   );
 }
+
+export type TComments = {
+  commentId: number;
+  content: string;
+  createdAt: string;
+  delYn: string;
+  user: { username: string; nickname: string };
+}[];

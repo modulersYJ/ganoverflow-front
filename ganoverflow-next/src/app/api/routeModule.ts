@@ -1,22 +1,23 @@
 import { AxiosInstance } from "axios";
+import { handleAuthentication } from "./jwt";
 
 export async function GET(
   endPoint: string,
   {
     params = "",
-    headers = {},
+    isAuth = false,
     revalidateTime = 10,
   }: {
-    params?: string | null;
-    headers?: Object;
+    params?: string | null | undefined;
+    isAuth?: boolean;
     revalidateTime?: number;
   } = {
     params: "",
-    headers: {},
+    isAuth: false,
     revalidateTime: 10,
   }
 ): Promise<any> {
-  console.log("GET authHeaders", headers);
+  const headers = await handleAuthentication(isAuth);
 
   const reqPath = params
     ? `${process.env.NEXT_PUBLIC_HOST}/${endPoint}/${params}`
@@ -24,7 +25,7 @@ export async function GET(
 
   const res = await fetch(reqPath, {
     method: "GET",
-    ...headers,
+    headers,
     next: { revalidate: revalidateTime },
   });
   const data = await res.json();
@@ -34,28 +35,28 @@ export async function GET(
 interface IPostReqProps {
   API: AxiosInstance;
   endPoint: string;
-  authHeaders?: any;
+  isAuth?: boolean;
   body?: any;
 }
 
 interface IUpdateReqProps extends IPostReqProps {
-  params?: string;
+  params?: string | null | undefined;
   query?: string;
 }
 
 export function POST({
   API,
   endPoint,
-  authHeaders,
+  isAuth = false,
   body,
 }: IPostReqProps): Promise<any> {
-  return REQUEST({ API, method: "POST", endPoint, authHeaders, body });
+  return REQUEST({ API, method: "POST", endPoint, isAuth, body });
 }
 
 export function PUT({
   API,
   endPoint,
-  authHeaders,
+  isAuth = false,
   body,
   params,
   query,
@@ -65,7 +66,7 @@ export function PUT({
     method: "PUT",
     endPoint,
     body,
-    authHeaders,
+    isAuth,
     params,
     query,
   });
@@ -74,17 +75,17 @@ export function PUT({
 export function PATCH({
   API,
   endPoint,
-  authHeaders,
+  isAuth = false,
   body,
   params,
 }: IUpdateReqProps): Promise<any> {
-  return REQUEST({ API, method: "PATCH", endPoint, body, authHeaders, params });
+  return REQUEST({ API, method: "PATCH", endPoint, body, isAuth, params });
 }
 
 export function DELETE({
   API,
   endPoint,
-  authHeaders,
+  isAuth = false,
   body,
   params,
 }: IUpdateReqProps): Promise<any> {
@@ -93,7 +94,7 @@ export function DELETE({
     method: "DELETE",
     endPoint,
     body,
-    authHeaders,
+    isAuth,
     params,
   });
 }
@@ -103,7 +104,7 @@ async function REQUEST({
   API,
   method,
   endPoint,
-  authHeaders,
+  isAuth,
   body,
   params,
   query,
@@ -111,11 +112,13 @@ async function REQUEST({
   API: AxiosInstance;
   method: "POST" | "PUT" | "PATCH" | "DELETE";
   endPoint: string;
-  authHeaders?: any;
+  isAuth: boolean;
   body?: any;
-  params?: string;
+  params?: string | undefined | null;
   query?: string;
 }): Promise<any> {
+  const headers = await handleAuthentication(isAuth);
+
   const cleanedEndPoint = endPoint.endsWith("/")
     ? endPoint.slice(0, -1)
     : endPoint;
@@ -129,7 +132,7 @@ async function REQUEST({
     url,
     method,
     data: body,
-    ...authHeaders,
+    headers,
   });
 
   const acceptedStatus = [200, 201, 204];

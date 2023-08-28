@@ -6,8 +6,8 @@ export const LoginBoxModal = () => {
   const setIsSigned = useSetRecoilState(isSignedState);
 
   return (
-    <div className="LoginBoxModal z-30 fixed inset-0 flex justify-center items-center">
-      <div className="z-30 relative max-w-lg animate-popIn origin-bottom">
+    <div className="LoginBoxModal z-40 fixed inset-0 flex justify-center items-center">
+      <div className="z-40 relative max-w-lg animate-popIn origin-bottom">
         <LoginBox modalType />
       </div>
       <div

@@ -35,7 +35,27 @@ const PromptConsole = ({
     setIsNowAnswering,
     setCurrStream,
   });
+
   const onChangeQuestionInput = GetHandleQuestionInput(setQuestionInput);
+
+  const adjustTextareaHeight = (target: HTMLTextAreaElement) => {
+    target.style.height = "32px";
+    const maxHeight = 64;
+    const minHeight = 32;
+    const scrollHeight = target.scrollHeight;
+
+    if (scrollHeight > minHeight) {
+      target.style.height = Math.min(scrollHeight, maxHeight) + "px";
+    } else {
+      target.style.height = minHeight + "px";
+    }
+  };
+  const onChangeQuestionInputWithTextareaSize = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    adjustTextareaHeight(event.target);
+    onChangeQuestionInput(event);
+  };
 
   // UPDATE states, using streaming answer
   useEffect(() => {
@@ -58,27 +78,26 @@ const PromptConsole = ({
         onSubmit={(e) => {
           onClickSubmitMsg({ e, prompt: questionInput, isContextMode: true });
         }}
-        className="w-full max-w-[40%] mr-12 md:mr-0 flex items-center "
+        className="w-full max-w-[90%] sm:max-w-[70%] md:max-w-[40%] flex items-center "
       >
         {chatSavedStatus === "T" ? (
           <input
-            onChange={onChangeQuestionInput}
             className="rounded-full bg-white dark:bg-gray-500 flex-grow mr-4 p-2 text-xs text-gray-500 dark:text-gray-300"
             value={"새 채팅을 시작하세요"}
             disabled
           />
         ) : (
-          <input
+          <textarea
             value={questionInput}
-            onChange={onChangeQuestionInput}
-            className="rounded-full bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs"
+            onChange={onChangeQuestionInputWithTextareaSize}
+            className="rounded-full resize-none bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs h-[32px] overflow-hidden outline-secondary"
             placeholder={"메시지를 입력하새우"}
           />
         )}
         <button
           type="submit"
           disabled={chatSavedStatus === "T"}
-          className={`rounded-2xl font-bold text-white py-2.5 px-5 text-xs !min-w-[60px]
+          className={`rounded-2xl font-bold text-white text-xs !min-w-[60px] px-0 py-2.5 md:px-5 
             dark:
             ${questionInput ? "bg-primary" : "bg-gray-500"}`}
         >
