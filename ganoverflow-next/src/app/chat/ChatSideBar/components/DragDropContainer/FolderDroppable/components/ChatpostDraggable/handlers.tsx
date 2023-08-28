@@ -107,7 +107,7 @@ const getHandleLoadThisPost =
         chatPostId: chatpost.chatPostId,
         title: LoadedPost.chatpostName,
         category: LoadedPost.categoryName?.categoryName,
-        tags: [...LoadedPost.tags],
+        tags: LoadedPost.tags ? [...LoadedPost.tags] : [],
       },
     });
     setLoadedChatPairs(LoadedPost.chatPair);
