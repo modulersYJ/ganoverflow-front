@@ -27,7 +27,8 @@ export interface ISaveChatModalProps {
   setIsModalOpen: (value: boolean) => void;
 }
 
-export interface ITitleAndCategory {
+export interface IPostMetaInput {
   chatpostName: string | undefined;
   category?: string | undefined;
+  tags?: string[];
 }
