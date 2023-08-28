@@ -57,7 +57,7 @@ export default async function PostPage({
                   key={id}
                 >
                   <td className="py-1">{post?.chatPostId}</td>
-                  <td className="py-1 hidden md:block">
+                  <td className="py-1 hidden md:table-cell">
                     {post?.categoryName?.categoryName ?? "카테고리업슴"}
                   </td>
                   <td className="py-1">
@@ -66,12 +66,12 @@ export default async function PostPage({
                     </Link>
                   </td>
                   <td className="py-1">{post?.user?.nickname ?? ""}</td>
-                  <td className="py-1 hidden md:block">
+                  <td className="py-1 hidden md:table-cell">
                     {parseDateWithSeconds(post?.createdAt)}
                   </td>
                   <td className="py-1">{post?.comments?.length}</td>
                   <td className="py-1">{post?.viewCount}</td>
-                  <td className="py-1 hidden md:block">
+                  <td className="py-1 hidden md:table-cell">
                     {post?.stars.reduce(
                       (acc: number, curr: any) => acc + curr.value,
                       0
