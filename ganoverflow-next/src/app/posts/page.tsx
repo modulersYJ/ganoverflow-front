@@ -65,7 +65,7 @@ export default async function PostPage({
                       {post?.chatpostName}
                     </Link>
                   </td>
-                  <td className="py-1">{post?.userId?.nickname ?? ""}</td>
+                  <td className="py-1">{post?.user?.nickname ?? ""}</td>
                   <td className="py-1 hidden md:block">
                     {parseDateWithSeconds(post?.createdAt)}
                   </td>

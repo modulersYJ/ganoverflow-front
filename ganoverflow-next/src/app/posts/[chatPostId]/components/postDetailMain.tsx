@@ -11,7 +11,7 @@ export const PostDetailMain = ({ postData }: any) => {
       <article className="post-detail-main w-full place-self-center">
         <PostHeader
           chatpostName={postData?.chatpostName}
-          nickname={postData?.userId?.nickname}
+          nickname={postData?.user?.nickname}
           createdAt={postData?.createdAt}
           viewCount={postData?.viewCount}
           commentCount={postData?.comments?.length}
