@@ -1,7 +1,7 @@
 .main-logo-container {
   position: relative;
   width: 100%;
-  padding-bottom: 55%; /* 주요 비율 유지 */
+  padding-bottom: 55%;
 }
 
 .logo-animate {
@@ -14,70 +14,67 @@
 
 .landing-logo-text {
   position: absolute;
-  top: 22%; /* 기존 비율에 맞게 조정 */
-  left: 28%; /* 초기 위치를 기준으로 설정 */
+  top: 22%;
+  left: 28%;
   width: 37.5%;
   z-index: 1;
-  transform: translateX(-50%); /* 시작 위치 설정 (기본값) */
+  transform: translateX(-50%);
   animation: moveText 1s forwards;
-  animation-delay: 1.4s; /* 기존 애니메이션이 끝나고 0.5초 후 */
+  animation-delay: 1.4s;
 }
 
 .landing-logo-textmask {
   background-color: black;
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 23%; /* 기존 비율에 맞게 조정 */
+  top: 23%;
   left: 30%;
   width: 42%;
   height: 20%;
   z-index: 2;
   animation: moveTextMask 1s forwards;
-  animation-delay: 1.4s; /* 기존 애니메이션이 끝나고 0.5초 후 */
-  /* z-index: 3; */
+  animation-delay: 1.4s;
 }
 
 .logo-symbol-container {
   position: absolute;
-  top: 15%; /* 기존 비율에 맞게 조정 */
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   width: 16.875%;
   animation: moveSymbol 1s forwards;
-  animation-delay: 1.4s; /* 기존 애니메이션이 끝나고 0.5초 후 */
-  /* z-index: 3; */
+  animation-delay: 1.4s;
 }
 
 @media (max-width: 750px) {
   .landing-logo-text {
-    width: 60%; /* 수정된 값 */
+    width: 60%;
     top: 26%;
     left: 15%;
   }
 
   .landing-logo-textmask {
-    width: 67%; /* 수정된 값 */
+    width: 67%;
     top: 33%;
     left: 18%;
   }
 
   .logo-symbol-container {
-    width: 27%; /* 수정된 값 */
+    width: 27%;
   }
 }
 
 @media (max-width: 500px) {
   .landing-logo-text {
-    width: 80%; /* 수정된 값 */
+    width: 80%;
     top: 75%;
     left: -10%;
-    transform: translateX(-90%); /* 시작 위치 설정 (기본값) */
-    animation-delay: 1s; /* 기존 애니메이션이 끝나고 0.5초 후 */
-    /* animation: none; */
+    transform: translateX(-90%);
+    animation-delay: 1s;
   }
 
   .landing-logo-textmask {
-    width: 80%; /* 수정된 값 */
+    width: 80%;
     height: 35%;
     top: 70%;
     animation: none;
@@ -85,16 +82,16 @@
   }
 
   .logo-symbol-container {
-    width: 40%; /* 수정된 값 */
+    width: 40%;
     left: 50%;
-    transform: translateX(-50%); /* 시작 위치 설정 (기본값) */
+    transform: translateX(-50%);
     animation: none;
   }
 }
 
 @keyframes moveText {
   0% {
-    transform: translateX(-50%); /* 시작 위치 (기본값) */
+    transform: translateX(-50%);
   }
   100% {
     transform: translateX(25%);
@@ -103,26 +100,26 @@
 
 @keyframes moveSymbol {
   0% {
-    transform: translateX(-50%); /* 시작 위치 (기본값) */
+    transform: translateX(-50%);
   }
   100% {
-    transform: translateX(-150%); /* 시작 위치 (기본값) */
+    transform: translateX(-150%);
   }
 }
 
 @keyframes moveTextMask {
   0% {
-    transform: translate(-50%, -50%); /* 시작 위치 (기본값) */
+    transform: translate(-50%, -50%);
   }
   100% {
-    transform: translate(-87%, -50%); /* 시작 위치 (기본값) */
+    transform: translate(-87%, -50%);
   }
 }
 
 /*  */
 @keyframes moveTextSmall {
   0% {
-    transform: translateX(-50%); /* 시작 위치 (기본값) */
+    transform: translateX(-50%);
   }
   100% {
     transform: translateX(25%);
@@ -131,19 +128,19 @@
 
 @keyframes moveSymbolSmall {
   0% {
-    transform: translateX(-50%); /* 시작 위치 (기본값) */
+    transform: translateX(-50%);
   }
   100% {
-    transform: translateX(-150%); /* 시작 위치 (기본값) */
+    transform: translateX(-150%);
   }
 }
 
 @keyframes moveTextMaskSmall {
   0% {
-    transform: translate(-50%, -50%); /* 시작 위치 (기본값) */
+    transform: translate(-50%, -50%);
   }
   100% {
-    transform: translate(-87%, -50%); /* 시작 위치 (기본값) */
+    transform: translate(-87%, -50%);
   }
 }
 
@@ -160,7 +157,7 @@
 .rect-item10,
 .rect-item11 {
   opacity: 0;
-  animation: fadeIn 1s forwards; /* 1초 동안 나타나는 애니메이션 */
+  animation: fadeIn 1s forwards;
 }
 
 @keyframes fadeIn {
@@ -176,8 +173,6 @@
 .logo-symbol-container.background {
   z-index: 0;
 }
-
-/* 각 요소가 순차적으로 나타나도록 애니메이션 지연을 설정 */
 
 .rect-item2 {
   z-index: 3;
