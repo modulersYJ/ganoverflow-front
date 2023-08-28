@@ -65,6 +65,7 @@ export const GetHandleLoadThisChat = (
         chatPostId: prevStatus.loadedMeta?.chatPostId,
         title: prevStatus.loadedMeta?.title,
         category: prevStatus.loadedMeta?.category,
+        tags: prevStatus.loadedMeta?.tags,
       },
     }));
     setChatPairs(chatPairs as IChatPair[]);

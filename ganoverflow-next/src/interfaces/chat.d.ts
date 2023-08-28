@@ -14,6 +14,7 @@ export interface IChatPostSendDTO {
   chatpostName: string | undefined;
   chatPair: IChatPair[];
   category?: string;
+  tags: string[] | undefined;
 }
 
 // extend IChatPostSendDTO

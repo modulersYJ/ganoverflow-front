@@ -95,21 +95,22 @@ const getHandleLoadThisPost =
   (
     chatpost: IChatPostBasicInfo,
 
-    setStatus: any,
-    setPairs: React.Dispatch<React.SetStateAction<IChatPair[]>>
+    setLoadChatStatus: any,
+    setLoadedChatPairs: React.Dispatch<React.SetStateAction<IChatPair[]>>
   ) =>
   async () => {
     const LoadedPost = await getOneChatPostById(chatpost.chatPostId);
-    setStatus({
+    setLoadChatStatus({
       status: TLoadChatStatus.SHOWING,
       loadedMeta: {
         folderId: LoadedPost.folderId,
         chatPostId: chatpost.chatPostId,
         title: LoadedPost.chatpostName,
         category: LoadedPost.categoryName?.categoryName,
+        tags: [...LoadedPost.tags],
       },
     });
-    setPairs(LoadedPost.chatPair);
+    setLoadedChatPairs(LoadedPost.chatPair);
   };
 
 export {

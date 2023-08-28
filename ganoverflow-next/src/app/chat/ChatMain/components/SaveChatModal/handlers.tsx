@@ -1,19 +1,19 @@
 import { putChatPost, sendChatPost } from "@/app/chat/api/chat";
 import { TLoadChatStatus } from "@/atoms/chat";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
-import { ITitleAndCategory } from "@/interfaces/IProps/chat";
+import { IPostMetaInput } from "@/interfaces/IProps/chat";
 import { ChatSavedStatus, IChatPair } from "@/interfaces/chat";
 import { Dispatch, SetStateAction } from "react";
 import { SetterOrUpdater } from "recoil";
 
-export const GetHandleChangeTitleAndCategory = (
-  titleAndCategory: ITitleAndCategory,
-  setTitleAndCategory: Dispatch<SetStateAction<ITitleAndCategory>>
+export const GetOnChangePostMetaInput = (
+  postMetaInput: IPostMetaInput,
+  setPostMetaInput: Dispatch<SetStateAction<IPostMetaInput>>
 ) => {
   return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     console.log(e.target.value, e.target.name);
-    setTitleAndCategory({
-      ...titleAndCategory,
+    setPostMetaInput({
+      ...postMetaInput,
       [e.target.name]: e.target.value,
     });
   };
@@ -22,7 +22,7 @@ export const GetHandleChangeTitleAndCategory = (
 export const GetHandleSaveChatpostExec = (
   chatPairs: IChatPair[],
   loadChatStatus: any,
-  titleAndCategory: ITitleAndCategory,
+  postMetaInput: IPostMetaInput,
   setLoadChatStatus: SetterOrUpdater<any>,
   setChatSavedStatus: SetterOrUpdater<ChatSavedStatus>
 ) => {
@@ -33,8 +33,9 @@ export const GetHandleSaveChatpostExec = (
       return aPair.isChecked === true;
     });
     const chatPostBody = {
-      chatpostName: titleAndCategory?.chatpostName,
-      categoryName: titleAndCategory?.category,
+      chatpostName: postMetaInput?.chatpostName,
+      categoryName: postMetaInput?.category,
+      tags: postMetaInput?.tags,
       chatPair: selectedPairs,
     };
 
@@ -47,18 +48,23 @@ export const GetHandleSaveChatpostExec = (
 
     if (loadChatStatus.status === TLoadChatStatus.UPDATING) {
       const chatpostName =
-        titleAndCategory?.chatpostName === ""
+        postMetaInput?.chatpostName === ""
           ? loadChatStatus.loadedMeta?.title
-          : titleAndCategory?.chatpostName;
+          : postMetaInput?.chatpostName;
       const categoryName =
-        titleAndCategory?.category === ""
+        postMetaInput?.category === ""
           ? loadChatStatus.loadedMeta?.category
-          : titleAndCategory?.category;
+          : postMetaInput?.category;
+      const tags =
+        postMetaInput?.tags?.length === 0
+          ? loadChatStatus.loadedMeta?.tags
+          : postMetaInput?.tags;
 
       const putChatPostBody = {
         ...chatPostBody,
         chatpostName,
         categoryName,
+        tags,
         folderId: loadChatStatus.loadedMeta?.folderId,
       };
       console.log("putChatPostBody", putChatPostBody);

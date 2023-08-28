@@ -40,6 +40,7 @@ export const GetHandleContinueChat = ({
         chatPostId: loadChatStatus.loadedMeta?.chatPostId,
         title: loadChatStatus.loadedMeta?.title,
         category: loadChatStatus.loadedMeta?.category,
+        tags: loadChatStatus.loadedMeta?.tags,
       },
     });
     setCheckCnt(chatPairs.length);

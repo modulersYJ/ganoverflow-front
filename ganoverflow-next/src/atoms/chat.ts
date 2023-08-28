@@ -12,6 +12,7 @@ type TLoadedMeta = {
   chatPostId: string | undefined;
   title: string | undefined;
   category: string | undefined;
+  tags: Array<string> | undefined;
 };
 
 type LoadChatStatusStateType = {
