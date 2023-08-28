@@ -53,9 +53,14 @@ module.exports = {
           "0%": { transform: "scale(0)" },
           "100%": { transform: "scale(1)" },
         },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
       },
       animation: {
         popIn: "popIn 0.1s ease-out",
+        fadeIn: "fadeIn 2s ease-out",
       },
     },
     plugins: [],
