@@ -346,20 +346,24 @@ const SideCanvas = ({
 
       {user === null ? (
         <div>
-          <Link
-            href="/"
-            className="block px-4 py-2 text-white font-inter text-sm"
-            passHref
-          >
-            로그인
-          </Link>
-          <Link
-            href="/"
-            className="block px-4 py-2 text-white font-inter text-sm"
-            passHref
-          >
-            회원가입
-          </Link>
+          <button onClick={onClickClose}>
+            <Link
+              href="/accounts/login"
+              className="block px-4 py-2 text-white font-inter text-sm"
+              passHref
+            >
+              로그인
+            </Link>
+          </button>
+          <button onClick={onClickClose}>
+            <Link
+              href="/accounts/register"
+              className="block px-4 py-2 text-white font-inter text-sm"
+              passHref
+            >
+              회원가입
+            </Link>
+          </button>
         </div>
       ) : (
         <>
