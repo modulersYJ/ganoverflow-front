@@ -33,6 +33,26 @@ export const postComment = async (
   }
 };
 
+export const postReComment = async (
+  commentData: { content: string; parent: number },
+  chatPostId: string
+) => {
+  try {
+    const res = await POST({
+      API: commentAPI,
+      endPoint: `recomment/${chatPostId}`,
+      body: commentData,
+      isAuth: true,
+    });
+    return res;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      console.log("Error 401: 로그인 하세요!");
+      return [];
+    }
+  }
+};
+
 export const getComments = async (chatPostId: string) => {
   const res = await GET(`comments/all/${chatPostId}`);
   return res;
