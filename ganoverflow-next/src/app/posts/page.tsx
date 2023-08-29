@@ -24,14 +24,15 @@ export default async function PostPage({
     page: currentPage,
   };
 
-  // view에 "전체" category 추가하도록 해야함
   if (searchParams.category) {
-    propsGetAllChatPostCategory.category = currentCategory;
+    // "전체"는 가상의 카테고리이므로, 빈 쿼리스트링 처리하여 전체검색 수행
+    if (searchParams.category !== "전체") {
+      propsGetAllChatPostCategory.category = currentCategory;
+    }
   } else if (searchParams.tag) {
     propsGetAllChatPostCategory.tag = currentTag;
   }
 
-  // const allPosts = await getAllChatPost({ page: currentPage });
   const allPosts = await getAllChatPostByCategory(propsGetAllChatPostCategory);
 
   console.log("allPosts==============================", allPosts);
@@ -54,7 +55,7 @@ export default async function PostPage({
 
   return (
     <div className="flex flex-col justify-between items-center w-full gap-4">
-      <div className="grid w-3/5 h-[600px] bg-blue-500">
+      <div className="grid w-4/5 h-[600px] bg-blue-500">
         <table className="board w-full h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
             <tr className="whitespace-nowrap">

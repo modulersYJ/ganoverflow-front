@@ -11,6 +11,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
     const fetchCategoriesAndTopTags = async () => {
       const response = await getCategoriesAndTopTags();
       setCategoriesAndTags(response);
+      setSelectedCategory("전체");
     };
 
     fetchCategoriesAndTopTags();
@@ -33,11 +34,11 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-row justify-center gap-4">
       {children}
-      <aside className="w-1/5 bg-red-400">
+      <aside className="w-64 bg-red-400">
         <div className="flex flex-col justify-between gap-4 h-full">
           <div className="h-[30%] bg-red-700">
             <h2 className="tw-subtitle">Categories</h2>
-            <ul className="flex flex-row justify-around h-full bg-green-700">
+            <ul className="flex flex-wrap justify-start gap-x-2 gap-y-2">
               {categoriesAndTags.map((item, idx) => (
                 <li key={idx}>
                   <Link
@@ -56,9 +57,9 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="h-[50%] bg-red-700">
-            <ul className="flex flex-row justify-around h-full bg-black">
+            <ul className="flex flex-wrap justify-start gap-x-2 gap-y-2">
               {getTagsOfSelectedCategory().map((tagInfo: any, i: number) => (
-                <li key={tagInfo.tag} className="your-li-class">
+                <li key={tagInfo.tag}>
                   <Link href={`/posts?page=1&tag=${tagInfo.tag}`}>
                     <button className="text-xs bg-secondary px-2 py-2 rounded-full">
                       {tagInfo.tag} {tagInfo.frequency}
