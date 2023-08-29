@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { postComment } from "../../api/chatposts";
+import { postComment, postReComment } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
@@ -27,14 +27,13 @@ export function CommentBox({
     console.log(e.target.value);
   };
 
+  // 댓글 등록
   const handleSubmit = async () => {
     if (!checkUserSigned()) return;
-
     if (commentData === "") {
       alert("댓글을 입력하세요");
       return;
     }
-
     const res = await postComment({ content: commentData }, chatPostId);
     if (res.status === 201) {
       setCommentData("");
@@ -44,6 +43,26 @@ export function CommentBox({
     }
   };
 
+  // 대댓글 등록
+  const handleReCommentSubmit = async (parent: number) => {
+    if (!checkUserSigned()) return;
+    if (commentData === "") {
+      alert("댓글을 입력하세요");
+      return;
+    }
+    const res = await postReComment(
+      { content: commentData, parent: parent },
+      chatPostId
+    );
+    if (res.status === 201) {
+      setCommentData("");
+      router.refresh();
+    } else {
+      console.log("등록 실패: ", res);
+    }
+  };
+
+  // 대댓글열기
   const handleReCommentOpen = (idx: number) => {
     if (reCommentOpen === idx) {
       setReCommentOpen(false);
@@ -59,15 +78,19 @@ export function CommentBox({
         {comments?.map((comment, idx) => {
           return (
             <div key={idx}>
-              <CommentRow
-                idx={idx}
-                comment={comment}
-                handleReCommentOpen={handleReCommentOpen}
-                userDidLike={
-                  comment.userLikes.filter((user) => user.id === userData?.id)
-                    .length === 1
-                }
-              />
+              {comment?.parent ? (
+                <></>
+              ) : (
+                <CommentRow
+                  idx={idx}
+                  comment={comment}
+                  handleReCommentOpen={handleReCommentOpen}
+                  userDidLike={
+                    comment.userLikes.filter((user) => user.id === userData?.id)
+                      .length === 1
+                  }
+                />
+              )}
               {reCommentOpen === idx ? (
                 <div className="border-b-2 border-stone-500">
                   <textarea
@@ -80,12 +103,31 @@ export function CommentBox({
                   <div className="flex justify-end pr-2">
                     <button
                       className="comment-submit w-32 h-8 mb-3 bg-secondary hover:bg-primary hover:text-white rounded-xl"
-                      onClick={handleSubmit}
+                      onClick={() => handleReCommentSubmit(comment.commentId)}
                     >
                       등록
                     </button>
                   </div>
                 </div>
+              ) : (
+                <></>
+              )}
+              {comment?.childComments.length > 0 ? (
+                comment.childComments.map((child, i) => (
+                  <div className="px-4">
+                    <CommentRow
+                      key={child.commentId}
+                      idx={i}
+                      comment={child}
+                      handleReCommentOpen={handleReCommentOpen}
+                      userDidLike={
+                        child?.userLikes?.filter(
+                          (user) => user.id === userData?.id
+                        ).length === 1
+                      }
+                    />
+                  </div>
+                ))
               ) : (
                 <></>
               )}
@@ -121,4 +163,6 @@ export type TComments = {
   delYn: string;
   user: { username: string; nickname: string };
   userLikes: any[];
+  parent?: TComments;
+  childComments: TComments[];
 };
