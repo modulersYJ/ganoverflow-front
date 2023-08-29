@@ -6,6 +6,20 @@ export const getAllChatPost = async ({ page }: { page: number }) => {
   return response;
 };
 
+//===============구현중====================
+export const getAllChatPostByCategory = async ({
+  page,
+  category,
+}: {
+  page: number;
+  category: string;
+}) => {
+  const response = await GET(
+    `chatposts/get-by-category?page=${page}&category=${category}`
+  );
+  return response;
+};
+
 export const getOneChatPost = async (chatPostId: string) => {
   const response = await GET(`chatposts/public/${chatPostId}`, {
     revalidateTime: 0,

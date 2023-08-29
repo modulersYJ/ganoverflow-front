@@ -4,9 +4,11 @@ import Link from "next/link";
 
 export const Pagination = ({
   currentPage,
+  currentCategory,
   totalPage,
 }: {
   currentPage: number;
+  currentCategory: string;
   totalPage: number;
 }) => {
   const pagingButtons = ["", "", "", "", ""];
@@ -64,14 +66,19 @@ export const Pagination = ({
     pagingButtons[4] = (parseInt(pagingButtons[4]) + 5).toString();
   };
 
+  const CATEGORY_URL = `category=${currentCategory}`;
   return (
     <>
       <div className="md:inline hidden">
-        <Link href={`posts?page=1`}>
+        <Link href={`posts?page=1&${CATEGORY_URL}`}>
           <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<<"}</button>
         </Link>
       </div>
-      <Link href={`posts?page=${currentPage - 5 > 0 ? currentPage - 5 : 1}`}>
+      <Link
+        href={`posts?page=${
+          currentPage - 5 > 0 ? currentPage - 5 : 1
+        }&${CATEGORY_URL}`}
+      >
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
           onClick={handlePrevFive}
@@ -80,7 +87,7 @@ export const Pagination = ({
         </button>
       </Link>
       {pagingButtons.map((e: string, idx: number) => (
-        <Link href={`posts?page=${e}`} key={idx}>
+        <Link href={`posts?page=${e}&${CATEGORY_URL}`} key={idx}>
           <button
             className={`p-2 px-2.5 m-2 rounded  ${
               currentPage.toString() == e ? "bg-primary" : "bg-secondary"
@@ -94,7 +101,7 @@ export const Pagination = ({
       <Link
         href={`posts?page=${
           totalPage > currentPage * 1 + 5 ? currentPage * 1 + 5 : totalPage
-        }`}
+        }&${CATEGORY_URL}`}
       >
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
@@ -104,7 +111,7 @@ export const Pagination = ({
         </button>
       </Link>
       <div className="md:inline hidden">
-        <Link href={`posts?page=${totalPage}`}>
+        <Link href={`posts?page=${totalPage}&${CATEGORY_URL}`}>
           <button className="p-2 px-2.5 m-2 rounded bg-primary">{">>"}</button>
         </Link>
       </div>
