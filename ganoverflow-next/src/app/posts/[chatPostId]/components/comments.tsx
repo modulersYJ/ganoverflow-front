@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
 import { CommentRow } from "./commentRow";
+import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 
 export function CommentBox({
   chatPostId,
@@ -49,31 +50,46 @@ export function CommentBox({
     } else setReCommentOpen(idx);
   };
 
+  const userData = getSessionStorageItem("userData");
+
   return (
     <>
       <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
       <div className="comments-commentbox border border-stone-500">
         {comments?.map((comment, idx) => {
           return (
-            <>
+            <div key={idx}>
               <CommentRow
-                key={idx}
                 idx={idx}
                 comment={comment}
                 handleReCommentOpen={handleReCommentOpen}
+                userDidLike={
+                  comment.userLikes.filter((user) => user.id === userData?.id)
+                    .length === 1
+                }
               />
               {reCommentOpen === idx ? (
-                <textarea
-                  name="comment"
-                  onChange={handleChange}
-                  value={commentData}
-                  className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
-                  placeholder="댓글을 입력해 주세요"
-                />
+                <div className="border-b-2 border-stone-500">
+                  <textarea
+                    name="comment"
+                    onChange={handleChange}
+                    value={commentData}
+                    className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
+                    placeholder="댓글을 입력해 주세요"
+                  />
+                  <div className="flex justify-end pr-2">
+                    <button
+                      className="comment-submit w-32 h-8 mb-3 bg-secondary hover:bg-primary hover:text-white rounded-xl"
+                      onClick={handleSubmit}
+                    >
+                      등록
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <></>
               )}
-            </>
+            </div>
           );
         })}
       </div>
@@ -104,5 +120,5 @@ export type TComments = {
   createdAt: string;
   delYn: string;
   user: { username: string; nickname: string };
-  stars?: number;
+  userLikes: any[];
 };
