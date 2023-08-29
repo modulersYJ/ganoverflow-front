@@ -106,7 +106,7 @@ const getHandleLoadThisPost =
         folderId: LoadedPost.folderId,
         chatPostId: chatpost.chatPostId,
         title: LoadedPost.chatpostName,
-        category: LoadedPost.categoryName?.categoryName,
+        category: LoadedPost.category?.categoryName,
         tags: LoadedPost.tags ? [...LoadedPost.tags] : [],
       },
     });

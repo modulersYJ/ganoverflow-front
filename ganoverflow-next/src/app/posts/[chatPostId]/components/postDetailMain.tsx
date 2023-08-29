@@ -15,7 +15,7 @@ export const PostDetailMain = ({ postData }: any) => {
           createdAt={postData?.createdAt}
           viewCount={postData?.viewCount}
           commentCount={postData?.comments?.length}
-          category={postData?.categoryName?.categoryName}
+          category={postData?.category?.categoryName}
         />
         <PostChatPair pairs={postData?.chatPair} />
       </article>
@@ -60,7 +60,7 @@ const PostChatPair = ({ pairs }: any) => {
   return (
     <div className="post-chat-box min-h-[500px]">
       {pairs
-        .sort(({ pairOne, pairTwo }: any) => pairOne?.order - pairTwo?.order)
+        ?.sort(({ pairOne, pairTwo }: any) => pairOne?.order - pairTwo?.order)
         .map((pair: any, idx: number) => (
           <div
             key={idx}

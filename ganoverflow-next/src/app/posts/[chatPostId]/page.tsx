@@ -11,7 +11,7 @@ export default async function PostDetailPage({
   const chatPostId = params.chatPostId;
 
   const postData = await getOneChatPost(chatPostId); // todo: 해당 함수 반환값 인터페이스 정의
-  console.log("pd ", postData?.categoryName?.categoryName);
+  console.log("pd ", postData?.category?.categoryName);
 
   return (
     <div className="grid  dark:bg-vert-dark-gradient bg-vert-light-gradient">
