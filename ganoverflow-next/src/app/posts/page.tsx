@@ -6,6 +6,7 @@ import { Pagination } from "./Pagination";
 interface SearchParams {
   page?: number;
   category?: string;
+  tag?: string;
 }
 
 export default async function PostPage({
@@ -16,23 +17,31 @@ export default async function PostPage({
 }) {
   // 쿼리스트링에 http://localhost:3000/posts?page=1&category=tech 처럼 두개의 쿼리스트링 사용하도록 변경 예정
   const currentPage = searchParams.page ?? 1;
-  const currentCategory = searchParams.category ?? "전체";
+  const currentCategory = searchParams.category;
+  const currentTag = searchParams.tag;
+
+  const propsGetAllChatPostCategory: any = {
+    page: currentPage,
+  };
+
+  // view에 "전체" category 추가하도록 해야함
+  if (searchParams.category) {
+    propsGetAllChatPostCategory.category = currentCategory;
+  } else if (searchParams.tag) {
+    propsGetAllChatPostCategory.tag = currentTag;
+  }
 
   // const allPosts = await getAllChatPost({ page: currentPage });
-  const allPosts = await getAllChatPostByCategory({
-    category: currentCategory,
-    page: currentPage,
-  });
+  const allPosts = await getAllChatPostByCategory(propsGetAllChatPostCategory);
 
   console.log("allPosts==============================", allPosts);
-  console.log("ap0", allPosts.posts[0]);
 
   // ! 페이징용 게시물수
   const totalCount = allPosts.postCount;
   const totalPage = Math.ceil(totalCount / 10);
 
   // ! 10개 미만이면 10개로 채워줘야 함.
-  while (allPosts.posts.length < 10) {
+  while (allPosts?.posts?.length < 10) {
     allPosts.posts.push({
       post: "",
       id: 0,
@@ -60,8 +69,8 @@ export default async function PostPage({
             </tr>
           </thead>
           <tbody>
-            {allPosts.posts.length === 10 ? (
-              allPosts.posts.map((post: any, id: number) => (
+            {allPosts?.posts?.length === 10 ? (
+              allPosts?.posts?.map((post: any, id: number) => (
                 <tr
                   className="border border-x-0 border-spacing-2 border-zinc-500 hover:bg-slate-600"
                   key={id}
@@ -99,6 +108,7 @@ export default async function PostPage({
         <Pagination
           currentPage={currentPage}
           currentCategory={currentCategory}
+          currentTag={currentTag}
           totalPage={totalPage}
         />
       </div>

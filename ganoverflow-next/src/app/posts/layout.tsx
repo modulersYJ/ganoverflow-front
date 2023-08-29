@@ -1,6 +1,35 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getCategoriesAndTopTags } from "./api/chatposts";
 
 export default function PLPLayout({ children }: { children: React.ReactNode }) {
+  const [categoriesAndTags, setCategoriesAndTags] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategoriesAndTopTags = async () => {
+      const response = await getCategoriesAndTopTags();
+      setCategoriesAndTags(response);
+    };
+
+    fetchCategoriesAndTopTags();
+  }, []);
+
+  const handleCategoryClick = (categoryName: string) => {
+    console.log("clicked");
+    setSelectedCategory(categoryName);
+  };
+
+  const getTagsOfSelectedCategory = () => {
+    console.log("getTagsOfSelectedCategory");
+    const categoryData = categoriesAndTags.find(
+      (category) => category.categoryName === selectedCategory
+    );
+    console.log("getTagsOfSelectedCategory END:", categoryData?.tagsInfo || []);
+    return categoryData?.tagsInfo || [];
+  };
+
   return (
     <div className="flex flex-row justify-center gap-4">
       {children}
@@ -8,20 +37,37 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col justify-between gap-4 h-full">
           <div className="h-[30%] bg-red-700">
             <h2 className="tw-subtitle">Categories</h2>
-            {/* 카테고리 fetch해와서 동적할당 */}
-            <ul>
-              {["전체", "프로그래밍", "글쓰기 과제"].map((category, idx) => (
+            <ul className="flex flex-row justify-around h-full bg-green-700">
+              {categoriesAndTags.map((item, idx) => (
                 <li key={idx}>
-                  <Link href={`/posts?page=1&category=${category}`}>
-                    {category}
+                  <Link
+                    href={`/posts?page=1&category=${item.categoryName}`}
+                    passHref
+                  >
+                    <button
+                      onClick={() => handleCategoryClick(item.categoryName)}
+                    >
+                      {item.categoryName}
+                    </button>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="h-[50%] bg-red-700"></div>
-
+          <div className="h-[50%] bg-red-700">
+            <ul className="flex flex-row justify-around h-full bg-black">
+              {getTagsOfSelectedCategory().map((tagInfo: any, i: number) => (
+                <li key={tagInfo.tag} className="your-li-class">
+                  <Link href={`/posts?page=1&tag=${tagInfo.tag}`}>
+                    <button className="text-xs bg-secondary px-2 py-2 rounded-full">
+                      {tagInfo.tag} {tagInfo.frequency}
+                    </button>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="h-[20%] bg-red-700"></div>
         </div>
       </aside>
