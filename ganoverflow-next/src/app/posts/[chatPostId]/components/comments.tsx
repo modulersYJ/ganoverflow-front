@@ -20,10 +20,16 @@ export function CommentBox({
   const router = useRouter();
   const commentCount = comments?.length;
   const [commentData, setCommentData] = useState("");
+  const [reCommentData, setReCommentData] = useState("");
   const [reCommentOpen, setReCommentOpen] = useState<number | false>(false);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentData(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleReCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setReCommentData(e.target.value);
     console.log(e.target.value);
   };
 
@@ -46,20 +52,21 @@ export function CommentBox({
   // 대댓글 등록
   const handleReCommentSubmit = async (parent: number) => {
     if (!checkUserSigned()) return;
-    if (commentData === "") {
+    if (reCommentData === "") {
       alert("댓글을 입력하세요");
       return;
     }
     const res = await postReComment(
-      { content: commentData, parent: parent },
+      { content: reCommentData, parent: parent },
       chatPostId
     );
     if (res.status === 201) {
-      setCommentData("");
+      setReCommentData("");
       router.refresh();
     } else {
       console.log("등록 실패: ", res);
     }
+    setReCommentOpen(false);
   };
 
   // 대댓글열기
@@ -82,7 +89,7 @@ export function CommentBox({
                 <></>
               ) : (
                 <CommentRow
-                  idx={idx}
+                  idx={comment.commentId}
                   comment={comment}
                   handleReCommentOpen={handleReCommentOpen}
                   userDidLike={
@@ -91,12 +98,12 @@ export function CommentBox({
                   }
                 />
               )}
-              {reCommentOpen === idx ? (
+              {reCommentOpen === comment.commentId ? (
                 <div className="border-b-2 border-stone-500">
                   <textarea
                     name="comment"
-                    onChange={handleChange}
-                    value={commentData}
+                    onChange={handleReCommentChange}
+                    value={reCommentData}
                     className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
                     placeholder="댓글을 입력해 주세요"
                   />
@@ -117,7 +124,7 @@ export function CommentBox({
                   <div className="px-4">
                     <CommentRow
                       key={child.commentId}
-                      idx={i}
+                      idx={child.commentId}
                       comment={child}
                       handleReCommentOpen={handleReCommentOpen}
                       userDidLike={
@@ -126,6 +133,29 @@ export function CommentBox({
                         ).length === 1
                       }
                     />
+                    {reCommentOpen === child.commentId ? (
+                      <div className="border-b-2 border-stone-500">
+                        <textarea
+                          name="comment"
+                          onChange={handleReCommentChange}
+                          value={reCommentData}
+                          className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
+                          placeholder="댓글을 입력해 주세요"
+                        />
+                        <div className="flex justify-end pr-2">
+                          <button
+                            className="comment-submit w-32 h-8 mb-3 bg-secondary hover:bg-primary hover:text-white rounded-xl"
+                            onClick={() =>
+                              handleReCommentSubmit(child.commentId)
+                            }
+                          >
+                            등록
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ))
               ) : (
