@@ -1,11 +1,3 @@
-.main-logo-container,
-.logo-animate,
-.landing-logo-text,
-.landing-logo-textmask,
-.logo-symbol-container {
-  will-change: transform;
-}
-
 .main-logo-container {
   position: relative;
   width: 100%;
@@ -46,8 +38,8 @@
 
 .logo-symbol-container {
   position: absolute;
-  top: 13%;
-  left: 50.5%;
+  top: 15%;
+  left: 50%;
   transform: translateX(-50%);
   width: 16.875%;
   animation: moveSymbol 1s forwards;
@@ -152,46 +144,20 @@
   }
 }
 
-/* 심볼 애닌메이션 */
-.logo-symbol-container.foreground {
-  z-index: 3;
-}
-
+/* 초기 상태: 모든 요소를 투명하게 설정 */
+.path-item1,
 .rect-item2,
 .rect-item3,
 .rect-item4,
-.rect-item5 {
-  will-change: transform, opacity;
-}
-
-.rect-item2 {
+.rect-item5,
+.rect-item6,
+.rect-item7,
+.rect-item8,
+.rect-item9,
+.rect-item10,
+.rect-item11 {
   opacity: 0;
-  animation:
-    fadeIn 1s forwards,
-    diagonalMove 1s forwards;
-  /* transform-origin: 0 0; */
-}
-.rect-item3 {
-  opacity: 0;
-  animation:
-    fadeIn 1s forwards,
-    diagonalMove2 1s forwards;
-  /* transform-origin: 0 0; */
-}
-.rect-item4 {
-  opacity: 0;
-  animation:
-    fadeIn 1s forwards,
-    diagonalMove3 1s forwards;
-  /* transform-origin: 0 0; */
-}
-
-.rect-item5 {
-  opacity: 0;
-  animation:
-    fadeIn 1s forwards,
-    diagonalMove4 1s forwards;
-  /* transform-origin: 0 0; */
+  animation: fadeIn 1s forwards;
 }
 
 @keyframes fadeIn {
@@ -200,54 +166,51 @@
   }
 }
 
-@keyframes diagonalMove {
-  from {
-    transform: translateY(-15px) translateX(-15px) rotate(45deg);
-  }
-  to {
-    transform: translateY(0) translateX(0) rotate(45deg);
-  }
+.logo-symbol-container.foreground {
+  z-index: 3;
 }
 
-@keyframes diagonalMove2 {
-  from {
-    transform: translateY(-15px) translateX(-15px) rotate(45deg);
-  }
-  to {
-    transform: translateY(5px) translateX(15px) rotate(45deg);
-  }
-}
-
-@keyframes diagonalMove3 {
-  from {
-    transform: translateY(-15px) translateX(-15px) rotate(45deg);
-  }
-  to {
-    transform: translateY(10px) translateX(30px) rotate(45deg);
-  }
-}
-
-@keyframes diagonalMove4 {
-  from {
-    transform: translateY(-15px) translateX(-15px) rotate(45deg);
-  }
-  to {
-    transform: translateY(15px) translateX(45px) rotate(45deg);
-  }
+.logo-symbol-container.background {
+  z-index: 0;
 }
 
 .rect-item2 {
-  animation-delay: 0.1s;
+  z-index: 3;
+  animation-delay: 0.08s;
 }
-
 .rect-item3 {
-  animation-delay: 0.2s;
+  z-index: 3;
+  animation-delay: 0.16s;
 }
-
 .rect-item4 {
-  animation-delay: 0.3s;
+  z-index: 3;
+  animation-delay: 0.24s;
 }
-
 .rect-item5 {
-  animation-delay: 0.4s;
+  z-index: 3;
+  animation-delay: 0.32s;
+}
+.rect-item6 {
+  z-index: 3;
+  animation-delay: 0.37s;
+}
+.rect-item7 {
+  z-index: 3;
+  animation-delay: 0.42s;
+}
+.rect-item8 {
+  z-index: 3;
+  animation-delay: 0.47s;
+}
+.rect-item9 {
+  z-index: 0;
+  animation-delay: 0.52s;
+}
+.rect-item10 {
+  z-index: 0;
+  animation-delay: 0.57s;
+}
+.rect-item11 {
+  z-index: 0;
+  animation-delay: 0.62s;
 }

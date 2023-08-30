@@ -7,6 +7,52 @@ const LogoAnimate = () => {
       <div className="logo-animate">
         <svg
           className="logo-symbol-container foreground"
+          width="74"
+          height="152"
+          viewBox="0 0 74 152"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            className="rect-item2"
+            x="9.57715"
+            width="91.1054"
+            height="13.5439"
+            transform="rotate(45 9.57715 0)"
+            fill="#42C83C"
+          />
+          <rect
+            className="rect-item3"
+            x="9.57715"
+            y="26.5206"
+            width="91.1054"
+            height="13.5439"
+            transform="rotate(45 9.57715 26.5206)"
+            fill="#3AB435"
+          />
+          <rect
+            className="rect-item4"
+            x="9.57715"
+            y="52.2612"
+            width="91.1054"
+            height="13.5439"
+            transform="rotate(45 9.57715 52.2612)"
+            fill="#329D2D"
+          />
+          <rect
+            className="rect-item5"
+            x="9.57715"
+            y="78.0017"
+            width="91.1054"
+            height="13.5439"
+            transform="rotate(45 9.57715 78.0017)"
+            fill="#216D1D"
+          />
+        </svg>
+
+        {/* old version logo */}
+        {/* <svg
+          className="logo-symbol-container foreground"
           viewBox="0 0 240 151"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -79,41 +125,8 @@ const LogoAnimate = () => {
             transform="rotate(104.917 159.857 2.91016)"
             fill="#42C83C"
           />
-        </svg>
-        {/*  */}
-        <svg
-          className="logo-symbol-container background"
-          viewBox="0 0 240 151"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            className="rect-item9"
-            x="201.504"
-            y="29.7932"
-            width="68.1037"
-            height="10.1244"
-            transform="rotate(127.747 201.504 29.7932)"
-            fill="#42C83C"
-          />
-          <rect
-            className="rect-item10"
-            x="234.495"
-            y="83.2188"
-            width="68.1037"
-            height="10.1244"
-            transform="rotate(160.985 234.495 83.2188)"
-            fill="#42C83C"
-          />
-          <rect
-            className="rect-item11"
-            x="171.605"
-            y="131.396"
-            width="68.2005"
-            height="8.80007"
-            fill="#42C83C"
-          />
-        </svg>
+        </svg> */}
+
         <div className="landing-logo-textmask" />
         <LogoText />
       </div>
