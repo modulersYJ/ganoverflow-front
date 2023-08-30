@@ -26,7 +26,13 @@ export default function Mypage() {
       { chatpostName: "제목1", chatPostId: 1 },
       { chatpostName: "제목2", chatPostId: 2 },
     ],
-    comments: [{ content: "댓댓", chatPost: { chatPostName: "스레드1" } }],
+    comments: [
+      {
+        content: "댓댓",
+        commentId: 1,
+        chatPost: { chatPostName: "스레드1", chatPostId: 11 },
+      },
+    ],
   });
   useEffect(() => {
     getMypageData().then((data) => setMyPageData(data));
@@ -91,7 +97,7 @@ export default function Mypage() {
                   className="p-2 w-full border border-slate-100 hover:bg-secondary"
                 >
                   <Link
-                    href={`/posts/${comment?.chatPost?.chatPostName}`}
+                    href={`/posts/${comment?.chatPost?.chatPostId}#comment${comment.commentId}`}
                     className=""
                   >
                     {comment?.content}

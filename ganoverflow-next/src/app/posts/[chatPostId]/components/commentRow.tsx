@@ -33,7 +33,10 @@ export default function CommentRow({
   const userData = getSessionStorageItem("userData");
 
   return (
-    <div className="flex flex-row gap-2 border-b-2 border-stone-500">
+    <div
+      id={`comment${comment.commentId}`}
+      className="flex flex-row gap-2 border-b-2 w-full border-stone-500"
+    >
       <div className="border border-1 rounded-full m-4 w-20">사진</div>
       <div className="flex flex-col w-full ">
         <div className="flex flex-row justify-between">
@@ -114,7 +117,7 @@ export default function CommentRow({
         </div>
 
         <div className="flex flex-row w-full text-left py-2">
-          <div className="w-full flex flex-row justify-between items-center text-left">
+          <div className="w-full flex flex-row justify-between items-center text-left whitespace-normal">
             {comment.content.split("\n").map((word: string, idx: number) => (
               <React.Fragment key={idx}>
                 {word}
