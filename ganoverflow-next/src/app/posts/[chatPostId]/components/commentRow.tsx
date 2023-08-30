@@ -13,11 +13,10 @@ export const CommentRow = ({
   userDidLike,
 }: {
   comment: TComments;
-  handleReCommentOpen: (idx: number) => void;
   idx: number;
+  handleReCommentOpen: (idx: number) => void;
   userDidLike: boolean;
 }) => {
-  console.log("🚀 ~ file: commentRow.tsx:20 ~ userDidLike:", userDidLike);
   console.log("commentRow.tsx:16 ~ comment:", comment);
   const router = useRouter();
 
@@ -30,17 +29,6 @@ export const CommentRow = ({
       alert("등록 실패");
     }
   };
-
-  const userData = getSessionStorageItem("userData");
-
-  useEffect(() => {
-    if (
-      comment?.userLikes?.filter((user) => user.id === userData?.id).length ===
-      1
-    ) {
-      console.log("useEffect, if true", idx);
-    }
-  }, []);
 
   return (
     <div className="flex flex-row gap-2 border-b-2 border-stone-500">
@@ -119,7 +107,7 @@ export const CommentRow = ({
         </div>
 
         <div className="flex flex-row w-full text-left py-2">
-          <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-row justify-between items-center text-left">
             {comment.content.split("\n").map((word: string, idx: number) => (
               <React.Fragment key={idx}>
                 {word}
