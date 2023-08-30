@@ -6,11 +6,39 @@ export const getAllChatPost = async ({ page }: { page: number }) => {
   return response;
 };
 
+//===============구현중====================
+export const getAllChatPostByCategory = async ({
+  page,
+  category,
+  tag,
+}: {
+  page: number;
+  category?: string;
+  tag?: string;
+}) => {
+  const baseUrl = `chatposts/get-by-category?page=${page}`;
+  let urlWithFilterQuery = `${baseUrl}`;
+  if (category) {
+    urlWithFilterQuery = `${baseUrl}&category=${category}`;
+  } else if (tag) {
+    urlWithFilterQuery = `${baseUrl}&tag=${tag}`;
+  }
+  console.log("GET EndPoint: ", urlWithFilterQuery);
+  const response = await GET(urlWithFilterQuery);
+  return response;
+};
+
 export const getOneChatPost = async (chatPostId: string) => {
   const response = await GET(`chatposts/public/${chatPostId}`, {
     revalidateTime: 0,
   });
   return response;
+};
+
+// 모든 카테고리와 각각에 매치되는 탑5 태그와 그 갯수를 가져옵니다.
+export const getCategoriesAndTopTags = async () => {
+  const res = await GET("categories/categories-and-top-tags");
+  return res;
 };
 
 export const postComment = async (
