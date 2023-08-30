@@ -3,10 +3,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { postComment, postReComment } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
-import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
-import { CommentRow } from "./commentRow";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import dynamic from "next/dynamic";
 
 export function CommentBox({
   chatPostId,
@@ -78,10 +77,12 @@ export function CommentBox({
 
   const userData = getSessionStorageItem("userData");
 
+  const CommentRow = dynamic(() => import("./commentRow"), { ssr: false });
+
   return (
     <>
       <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
-      <div className="comments-commentbox border border-stone-500">
+      <div className="comments-commentbox border border-stone-500 whitespace-nowrap">
         {comments?.map((comment, idx) => {
           return (
             <div key={idx}>
@@ -103,6 +104,7 @@ export function CommentBox({
                 <div className="border-b-2 border-stone-500">
                   <textarea
                     name="comment"
+                    key={`textarea-${comment.commentId}`}
                     onChange={handleReCommentChange}
                     value={reCommentData}
                     className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
@@ -122,22 +124,26 @@ export function CommentBox({
               )}
               {comment?.childComments.length > 0 ? (
                 comment.childComments.map((child, i) => (
-                  <div className="px-4">
-                    <CommentRow
-                      key={child.commentId}
-                      idx={child.commentId}
-                      comment={child}
-                      handleReCommentOpen={handleReCommentOpen}
-                      userDidLike={
-                        child?.userLikes?.filter(
-                          (user) => user.id === userData?.id
-                        ).length === 1
-                      }
-                    />
+                  <>
+                    <div className="w-full flex flex-row" key={child.commentId}>
+                      <div className="w-10 border-b-2 border-stone-500">ㄴ</div>
+                      <CommentRow
+                        idx={child.commentId}
+                        comment={child}
+                        handleReCommentOpen={handleReCommentOpen}
+                        userDidLike={
+                          child?.userLikes?.filter(
+                            (user) => user.id === userData?.id
+                          ).length === 1
+                        }
+                      />
+                    </div>
+
                     {reCommentOpen === child.commentId ? (
-                      <div className="border-b-2 border-stone-500">
+                      <div className="">
                         <textarea
                           name="comment"
+                          key={`textarea-${child.commentId}`}
                           onChange={handleReCommentChange}
                           value={reCommentData}
                           className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
@@ -157,7 +163,7 @@ export function CommentBox({
                     ) : (
                       <></>
                     )}
-                  </div>
+                  </>
                 ))
               ) : (
                 <></>
