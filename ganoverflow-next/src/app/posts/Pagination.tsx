@@ -4,11 +4,23 @@ import Link from "next/link";
 
 export const Pagination = ({
   currentPage,
+  currentCategory,
+  currentTag,
   totalPage,
 }: {
   currentPage: number;
+  currentCategory?: string;
+  currentTag?: string;
   totalPage: number;
 }) => {
+  let optionalQueryString = "";
+
+  if (currentCategory) {
+    optionalQueryString = `category=${currentCategory}`;
+  } else if (currentTag) {
+    optionalQueryString = `tag=${currentTag}`;
+  }
+
   const pagingButtons = ["", "", "", "", ""];
 
   console.log("currentPage", currentPage, "totalPage", totalPage);
@@ -67,11 +79,15 @@ export const Pagination = ({
   return (
     <>
       <div className="md:inline hidden">
-        <Link href={`posts?page=1`}>
+        <Link href={`posts?page=1&${optionalQueryString}`}>
           <button className="p-2 px-2.5 m-2 rounded bg-primary">{"<<"}</button>
         </Link>
       </div>
-      <Link href={`posts?page=${currentPage - 5 > 0 ? currentPage - 5 : 1}`}>
+      <Link
+        href={`posts?page=${
+          currentPage - 5 > 0 ? currentPage - 5 : 1
+        }&${optionalQueryString}`}
+      >
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
           onClick={handlePrevFive}
@@ -80,7 +96,7 @@ export const Pagination = ({
         </button>
       </Link>
       {pagingButtons.map((e: string, idx: number) => (
-        <Link href={`posts?page=${e}`} key={idx}>
+        <Link href={`posts?page=${e}&${optionalQueryString}`} key={idx}>
           <button
             className={`p-2 px-2.5 m-2 rounded  ${
               currentPage.toString() == e ? "bg-primary" : "bg-secondary"
@@ -94,7 +110,7 @@ export const Pagination = ({
       <Link
         href={`posts?page=${
           totalPage > currentPage * 1 + 5 ? currentPage * 1 + 5 : totalPage
-        }`}
+        }&${optionalQueryString}`}
       >
         <button
           className="p-2 px-2.5 m-2 rounded bg-primary"
@@ -104,7 +120,7 @@ export const Pagination = ({
         </button>
       </Link>
       <div className="md:inline hidden">
-        <Link href={`posts?page=${totalPage}`}>
+        <Link href={`posts?page=${totalPage}&${optionalQueryString}`}>
           <button className="p-2 px-2.5 m-2 rounded bg-primary">{">>"}</button>
         </Link>
       </div>

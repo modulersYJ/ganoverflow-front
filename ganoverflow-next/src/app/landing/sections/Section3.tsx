@@ -19,7 +19,7 @@ const Section3 = () => {
 const Section3_2 = () => {
   return (
     <div
-      className="sticky top-20 z-[45] h-[38%] mt-40"
+      className="sticky top-20 z-[45] h-[38%] mt-0 md:mt-40"
       style={{
         width: "100%",
         opacity: "80%",
