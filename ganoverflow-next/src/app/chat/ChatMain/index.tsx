@@ -16,7 +16,7 @@ const ChatMain = ({ onClickNewChatBtn, scrollRef }: IChatMainProps) => {
   const [isNowAnswering, setIsNowAnswering] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col h-full ">
+    <div className="flex flex-col h-full " ref={scrollRef}>
       {isModalOpen && (
         <SaveChatModal
           categories={categories}
@@ -24,7 +24,7 @@ const ChatMain = ({ onClickNewChatBtn, scrollRef }: IChatMainProps) => {
         />
       )}
       <ChatTitle />
-      <ChatContent scrollRef={scrollRef} />
+      <ChatContent />
       <ChatControlsBtns
         onClickNewChatBtn={onClickNewChatBtn}
         isNowAnswering={isNowAnswering}
