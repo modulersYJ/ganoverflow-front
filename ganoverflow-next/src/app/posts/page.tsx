@@ -54,8 +54,8 @@ export default async function PostPage({
   }
 
   return (
-    <div className="flex flex-col justify-between items-center w-full gap-4">
-      <div className="grid w-4/5 h-[600px] bg-blue-500">
+    <div className="flex flex-col justify-between items-center w-full mx-auto gap-4">
+      <div className="grid w-full h-[600px]">
         <table className="board w-full h-[600px] place-self-center">
           <thead className="posts-tablehead border border-gray-300 border-x-0">
             <tr className="whitespace-nowrap">
