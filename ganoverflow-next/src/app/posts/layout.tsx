@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getCategoriesAndTopTags } from "./api/chatposts";
 import LottieCommunity from "./components/Lottie_Community";
+import LottieTrending from "./components/Lottie_Trending";
+import ChatIcon from "@mui/icons-material/Chat";
 
 export default function PLPLayout({ children }: { children: React.ReactNode }) {
   const [categoriesAndTags, setCategoriesAndTags] = useState<any[]>([]);
@@ -53,7 +55,10 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
             }}
           ></div>
           <LottieCommunity />
-          <h1 className="relative px-14 z-10 text-xl font-bold text-center w-full !text-white">
+          <h1
+            className="relative px-14 z-10 text-xl font-bold text-center w-full !text-white animate-fadeIn"
+            key={latestSelected}
+          >
             {latestSelected === "전체" ? "전체 보기" : latestSelected}
           </h1>
         </div>
@@ -61,9 +66,21 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
       </div>
       <aside className="mt-32 absolute right-12 hidden lg:block w-48 xl:w-56">
         <div className="flex flex-col justify-start gap-4 h-full">
+          <div className="flex flex-col gap-2">
+            <input
+              className="h-11 w-full border-2px border-white rounded-md bg-zinc-100 dark:bg-[#121212] px-2 py-1 font-normal outline-secondary"
+              name="searchBar"
+              // value={formData.username}
+              autoFocus
+              autoComplete="off"
+              placeholder="관심있는 제목, 내용을 검색해요"
+              // onChange={handleChange}
+            />
+          </div>
+
           <div className="pb-4 bg-gray-200 dark:bg-zinc-900 rounded-md">
             <div className="w-full border-b-[1px] border-white dark:border-zinc-700">
-              <p className="px-3 py-2 !text-base !font-bold !text-left text-zinc-700 dark:text-white">
+              <p className="px-3 py-2 !text-base !font-bold !text-left text-zinc-900 dark:text-white">
                 카테고리
               </p>
             </div>
@@ -93,7 +110,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="pb-4 bg-gray-200 dark:bg-zinc-900 rounded-md">
             <div className="w-full border-b-[1px] border-white dark:border-zinc-700">
-              <p className="px-3 py-2 !text-sm font-medium !text-left text-zinc-700 dark:text-white">
+              <p className="px-3 py-2 !text-sm font-medium !text-left text-zinc-900 dark:text-white">
                 이 카테고리에서 인기있는 태그
               </p>
             </div>
@@ -101,20 +118,12 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
               {getTagsOfSelectedCategory().map((tagInfo: any, i: number) => (
                 <li key={tagInfo.tag}>
                   <Link href={`/posts?page=1&tag=${tagInfo.tag}`}>
-                    {/* <div
-                      className={`text-xs font-bold text-zinc-600 border-zinc-600 bg-green-300 dark:text-zinc-400 dark:border-zinc-400 border-[1.5px] px-2 py-1 rounded-full hover:!text-white hover:border-white ${
-                        tagInfo.tag === selectedTag
-                          ? "!border-secondary !text-secondary"
-                          : ""
-                      }`}
-                      onClick={() => handleTagClick(tagInfo.tag)}
-                    > */}
                     <button
                       className="h-full inline-flex items-center animate-popIn"
                       onClick={() => handleTagClick(tagInfo.tag)}
                     >
                       <span
-                        className={`inline-flex items-center !text-xs whitespace-nowrap bg-gray-100 font-normal dark:bg-[#222222] text-primary dark:text-secondary h-3/4 my-2 px-2 rounded-full ${styleTransitionColor} ${
+                        className={`inline-flex items-center !text-xs whitespace-nowrap bg-gray-100 font-normal dark:bg-[#222222] text-primary dark:text-secondary h-3/4 my-2 px-2 rounded-full ${styleTransitionColor} hover:!bg-zinc-700 ${
                           tagInfo.tag === selectedTag
                             ? "!bg-primary !text-white"
                             : ""
@@ -131,7 +140,56 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
               ))}
             </ul>
           </div>
-          <div className="h-[20%] bg-red-700"></div>
+          <div className="pb-4 mt-4 bg-gray-200 dark:bg-zinc-900 rounded-md">
+            <div className="w-full border-b-[1px] border-white dark:border-zinc-700 relative">
+              <LottieTrending />
+              <p className="px-3 py-2 !text-sm font-medium !text-right mr-4 text-zinc-900 dark:text-white">
+                현재 <span className="text-secondary font-bold">핫한</span>{" "}
+                스레드
+              </p>
+            </div>
+            <div className="my-1">
+              <ul className="flex flex-col gap-4 px-4 py-2">
+                {[
+                  {
+                    title: "GANoverflow는 무슨 서비스인가?",
+                    commentCnt: 12,
+                    url: "http://localhost:3000/posts/231",
+                  },
+                  {
+                    title: "ㅋㅋ를 코드화!!!",
+                    commentCnt: 8,
+                    url: "http://localhost:3000/posts/131",
+                  },
+                  {
+                    title: "Say Cutely 시스템 명령 적용 모드",
+                    commentCnt: 6,
+                    url: "http://localhost:3000/posts/193",
+                  },
+                ].map((item: any, idx: number) => (
+                  <li key={idx}>
+                    <Link
+                      href={item.url}
+                      className={`w-full flex flex-row items-center justify-start gap-3 text-zinc-600 dark:text-zinc-300 hover:!text-zinc-600 ${styleTransitionColor}`}
+                    >
+                      <div className="!text-left text-xs w-3/4">
+                        {" "}
+                        {item.title.length > 16
+                          ? item.title.substring(0, 16) + ".."
+                          : item.title}
+                      </div>
+                      <div className="w-2/12 flex flex-row gap-1 mt-[1px]">
+                        <ChatIcon
+                          sx={{ fontSize: "15px", paddingTop: "3px" }}
+                        />
+                        <span className="text-xs ">{item.commentCnt}</span>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </aside>
     </div>
