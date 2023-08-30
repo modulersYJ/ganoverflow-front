@@ -40,12 +40,10 @@ const Section4 = () => {
             <h1 className="text-left !text-3xl sm:!text-5xl md:!text-6xl">
               <div className="block lg:inline-block text-center md:text-left">
                 <span className="!text-secondary">
-                  <span className="text-[#4285F4]">G</span>
-                  <span className="text-[#EA4335]">o</span>
-                  <span className="text-[#FBBC05]">o</span>
-                  <span className="text-[#4285F4]">g</span>
-                  <span className="text-[#34A853]">l</span>
-                  <span className="text-[#EA4335]">e</span>
+                  <span className="text-[#4285F4]">검</span>
+                  <span className="text-[#EA4335]">색</span>
+                  <span className="text-[#FBBC05]">엔</span>
+                  <span className="text-[#34A853]">진</span>
                 </span>
                 을<span> 정복하자!</span>
               </div>{" "}
