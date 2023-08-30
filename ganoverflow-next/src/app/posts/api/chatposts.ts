@@ -1,5 +1,5 @@
 import { commentAPI, starAPI } from "@/app/api/axiosInstanceManager";
-import { GET, POST } from "@/app/api/routeModule";
+import { GET, POST, PUT } from "@/app/api/routeModule";
 
 export const getAllChatPost = async ({ page }: { page: number }) => {
   const response = await GET(`chatposts?page=${page}`);
@@ -61,6 +61,26 @@ export const postComment = async (
   }
 };
 
+export const postReComment = async (
+  commentData: { content: string; parent: number },
+  chatPostId: string
+) => {
+  try {
+    const res = await POST({
+      API: commentAPI,
+      endPoint: `recomment/${chatPostId}`,
+      body: commentData,
+      isAuth: true,
+    });
+    return res;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      console.log("Error 401: 로그인 하세요!");
+      return [];
+    }
+  }
+};
+
 export const getComments = async (chatPostId: string) => {
   const res = await GET(`comments/all/${chatPostId}`);
   return res;
@@ -93,6 +113,32 @@ export const postStar = async ({
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       console.log("Error 401: 로그인 하세요!");
+      return [];
+    }
+  }
+};
+
+export const putCommentLike = async ({
+  commentId,
+  didLike,
+}: {
+  commentId: number;
+  didLike: boolean;
+}) => {
+  const body = {
+    didLike: didLike,
+  };
+  try {
+    const res = await PUT({
+      API: commentAPI,
+      endPoint: `like/${commentId}`,
+      isAuth: true,
+      body: body,
+    });
+    return res;
+  } catch (e: any) {
+    if (e.response && e.response.status === 401) {
+      console.log("Error 401 : 로그인 하세요!");
       return [];
     }
   }
