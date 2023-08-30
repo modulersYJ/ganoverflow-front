@@ -68,7 +68,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col justify-start gap-4 h-full">
           <div className="flex flex-col gap-2">
             <input
-              className="h-11 w-full border-2px border-white rounded-md bg-zinc-100 dark:bg-[#121212] px-2 py-1 font-normal outline-secondary"
+              className="h-11 w-full rounded-md border-[1px] border-primary bg-white dark:bg-[#121212] px-2 py-1 font-normal outline-secondary"
               name="searchBar"
               // value={formData.username}
               autoFocus
