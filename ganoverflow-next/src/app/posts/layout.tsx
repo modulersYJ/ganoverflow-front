@@ -56,7 +56,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
                     <div
                       className={`text-xs font-bold text-zinc-400 border-zinc-400 border-[1.5px] px-2 py-1 rounded-md hover:!text-white hover:border-white ${
                         item.categoryName === selectedCategory
-                          ? "border-secondary !text-secondary"
+                          ? "!border-secondary !text-secondary"
                           : ""
                       }`}
                       onClick={() => handleCategoryClick(item.categoryName)}
@@ -81,7 +81,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
                     <div
                       className={`text-xs font-bold text-zinc-400 border-zinc-400 border-[1.5px] px-2 py-1 rounded-full hover:!text-white hover:border-white ${
                         tagInfo.tag === selectedTag
-                          ? "border-secondary !text-secondary"
+                          ? "!border-secondary !text-secondary"
                           : ""
                       }`}
                       onClick={() => handleTagClick(tagInfo.tag)}
