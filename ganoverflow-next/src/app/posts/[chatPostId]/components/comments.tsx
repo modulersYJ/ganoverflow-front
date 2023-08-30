@@ -3,10 +3,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { postComment, postReComment } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
-import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
-import { CommentRow } from "./commentRow";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import dynamic from "next/dynamic";
 
 export function CommentBox({
   chatPostId,
@@ -78,6 +77,8 @@ export function CommentBox({
 
   const userData = getSessionStorageItem("userData");
 
+  const CommentRow = dynamic(() => import("./commentRow"), { ssr: false });
+
   return (
     <>
       <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
@@ -122,9 +123,8 @@ export function CommentBox({
               )}
               {comment?.childComments.length > 0 ? (
                 comment.childComments.map((child, i) => (
-                  <div className="px-4">
+                  <div className="px-4" key={child.commentId}>
                     <CommentRow
-                      key={child.commentId}
                       idx={child.commentId}
                       comment={child}
                       handleReCommentOpen={handleReCommentOpen}
