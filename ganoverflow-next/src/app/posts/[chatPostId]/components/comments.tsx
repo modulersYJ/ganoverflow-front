@@ -93,8 +93,9 @@ export function CommentBox({
                   comment={comment}
                   handleReCommentOpen={handleReCommentOpen}
                   userDidLike={
-                    comment.userLikes.filter((user) => user.id === userData?.id)
-                      .length === 1
+                    comment?.userLikes?.filter(
+                      (user) => user.id === userData.id
+                    ).length === 1
                   }
                 />
               )}
