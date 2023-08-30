@@ -26,6 +26,7 @@ export default function Mypage() {
       { chatpostName: "제목1", chatPostId: 1 },
       { chatpostName: "제목2", chatPostId: 2 },
     ],
+    comments: [{ content: "댓댓", chatPost: { chatPostName: "스레드1" } }],
   });
   useEffect(() => {
     getMypageData().then((data) => setMyPageData(data));
@@ -61,10 +62,10 @@ export default function Mypage() {
           </div>
         </div>
         <div className="mypage-box mypage-favorite-category ">
-          <h3 className="p-2 text-xl font-bold">관심있을만한 chat</h3>
+          <h3 className="p-2 text-xl font-bold">관심있을만한 스레드</h3>
         </div>
         <div className="mypage-box mypage-favorite-category">
-          <h3 className="p-2 text-xl font-bold">내가 작성한 chat</h3>
+          <h3 className="p-2 text-xl font-bold">내가 작성한 스레드</h3>
           <div>
             <ul>
               {mypageData?.myPosts?.map((post, idx: number) => (
@@ -74,6 +75,26 @@ export default function Mypage() {
                 >
                   <Link href={`/posts/${post?.chatPostId}`} className="">
                     {post?.chatpostName}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="mypage-box mypage-mycomments">
+          <h3 className="p-2 text-xl font-bold">내가 작성한 댓글</h3>
+          <div>
+            <ul>
+              {mypageData?.comments?.map((comment, idx: number) => (
+                <li
+                  key={idx}
+                  className="p-2 w-full border border-slate-100 hover:bg-secondary"
+                >
+                  <Link
+                    href={`/posts/${comment?.chatPost?.chatPostName}`}
+                    className=""
+                  >
+                    {comment?.content}
                   </Link>
                 </li>
               ))}
