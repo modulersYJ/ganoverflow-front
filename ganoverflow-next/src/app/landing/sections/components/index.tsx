@@ -3,6 +3,7 @@ import {
   Lottie_NatureBottom,
   Lottie_NatureFriendly,
   Lottie_SEO,
+  Lottie_ArrowDown,
 } from "./Lotties";
 import TextSwapLoop from "./TextSwapLoop";
 import ServiceVideo from "./ServiceVideo";
@@ -11,6 +12,7 @@ export {
   Lottie_NatureBottom,
   Lottie_NatureFriendly,
   Lottie_SEO,
+  Lottie_ArrowDown,
   TextSwapLoop,
   ServiceVideo,
 };
