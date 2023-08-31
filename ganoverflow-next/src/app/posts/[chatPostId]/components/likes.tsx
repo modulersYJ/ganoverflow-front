@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Error from "next/error";
 import { usePathname } from "next/navigation";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
+import { styleTransitionColor } from "../../layout";
 
 export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
   const checkUserSigned = useSignedCheck();
@@ -77,7 +78,7 @@ export const LikeBox = ({ chatPostId }: { chatPostId: string }) => {
         <div className="flex justify-center items-center">
           <button
             name="up"
-            className={`rounded-lg p-2 mx-8 h-12 bg-slate-300 hover:bg-slate-50`}
+            className={`rounded-lg p-2 mx-8 h-12 bg-slate-300 hover:bg-slate-50 ${styleTransitionColor}`}
             onClick={handleLike}
           >
             {userDidLike === 1 ? (

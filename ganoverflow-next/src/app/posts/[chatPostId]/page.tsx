@@ -14,8 +14,8 @@ export default async function PostDetailPage({
   console.log("pd ", postData?.category?.categoryName);
 
   return (
-    <div className="grid w-full dark:bg-vert-dark-gradient bg-vert-light-gradient">
-      <article className="post-detail-main w-5/6 md:w-3/5 place-self-center my-4">
+    <div className="grid w-full">
+      <article className="post-detail-main w-5/6 md:w-full place-self-center my-4">
         <PostDetailMain postData={postData} />
         <LikeBox chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />

@@ -18,6 +18,7 @@ import {
   loadChatStatusState,
   questionInputState,
 } from "@/atoms/chat";
+import { styleTransitionColor } from "@/app/posts/layout";
 
 const FolderDroppable: React.FC<{
   curFolder: IFolderWithPostsDTO;
@@ -48,7 +49,12 @@ const FolderDroppable: React.FC<{
   );
 
   return (
-    <div ref={drop} style={folderStyleProvider(isActive)} data-testid="folder">
+    <div
+      className={`${styleTransitionColor}`}
+      ref={drop}
+      style={folderStyleProvider(isActive)}
+      data-testid="folder"
+    >
       {idx === 0 ? (
         // 1. 무소속(Folder idx = 0) Posts
         <div className="min-h-[20px]">

@@ -29,9 +29,6 @@
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
     "lottie-web": "^5.10.2",
-    "markdown-it": "^13.0.1",
-    "markdown-it-anchor": "^8.6.7",
-    "markdown-it-table-of-contents": "^0.6.0",
     "next": "^13.4.12",
     "postcss": "8.4.24",
     "prismjs": "^1.29.0",
@@ -40,7 +37,6 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.7",
-    "react-syntax-highlighter": "^15.5.0",
     "recoil": "^0.7.7",
     "swiper": "^9.3.2",
     "tailwind-styled-components": "^2.2.0",
@@ -50,7 +46,6 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
     "@types/lodash": "^4.14.197",
-    "@types/react-syntax-highlighter": "^15.5.7",
     "@types/styled-components": "^5.1.26",
     "babel-plugin-styled-components": "^2.1.3"
   }

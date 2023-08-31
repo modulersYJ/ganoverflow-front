@@ -13,6 +13,7 @@ import {
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { GetHandleQuestionInput, GetHandleSubmitMsg } from "./handlers";
 import scrollDown from "@/utils/scrollDown";
+import { styleTransitionColor } from "@/app/posts/layout";
 
 const PromptConsole = ({
   isNowAnswering,
@@ -76,7 +77,7 @@ const PromptConsole = ({
     <div className="promptConsole h-20 fixed bottom-0 w-full flex items-center justify-center opacity-95 backdrop-blur-sm backdrop-saturate-100 bg-vert-light-gradient dark:bg-transparent dark:bg-vert-dark-gradient">
       <form
         onSubmit={(e) => {
-          onClickSubmitMsg({ e, prompt: questionInput, isContextMode: true });
+          onClickSubmitMsg({ e, prompt: questionInput, isContextMode: false });
         }}
         className="w-full max-w-[90%] sm:max-w-[70%] md:max-w-[40%] flex items-center "
       >
@@ -90,6 +91,16 @@ const PromptConsole = ({
           <textarea
             value={questionInput}
             onChange={onChangeQuestionInputWithTextareaSize}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                onClickSubmitMsg({
+                  e,
+                  prompt: questionInput,
+                  isContextMode: true,
+                });
+              }
+            }}
             className="rounded-full resize-none bg-white dark:bg-gray-500 text-black dark:text-gray-100 flex-grow mr-4 p-2 text-xs h-[32px] overflow-hidden outline-secondary"
             placeholder={"메시지를 입력하새우"}
           />
@@ -98,6 +109,7 @@ const PromptConsole = ({
           type="submit"
           disabled={chatSavedStatus === "T"}
           className={`rounded-2xl font-bold text-white text-xs !min-w-[60px] px-0 py-2.5 md:px-5 
+          ${styleTransitionColor}
             dark:
             ${questionInput ? "bg-primary" : "bg-gray-500"}`}
         >

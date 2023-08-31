@@ -11,7 +11,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { GetHandleCheckBox } from "./handlers";
 import { IChatPair } from "@/interfaces/chat";
 
-const ChatContent = ({ scrollRef }: any) => {
+const ChatContent = () => {
   const [chatPairs, setChatPairs] = useRecoilState(chatPairsState);
   const setCheckCnt = useSetRecoilState(checkCntState);
   const chatSavedStatus = useRecoilValue(chatSavedStatusState);
@@ -25,9 +25,13 @@ const ChatContent = ({ scrollRef }: any) => {
 
   return (
     <div className="chatCont flex-grow overflow-y-auto flex justify-center mb-[96px]">
-      <div className="chatBox w-full" ref={scrollRef}>
+      <div className="chatBox w-full">
         {chatPairs?.map((chatLine: IChatPair, index: number) => (
-          <ChatPairWrapper key={`${index}:${chatLine.question}`} index={index}>
+          <ChatPairWrapper
+            key={`${index}:${chatLine.question}`}
+            index={index}
+            isChatPage={true}
+          >
             <div className="chatPairBox w-full flex flex-col justify-center self-center">
               {chatLine.question && (
                 <MsgBox isQuestion={true}>{chatLine.question}</MsgBox>
