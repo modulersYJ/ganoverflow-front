@@ -44,6 +44,7 @@ export const login = async (
   setSessionStorageItem("userData", {
     id: response.data.id,
     nickname: response.data.nickname,
+    imgUrl: response.data.imgUrl,
   });
 
   return response.data;
