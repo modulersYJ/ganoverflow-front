@@ -11,6 +11,7 @@ interface SearchParams {
   page?: number;
   category?: string;
   tag?: string;
+  keyword?: string;
 }
 
 export default async function PostPage({
@@ -21,6 +22,7 @@ export default async function PostPage({
   const currentPage = searchParams.page ?? 1;
   const currentCategory = searchParams.category;
   const currentTag = searchParams.tag;
+  const keyword = searchParams.keyword;
 
   const propsGetAllChatPostCategory: any = {
     page: currentPage,
@@ -33,6 +35,10 @@ export default async function PostPage({
     }
   } else if (searchParams.tag) {
     propsGetAllChatPostCategory.tag = currentTag;
+  }
+
+  if (keyword) {
+    propsGetAllChatPostCategory.keyword = keyword;
   }
 
   const allPosts = await getAllChatPostByCategory(propsGetAllChatPostCategory);

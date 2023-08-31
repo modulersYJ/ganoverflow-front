@@ -13,6 +13,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [latestSelected, setLatestSelected] = useState<string | null>(null);
+  const [searchData, setSearchData] = useState<string>("");
 
   useEffect(() => {
     const fetchCategoriesAndTopTags = async () => {
@@ -43,6 +44,12 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
     return categoryData?.tagsInfo || [];
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {};
+
   return (
     <div className="relative flex flex-row justify-center gap-4">
       <div className="flex flex-col justify-between gap-6 items-center w-10/12 md:w-3/5 mt-10">
@@ -67,17 +74,54 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
       </div>
       <aside className="mt-32 absolute right-12 hidden lg:block w-48 xl:w-56">
         <div className="flex flex-col justify-start gap-4 h-full">
-          <div className="flex flex-col gap-2">
+          <form
+            action="/posts"
+            className="flex flex-row gap-2 border-[1px] rounded-md border-primary outline-secondary bg-white dark:bg-[#121212]"
+          >
             <input
-              className="h-11 w-full rounded-md border-[1px] border-primary bg-white dark:bg-[#121212] px-2 py-1 font-normal outline-secondary"
-              name="searchBar"
-              // value={formData.username}
+              className="h-11 w-full bg-inherit px-2 py-1 font-normal text-xs text-left"
+              name="keyword"
+              value={searchData}
               autoFocus
               autoComplete="off"
               placeholder="관심있는 제목, 내용을 검색해요"
-              // onChange={handleChange}
+              onChange={handleInputChange}
             />
-          </div>
+            <button
+              className=" text-white dark:text-black  rounded min-w-fit"
+              onClick={handleSearch}
+            >
+              <svg
+                fill="#12D761"
+                height="20px"
+                width="20px"
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                stroke="#12D761"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g>
+                    <g>
+                      <path d="M196.165,53.195c-75.163,0-136.312,61.149-136.312,136.312s61.15,136.312,136.312,136.312s136.312-61.149,136.312-136.312 S271.328,53.195,196.165,53.195z M196.165,299.221c-60.496,0-109.714-49.217-109.714-109.714 c0-60.497,49.219-109.714,109.714-109.714s109.714,49.217,109.714,109.714C305.879,250.004,256.662,299.221,196.165,299.221z"></path>{" "}
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M493.676,443.893L349.931,300.149c23.122-32.11,35.74-70.953,35.74-110.643C385.672,85.012,300.66,0,196.165,0 S6.659,85.012,6.659,189.506s85.012,189.507,189.507,189.507c33.349,0,65.797-8.715,94.494-25.293l146.593,146.594 c7.535,7.535,17.554,11.686,28.212,11.686s20.675-4.151,28.212-11.686C509.23,484.759,509.23,459.449,493.676,443.893z M474.869,481.507c-2.512,2.512-5.851,3.895-9.404,3.895c-3.552,0-6.893-1.383-9.404-3.895L302.037,327.483 c-2.571-2.571-5.975-3.895-9.407-3.895c-2.524,0-5.064,0.717-7.296,2.184c-26.543,17.431-57.375,26.644-89.169,26.644 c-89.829,0-162.909-73.08-162.909-162.909s73.08-162.909,162.909-162.909s162.909,73.08,162.909,162.909 c0,37.585-13.166,74.285-37.071,103.34c-4.35,5.286-3.975,13.011,0.864,17.852l152,152 C480.052,467.886,480.052,476.322,474.869,481.507z"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </form>
 
           <div className="pb-4 bg-gray-200 dark:bg-zinc-900 rounded-md">
             <div className="w-full border-b-[1px] border-white dark:border-zinc-700">
