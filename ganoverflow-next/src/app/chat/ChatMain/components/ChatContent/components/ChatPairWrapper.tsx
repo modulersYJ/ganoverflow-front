@@ -1,9 +1,11 @@
 const ChatPairWrapper = ({
   children,
   index,
+  isChatPage,
 }: {
   index: number;
   children: React.ReactNode;
+  isChatPage: boolean;
 }) => {
   return (
     <div
@@ -15,7 +17,11 @@ const ChatPairWrapper = ({
       } flex flex-row
 		`}
     >
-      <div className="chatPairContainer h-full flex flex-col sm:flex-row items-center w-full md:w-2/5 m-auto">
+      <div
+        className={`chatPairContainer h-full flex flex-col sm:flex-row items-center w-full md:w-2/5
+        ${isChatPage ? "md:w-2/5" : "md:w-4/5"}
+        m-auto`}
+      >
         {children}
       </div>
     </div>

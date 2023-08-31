@@ -1,0 +1,8 @@
+div > pre {
+  text-align: left;
+}
+
+pre {
+  background-color: #1c1d21 !important;
+  padding: 10px !important;
+}

@@ -1,7 +1,10 @@
+import React from "react";
+import hljs from "highlight.js";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
+// import "highlight.js/styles/an-old-hope.css";
+// import "highlight.js/styles/vs2015.css";
+import "highlight.js/styles/androidstudio.css";
+import "./md-wrapper.css";
 const MarkdownWrapper = ({ children }: any) => {
   const codeComponent = ({
     node,
@@ -15,18 +18,19 @@ const MarkdownWrapper = ({ children }: any) => {
 
     if (!inline) {
       return (
-        <SyntaxHighlighter
-          style={
-            gruvboxDark as {
-              [key: string]: React.CSSProperties;
-            }
-          }
-          language={language || "javascript"}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, "")}
-        </SyntaxHighlighter>
+        <div className="overflow-auto max-w-full rounded-md">
+          <pre {...props}>
+            <code
+              className={`${className} overflow-x-auto`}
+              dangerouslySetInnerHTML={{
+                __html: hljs.highlight(String(children), {
+                  // 문자열로 안전하게 변환
+                  language: language || "plaintext",
+                }).value,
+              }}
+            />
+          </pre>
+        </div>
       );
     } else {
       return (
@@ -43,7 +47,9 @@ const MarkdownWrapper = ({ children }: any) => {
         components={{
           p({ node, children }: { children: React.ReactNode; node: any }) {
             return (
-              <p className="answer-p !text-left ml-1 font-light">{children}</p>
+              <p className="answer-p !text-left ml-1 font-light !leading-5">
+                {children}
+              </p>
             );
           },
           ol({ node, children }: { children: React.ReactNode; node: any }) {
@@ -61,7 +67,6 @@ const MarkdownWrapper = ({ children }: any) => {
               </strong>
             );
           },
-
           code: codeComponent,
         }}
       >
@@ -74,7 +79,6 @@ const MarkdownWrapper = ({ children }: any) => {
 export default MarkdownWrapper;
 
 const transformStringToMarkdown = (text: string) => {
-  // 1. 부제목 식별, strong 변환
   const transformed = text.replace(/(\d\.) ([^:]+):/g, "$1 **$2**:");
   return transformed;
 };
