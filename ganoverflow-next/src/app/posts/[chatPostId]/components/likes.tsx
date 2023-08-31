@@ -3,7 +3,6 @@
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { getStars, postStar } from "@/app/posts/api/chatposts";
 import { useState, useEffect } from "react";
-import Error from "next/error";
 import { usePathname } from "next/navigation";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
 import { styleTransitionColor } from "../../layout";

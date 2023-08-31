@@ -1,14 +1,13 @@
-import { ErrorLottie } from "@/components/ui/Lottie/Error/ErrorLottie";
+import { ConstructingLottie } from "@/components/ui/Lottie/Constructing/ConstructingLottie";
 import Link from "next/link";
 
-export default function NotFound() {
+export default function PromptPage() {
   return (
     <div className="flex flex-col justify-center align-middle">
       <div className="w-full">
-        <ErrorLottie />
-        {/* <LoadingLottie /> */}
+        <ConstructingLottie />
       </div>
-      <h1>아무것도 없네요!</h1>
+      <h1>바쁘게 준비중이에요!</h1>
 
       <button
         className="
