@@ -11,10 +11,12 @@ export const getAllChatPostByCategory = async ({
   page,
   category,
   tag,
+  keyword,
 }: {
   page: number;
   category?: string;
   tag?: string;
+  keyword?: string;
 }) => {
   const baseUrl = `chatposts/get-by-category?page=${page}`;
   let urlWithFilterQuery = `${baseUrl}`;
@@ -23,6 +25,11 @@ export const getAllChatPostByCategory = async ({
   } else if (tag) {
     urlWithFilterQuery = `${baseUrl}&tag=${tag}`;
   }
+
+  if (keyword) {
+    urlWithFilterQuery = `${baseUrl}&keyword=${keyword}`;
+  }
+
   console.log("GET EndPoint: ", urlWithFilterQuery);
   const response = await GET(urlWithFilterQuery);
   return response;
