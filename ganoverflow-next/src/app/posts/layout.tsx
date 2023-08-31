@@ -6,6 +6,8 @@ import LottieCommunity from "./components/Lottie_Community";
 import LottieTrending from "./components/Lottie_Trending";
 import ChatIcon from "@mui/icons-material/Chat";
 
+export const styleTransitionColor = `transition duration-300 ease-in-out`;
+
 export default function PLPLayout({ children }: { children: React.ReactNode }) {
   const [categoriesAndTags, setCategoriesAndTags] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -41,7 +43,6 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
     return categoryData?.tagsInfo || [];
   };
 
-  const styleTransitionColor = `transition duration-300 ease-in-out`;
   return (
     <div className="relative flex flex-row justify-center gap-4">
       <div className="flex flex-col justify-between gap-6 items-center w-3/5 mt-10">

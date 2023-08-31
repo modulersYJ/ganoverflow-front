@@ -27,6 +27,7 @@ import TitleEdit from "@/components/ui/Chat/TitleEdit";
 import Box from "@mui/material/Box";
 import ChatIcon from "@mui/icons-material/Chat";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { styleTransitionColor } from "@/app/posts/layout";
 
 interface IChatpostDraggableProps {
   curChatpost: IChatPostBasicInfo;
@@ -93,9 +94,9 @@ const ChatpostDraggable: React.FC<IChatpostDraggableProps> = ({
   return (
     <div ref={drag} style={{ opacity }} data-testid={`chatpost`}>
       <div
-        className={`postUnit w-[calc(100%-8px)] cursor-move float-left mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-slate-600  ${
-          isDefault ? "pl-1" : "pl-5"
-        } cursor-pointer
+        className={`postUnit w-[calc(100%-8px)] cursor-move float-left mx-[4px] my-[1px] px-1 text-gray-200 py-1 hover:bg-gray-600 rounded-md  
+        ${styleTransitionColor}
+        ${isDefault ? "pl-1" : "pl-5"} cursor-pointer
 		opacity-[${opacity}]
 		`}
         style={{ opacity }}

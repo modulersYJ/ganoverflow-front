@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { getAllChatPost, getAllChatPostByCategory } from "./api/chatposts";
-import { parseDate, parseDateWithSeconds } from "@/utils/parseDate";
+import {
+  formatTimeDifference,
+  parseDate,
+  parseDateWithSeconds,
+} from "@/utils/parseDate";
 import { Pagination } from "./Pagination";
 
 interface SearchParams {
@@ -13,9 +17,7 @@ export default async function PostPage({
   searchParams,
 }: {
   searchParams: SearchParams;
-  // { [page: string]: number };
 }) {
-  // 쿼리스트링에 http://localhost:3000/posts?page=1&category=tech 처럼 두개의 쿼리스트링 사용하도록 변경 예정
   const currentPage = searchParams.page ?? 1;
   const currentCategory = searchParams.category;
   const currentTag = searchParams.tag;
@@ -87,7 +89,7 @@ export default async function PostPage({
                   </td>
                   <td className="py-1">{post?.user?.nickname ?? ""}</td>
                   <td className="py-1 hidden md:table-cell">
-                    {parseDateWithSeconds(post?.createdAt)}
+                    {formatTimeDifference(post?.createdAt, "ko-KR")}
                   </td>
                   <td className="py-1">{post?.comments?.length}</td>
                   <td className="py-1">{post?.viewCount}</td>

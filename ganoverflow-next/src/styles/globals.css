@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 /* Firefox */
- {
+::-moz-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);
 }
 
 /* Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 12px; /* 더 큰 크기로 조절 */
+  height: 8px;
+  background-color: var(--secondary);
 }
 
 ::-webkit-scrollbar-track {
@@ -18,11 +20,10 @@
   border-radius: 5px;
 }
 
-::- webkit-scrollbar-thumb {
-  width: 2px;
-  background-color: var(--secondary);
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
   border-radius: 14px;
-  border: 3px solid var(--primary);
+  border: none; /* border를 제거함 */
 }
 
 :root {
@@ -55,8 +56,17 @@
 html,
 body,
 #__next {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
     "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
