@@ -3,6 +3,7 @@
 export type TUserData = {
   id: string;
   nickname: string;
+  imgUrl: string;
 };
 
 export function setSessionStorageItem(key: string, value: TUserData | null) {

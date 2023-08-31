@@ -4,7 +4,10 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { postComment, postReComment } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
-import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import {
+  TUserData,
+  getSessionStorageItem,
+} from "@/utils/common/sessionStorage";
 import dynamic from "next/dynamic";
 
 export function CommentBox({
@@ -198,7 +201,7 @@ export type TComments = {
   content: string;
   createdAt: string;
   delYn: string;
-  user: { username: string; nickname: string };
+  user: TUserData;
   userLikes: any[];
   parent?: TComments;
   childComments: TComments[];

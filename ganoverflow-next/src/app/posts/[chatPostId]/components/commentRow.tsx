@@ -6,7 +6,8 @@ import { putCommentLike } from "../../api/chatposts";
 import { useRouter } from "next/navigation";
 import { getSessionStorageItem } from "@/utils/common/sessionStorage";
 import { useSignedCheck } from "@/hooks/useSignedCheck";
-
+import Link from "next/link";
+import Image from "next/image";
 export default function CommentRow({
   comment,
   idx,
@@ -40,7 +41,15 @@ export default function CommentRow({
       id={`comment${comment.commentId}`}
       className="flex flex-row gap-2 border-b-2 w-full border-stone-500"
     >
-      <div className="border border-1 rounded-full m-4 w-20">사진</div>
+      <Link href={`/users/${comment?.user?.id}`}>
+        <Image
+          className="rounded-full mt-1"
+          alt={comment?.user?.nickname}
+          width={30}
+          height={30}
+          src={comment?.user?.imgUrl}
+        />
+      </Link>
       <div className="flex flex-col w-full ">
         <div className="flex flex-row justify-between">
           <div className="w-1/3 text-left py-2 flex gap-2">
