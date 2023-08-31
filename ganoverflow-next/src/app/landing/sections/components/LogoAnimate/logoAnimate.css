@@ -27,8 +27,16 @@
   width: 37.5%;
   z-index: 1;
   transform: translateX(-50%);
-  animation: moveText 1s forwards;
+  animation:
+    moveText 1s forwards,
+    updateZIndex 4s forwards 4.5s;
   animation-delay: 1.4s;
+}
+
+@keyframes updateZIndex {
+  to {
+    z-index: 3;
+  }
 }
 
 .landing-logo-textmask {
