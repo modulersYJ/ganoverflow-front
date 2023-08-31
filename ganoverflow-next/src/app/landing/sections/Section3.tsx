@@ -26,7 +26,7 @@ const Section3_2 = () => {
         backgroundColor: "black",
       }}
     >
-      <div className="sec-3-2 flex flex-col gap-10 mx-auto font-oswald w-full h-full py-16 px-[15%]">
+      <div className="sec-3-2 flex flex-col gap-10 mx-auto font-oswald w-full h-full py-[5%] sm:py-16 px-[0%] sm:px-[15%]">
         <h1 className="text-center !text-xl sm:!text-3xl md:!text-3xl lg:!text-5xl">
           <p>유용한 AI 대화내역,</p>
           <p>간편하게 기록하고 관리하세요</p>
