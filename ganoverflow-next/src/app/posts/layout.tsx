@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getCategoriesAndTopTags } from "./api/chatposts";
-import LottieCommunity from "./components/Lottie_Community";
-import LottieTrending from "./components/Lottie_Trending";
+import LottieCommunity from "./components/Lotties/Lottie_Community";
+import LottieTrending from "./components/Lotties/Lottie_Trending";
 import ChatIcon from "@mui/icons-material/Chat";
 import SearchIcon from "@mui/icons-material/Search";
 
