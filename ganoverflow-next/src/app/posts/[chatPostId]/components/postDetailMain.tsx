@@ -35,7 +35,7 @@ const PostHeader: React.FC<IPostHeaderProps> = ({
   category,
 }) => {
   return (
-    <div className="post-chatpostName-box border-[1px] border-x-0 border-zinc-600 py-5 flex flex-row justify-between">
+    <div className="post-chatpostName-box border-[1px] border-x-0 border-zinc-600 py-5 px-2 md:px-8 flex flex-row justify-between">
       <div className="w-3/12 post-user-category-box flex flex-row justify-between">
         <div className="post-stats flex flex-row gap-2 justify-start items-end text-gray-700 dark:text-gray-500 text-xs font-light">
           <span className="text-left">{nickname}</span>

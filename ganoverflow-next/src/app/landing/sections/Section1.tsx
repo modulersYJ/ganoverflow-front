@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { LogoAnimate, Lottie_NatureBottom } from "./components";
+import {
+  LogoAnimate,
+  Lottie_ArrowDown,
+  Lottie_NatureBottom,
+} from "./components";
 
 const Section1 = () => {
   return (
@@ -14,6 +18,7 @@ const Section1 = () => {
         </button>
       </Link>
       <Lottie_NatureBottom />
+      <Lottie_ArrowDown />
     </section>
   );
 };
