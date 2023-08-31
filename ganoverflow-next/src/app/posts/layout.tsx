@@ -45,7 +45,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative flex flex-row justify-center gap-4">
-      <div className="flex flex-col justify-between gap-6 items-center w-11/12 md:w-3/5 mt-10">
+      <div className="flex flex-col justify-between gap-6 items-center w-10/12 md:w-3/5 mt-10">
         <div className="filter-title relative flex items-center justify-start w-full h-16">
           <div
             className="absolute inset-0 opacity-75 z-0 rounded-lg"
