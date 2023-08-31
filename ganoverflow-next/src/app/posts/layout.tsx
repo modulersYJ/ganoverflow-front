@@ -5,6 +5,7 @@ import { getCategoriesAndTopTags } from "./api/chatposts";
 import LottieCommunity from "./components/Lottie_Community";
 import LottieTrending from "./components/Lottie_Trending";
 import ChatIcon from "@mui/icons-material/Chat";
+import SearchIcon from "@mui/icons-material/Search";
 
 export const styleTransitionColor = `transition duration-300 ease-in-out`;
 
@@ -13,6 +14,7 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [latestSelected, setLatestSelected] = useState<string | null>(null);
+  const [searchData, setSearchData] = useState<string>("");
 
   useEffect(() => {
     const fetchCategoriesAndTopTags = async () => {
@@ -43,9 +45,15 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
     return categoryData?.tagsInfo || [];
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {};
+
   return (
     <div className="relative flex flex-row justify-center gap-4">
-      <div className="flex flex-col justify-between gap-6 items-center w-3/5 mt-10">
+      <div className="flex flex-col justify-between gap-6 items-center w-10/12 md:w-3/5 mt-10">
         <div className="filter-title relative flex items-center justify-start w-full h-16">
           <div
             className="absolute inset-0 opacity-75 z-0 rounded-lg"
@@ -67,17 +75,26 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
       </div>
       <aside className="mt-32 absolute right-12 hidden lg:block w-48 xl:w-56">
         <div className="flex flex-col justify-start gap-4 h-full">
-          <div className="flex flex-col gap-2">
+          <form
+            action="/posts"
+            className="flex flex-row gap-2 border-[1px] rounded-md border-primary outline-secondary bg-white dark:bg-[#121212]"
+          >
             <input
-              className="h-11 w-full rounded-md border-[1px] border-primary bg-white dark:bg-[#121212] px-2 py-1 font-normal outline-secondary"
-              name="searchBar"
-              // value={formData.username}
+              className="relative h-11 w-full bg-inherit px-2 pl-3 py-1 font-normal text-xs text-left outline-none rounded-md"
+              name="keyword"
+              value={searchData}
               autoFocus
               autoComplete="off"
               placeholder="관심있는 제목, 내용을 검색해요"
-              // onChange={handleChange}
+              onChange={handleInputChange}
             />
-          </div>
+            <button
+              className="absolute right-1 top-2.5 text-white dark:text-black  rounded min-w-fit"
+              onClick={handleSearch}
+            >
+              <SearchIcon className="!text-secondary dark:!text-white mr-1" />
+            </button>
+          </form>
 
           <div className="pb-4 bg-gray-200 dark:bg-zinc-900 rounded-md">
             <div className="w-full border-b-[1px] border-white dark:border-zinc-700">
@@ -155,17 +172,17 @@ export default function PLPLayout({ children }: { children: React.ReactNode }) {
                   {
                     title: "GANoverflow는 무슨 서비스인가?",
                     commentCnt: 12,
-                    url: "http://localhost:3000/posts/231",
+                    url: "/posts/231",
                   },
                   {
                     title: "ㅋㅋ를 코드화!!!",
                     commentCnt: 8,
-                    url: "http://localhost:3000/posts/131",
+                    url: "/posts/131",
                   },
                   {
                     title: "Say Cutely 시스템 명령 적용 모드",
                     commentCnt: 6,
-                    url: "http://localhost:3000/posts/193",
+                    url: "/posts/193",
                   },
                 ].map((item: any, idx: number) => (
                   <li key={idx}>

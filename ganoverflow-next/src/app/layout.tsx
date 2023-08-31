@@ -19,7 +19,10 @@ import {
   useSetRecoilState,
 } from "recoil";
 import { userState } from "@/atoms/user";
-import { getSessionStorageItem } from "@/utils/common/sessionStorage";
+import {
+  TUserData,
+  getSessionStorageItem,
+} from "@/utils/common/sessionStorage";
 import { foldersWithChatpostsState } from "@/atoms/folder";
 import {
   TLoadChatStatus,
@@ -237,7 +240,7 @@ const UserDropdownButton = ({
   userData,
   onClickSetLogout,
 }: {
-  userData: { id: string; nickname: string };
+  userData: TUserData;
   onClickSetLogout: () => void;
 }) => {
   const setChatPairs = useSetRecoilState(chatPairsState);
@@ -266,11 +269,16 @@ const UserDropdownButton = ({
   };
 
   return (
-    <div className="relative 2xl:mr-10 flex flex-row justify-center group py-4">
+    <div className="relative 2xl:mr-10 flex flex-row justify-center group mr-8">
       <Link href="/" passHref>
         <button className="font-bold hover:text-gray-400">
-          {userData?.nickname}
-          <span className="text-xs">님</span>
+          <Image
+            className="rounded-full mt-1"
+            alt={userData.nickname}
+            width={38}
+            height={38}
+            src={userData?.imgUrl}
+          />
         </button>
       </Link>
 
@@ -311,7 +319,7 @@ const Footer = () => {
         </section>
         <ul className="section_social"></ul>
         <small className="txt_copyright">
-          © <a href="https://www.ganoverflow.com">GanOverflow</a> All rights
+          © <a href="https://www.ganoverflow.com">GANoverflow</a> All rights
           reserved.
         </small>
       </div>
