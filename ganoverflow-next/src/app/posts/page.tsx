@@ -107,7 +107,7 @@ export default async function PostPage({
           </tbody>
         </table>
       </div>
-      <div className="pagination-wrapper">
+      <div className="pagination-wrapper flex flex-row">
         <Pagination
           currentPage={currentPage}
           currentCategory={currentCategory}
