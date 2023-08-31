@@ -1,12 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllChatPost, getAllChatPostByCategory } from "./api/chatposts";
-import {
-  formatTimeDifference,
-  parseDate,
-  parseDateWithSeconds,
-} from "@/utils/parseDate";
+import { getAllChatPostByCategory } from "./api/chatposts";
+import { formatTimeDifference } from "@/utils/parseDate";
 import { Pagination } from "./Pagination";
+import { IconComment, IconStar, IconVisibility } from "./components/icons";
 
 interface SearchParams {
   page?: number;
@@ -66,90 +63,83 @@ export default async function PostPage({
     <div className="flex flex-col justify-between items-center w-full mx-auto gap-4">
       <div className="grid w-full">
         <div className="board w-full place-self-center">
-          {/* <thead className="posts-tablehead border border-gray-300 border-x-0">
-            <tr className="whitespace-nowrap">
-              <th className="p-2.5">번호</th>
-              <th className="p-2.5 hidden md:block">카테고리</th>
-              <th className="p-2.5">제목</th>
-              <th className="p-2.5">글쓴이</th>
-              <th className="p-2.5 hidden md:block">작성일</th>
-              <th className="p-2.5">댓글</th>
-              <th className="p-2.5">조회수</th>
-              <th className="p-2.5 hidden md:block">추천</th>
-            </tr>
-          </thead> */}
           <div>
             {allPosts?.posts?.length === 10 ? (
               allPosts?.posts?.map((post: any, id: number) => (
                 <div key={id}>
-                  <div className=" border border-x-0 border-spacing-2 border-zinc-500 hover:bg-slate-600 flex flex-col">
-                    <div className="upperline flex flex-row pt-2 pb-1 gap-2 items-center">
-                      <div
-                        className={`flex flex-row text-xs ${
-                          post?.category?.categoryName ?? "hidden"
-                        } justify-start border w-fit h-6 mx-1 p-1 border-stone-500 rounded-md bg-slate-200 dark:bg-[#121212]  font-normal overflow-x-hidden whitespace-nowrap`}
-                      >
-                        {post?.category?.categoryName ?? ""}
-                      </div>
-                      <Link href={`/posts/${post?.chatPostId}`}>
-                        <div className="font-extrabold text-lg text-left">
-                          {post?.chatpostName}
+                  <div className="px-1 py-2 border-0 border-b-[1px]  border-zinc-500 hover:bg-zinc-600 flex flex-col gap-1 transition duration-300 ease-in-out rounded-sm">
+                    <div className="upperline flex flex-row justify-between pb-1 gap-2">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-row gap-1">
+                          <div
+                            className={`chip-category flex flex-row text-xs ${
+                              post?.category?.categoryName ?? "hidden"
+                            } justify-start w-fit h-6 px-1.5 py-1 text-primary dark:text-white border-0 dark:border-[1px] dark:border-stone-500 rounded-md bg-gray-200 dark:bg-black  font-normal overflow-x-hidden whitespace-nowrap`}
+                          >
+                            {post?.category?.categoryName ?? ""}
+                          </div>
                         </div>
-                      </Link>
-                      <div className="comments">[{post?.comments?.length}]</div>
-                    </div>
-                    <div className="lowerline flex flex-row items-center gap-2">
-                      <div className="userbox flex flex-row gap-2 pb-1 items-center">
-                        <Link href={`/users/${post?.user?.id}`}>
-                          <Image
-                            className="rounded-full mt-1"
-                            alt={post?.user?.nickname}
-                            width={30}
-                            height={30}
-                            src={post?.user?.imgUrl}
-                          />
+                        <Link className="" href={`/posts/${post?.chatPostId}`}>
+                          <div className="font-bold text-lg text-left pl-1">
+                            {post?.chatpostName}
+                          </div>
                         </Link>
+                      </div>
+                      <div className="flex flex-row gap-2 text-xs">
+                        <div className="stars flex flex-row text-zinc-500">
+                          <IconStar />
+                          <span>
+                            {post?.stars.reduce(
+                              (acc: number, curr: any) => acc + curr.value,
+                              0
+                            )}
+                          </span>
+                        </div>
+                        <div className="comments text-zinc-500 flex flex-row gap-1">
+                          <IconComment />
+                          {post?.comments?.length}
+                        </div>
+                        <div className="viewcount flex flex-row gap-1 text-zinc-500">
+                          <IconVisibility />
+                          <span>{post?.viewCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="lowerline flex flex-row items-center justify-between gap-5 ml-1">
+                      <div className="flex flex-row gap-1">
+                        <div className="userbox flex flex-row gap-2 items-center">
+                          <Link href={`/users/${post?.user?.id}`}>
+                            <Image
+                              className="rounded-full mt-1"
+                              alt={post?.user?.nickname}
+                              width={24}
+                              height={24}
+                              src={post?.user?.imgUrl}
+                            />
+                          </Link>
 
-                        <div className="">{post?.user?.nickname ?? ""}</div>
+                          <div className="dark:text-zinc-300 text-xs pt-1">
+                            {post?.user?.nickname ?? ""}
+                          </div>
+                          <div className="date text-xs text-zinc-500 pt-1">
+                            {formatTimeDifference(post?.createdAt, "ko-KR")}
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="date">
-                        {formatTimeDifference(post?.createdAt, "ko-KR")}
-                      </div>
-                      <div className="viewcount flex flex-row gap-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />{" "}
-                          <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />{" "}
-                        </svg>
-                        <span>{post?.viewCount}</span>
-                      </div>
-                      <div className="stars flex flex-row">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="1em"
-                          viewBox="0 0 512 512"
-                          style={{
-                            fill: "white",
-                            width: "25px",
-                            height: "1rem",
-                            fontSize: "0.8rem",
-                            pointerEvents: "none",
-                          }}
-                        >
-                          <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
-                        </svg>
-                        <span>
-                          {post?.stars.reduce(
-                            (acc: number, curr: any) => acc + curr.value,
-                            0
-                          )}
-                        </span>
+                      <div className="flex flex-row gap-1.5">
+                        {post?.tags?.map((tag: string, idx: number) => (
+                          <Link href={`/posts?page=1&tag=${tag}`} key={idx}>
+                            <button className="h-full inline-flex items-center animate-popIn">
+                              <span
+                                className={`inline-flex items-center !text-xs whitespace-nowrap bg-gray-200 font-normal dark:bg-[#2e2e2e] text-primary  dark:text-white h-3/4 my-1.5 px-2 rounded-full $ hover:!bg-zinc-700 
+                                     transition duration-300 ease-in-out`}
+                              >
+                                {tag}{" "}
+                              </span>
+                            </button>
+                          </Link>
+                        ))}
                       </div>
                     </div>
                   </div>

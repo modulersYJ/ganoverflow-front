@@ -183,14 +183,14 @@ const Header = ({
                 className="text-[#404040] hover:text-black dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
                 passHref
               >
-                게시판
+                스레드
               </Link>
               <Link
-                href="/"
+                href="/prompts"
                 className="text-[#404040] hover:text-black dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
                 passHref
               >
-                기타
+                Prompts
               </Link>
               <a
                 className="text-[#333336] hover:text-[#111112] dark:text-[#AEAEB2] dark:hover:text-[#7A7A7C] font-notoSansKR text-xs px-4 py-5 font-medium transition-colors duration-200"
@@ -198,7 +198,7 @@ const Header = ({
                 href="https://github.com/modulersYJ"
                 rel="noopener noreferrer"
               >
-                modulers
+                Modulers
               </a>
             </div>
           </div>
