@@ -36,9 +36,9 @@ export default function CommentRow({
   return (
     <div
       id={`comment${comment.commentId}`}
-      className="flex flex-row gap-2 w-full mt-4"
+      className="flex flex-row gap-2 w-full"
     >
-      <div className="flex flex-col w-full ">
+      <div className="flex flex-col w-full border-b-[1px] dark:border-zinc-700 mb-4">
         <div className="flex flex-row justify-between">
           <div className="w-1/3 text-left py-2 flex flex-row items-center gap-2">
             <Link href={`/users/${comment?.user?.id}`}>
