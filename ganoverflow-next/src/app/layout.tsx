@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import Head from "next/head";
 import Image from "next/image";
@@ -12,12 +12,7 @@ import { logout } from "./accounts/login/api/login";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 
-import {
-  RecoilRoot,
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/user";
 import {
   TUserData,
@@ -35,6 +30,7 @@ import {
 import { setAccessToken } from "./api/jwt";
 import { LoginBoxModal } from "./accounts/login/LoginBoxModal";
 import { TIsSigned, isSignedState } from "@/atoms/sign";
+import CustomMuiDarkSwitch from "@/components/common/Button/CustomMuiDarkSwitch";
 
 const siteTitle = "최고의 머시깽이, GanOverflow";
 const siteDescription = "Gan Overflow는 ...입니당. 최고의 경험을 누려보세요!";
@@ -153,6 +149,8 @@ const Header = ({
     };
   }, [isOffCanvasOpen, user]);
 
+  const curPathname = usePathname();
+
   return (
     <header>
       {isSigned === TIsSigned.F && <LoginBoxModal />}
@@ -203,9 +201,12 @@ const Header = ({
             </div>
           </div>
           <div className="flex flex-row col-sapn-1 self-center gap-6">
-            <button className="text-xs" onClick={toggleDarkMode}>
-              {isDarkMode === true ? "Light" : "Dark"}
-            </button>
+            {curPathname !== "/" && (
+              <CustomMuiDarkSwitch
+                isDarkMode={isDarkMode}
+                toggleDarkMode={toggleDarkMode}
+              />
+            )}
             <div className="self-center">
               <div className="hidden md:flex font-bold hover:text-gray-400">
                 {user === null ? (
@@ -249,8 +250,6 @@ const UserDropdownButton = ({
   const setQuestionInput = useSetRecoilState(questionInputState);
   const setFoldersData = useSetRecoilState(foldersWithChatpostsState);
   const setLoadChatStatus = useSetRecoilState(loadChatStatusState);
-
-  const router = useRouter();
 
   const onClickLogOut = async () => {
     console.log("유저아이디:", userData.id);
