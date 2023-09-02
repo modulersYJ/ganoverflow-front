@@ -17,6 +17,7 @@ export default async function PostDetailPage({
     <div className="grid w-full">
       <article className="post-detail-main w-5/6 md:w-full place-self-center my-4">
         <PostDetailMain postData={postData} />
+
         <LikeBox chatPostId={chatPostId} />
         <CommentBox chatPostId={chatPostId} comments={postData?.comments} />
       </article>

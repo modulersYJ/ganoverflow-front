@@ -84,8 +84,8 @@ export function CommentBox({
 
   return (
     <>
-      <div className="comments-totalcount">{`전체 댓글 ${commentCount}개`}</div>
-      <div className="comments-commentbox border border-stone-500 whitespace-nowrap">
+      <div className="comments-totalcount mt-12 mb-3 w-full items-start dark:text-gray-400">{`전체 댓글 ${commentCount}개`}</div>
+      <div className="comments-commentbox border-0 dark:border rounded-lg bg-gray-200 dark:bg-transparent border-stone-500 whitespace-nowrap  px-4 py-2">
         {comments?.map((comment, idx) => {
           return (
             <div key={idx}>
@@ -104,13 +104,13 @@ export function CommentBox({
                 />
               )}
               {reCommentOpen === comment.commentId ? (
-                <div className="border-b-2 border-stone-500">
+                <div className="">
                   <textarea
                     name="comment"
                     key={`textarea-${comment.commentId}`}
                     onChange={handleReCommentChange}
                     value={reCommentData}
-                    className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
+                    className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600  text-lg text-left"
                     placeholder="댓글을 입력해 주세요"
                   />
                   <div className="flex justify-end pr-2">
@@ -128,8 +128,10 @@ export function CommentBox({
               {comment?.childComments.length > 0 ? (
                 comment.childComments.map((child, i) => (
                   <>
-                    <div className="w-full flex flex-row" key={child.commentId}>
-                      <div className="w-10 border-b-2 border-stone-500">ㄴ</div>
+                    <div
+                      className="w-full flex flex-row pl-8 border-l-4 border-gray-300"
+                      key={child.commentId}
+                    >
                       <CommentRow
                         idx={child.commentId}
                         comment={child}
@@ -149,7 +151,7 @@ export function CommentBox({
                           key={`textarea-${child.commentId}`}
                           onChange={handleReCommentChange}
                           value={reCommentData}
-                          className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
+                          className="border border-gray-300 w-11/12 h-40 p-1 m-3 bg-gray-100 dark:bg-gray-600 text-lg text-left"
                           placeholder="댓글을 입력해 주세요"
                         />
                         <div className="flex justify-end pr-2">
@@ -180,7 +182,7 @@ export function CommentBox({
           name="comment"
           onChange={handleChange}
           value={commentData}
-          className="border border-gray-300 w-full h-40 p-2 my-3 bg-gray-100 dark:bg-gray-600 text-white text-lg text-left"
+          className="border border-gray-300 w-full h-40 p-2 my-3 bg-gray-100 dark:bg-gray-600 text-lg text-left"
           placeholder="댓글을 입력해 주세요"
         />
         <div className="flex justify-end">
