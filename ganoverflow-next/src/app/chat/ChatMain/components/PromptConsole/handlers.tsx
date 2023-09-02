@@ -49,7 +49,7 @@ export const GetHandleSubmitMsg = ({
     setCurrStream("");
 
     //
-    const systemCmds: string[] = []; // 배열에 시스템커맨드 넣어주면 자동적용되어요
+    const systemCmds: string[] = ['say friendly']; // 배열에 시스템커맨드 넣어주면 자동적용되어요
 
     const prompts = _(true) // lodash 체이닝 (true=시작의 의미, 로직영향X)
       .thru(() => getInitialPromptsChain(isContextMode, prompt, chatPairs))
@@ -74,7 +74,6 @@ export const GetHandleSubmitMsg = ({
     });
   };
 };
-
 
 //
 const composePromptsForContext = (

@@ -77,7 +77,7 @@ const PromptConsole = ({
     <div className="promptConsole h-20 fixed bottom-0 w-full flex items-center justify-center opacity-95 backdrop-blur-sm backdrop-saturate-100 bg-vert-light-gradient dark:bg-transparent dark:bg-vert-dark-gradient">
       <form
         onSubmit={(e) => {
-          onClickSubmitMsg({ e, prompt: questionInput, isContextMode: false });
+          onClickSubmitMsg({ e, prompt: questionInput, isContextMode: true });
         }}
         className="w-full max-w-[90%] sm:max-w-[70%] md:max-w-[40%] flex items-center "
       >
