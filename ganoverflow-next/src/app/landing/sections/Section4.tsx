@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Lottie_SEO } from "./components";
 import React, { useEffect, useRef } from "react";
 
@@ -71,12 +72,14 @@ const Section4 = () => {
               문제에 대해 더 개방적이며 적극적인 논의의 장을 제시하겠습니다.
             </p>
           </div>
-          <button
-            className={`self-center md:self-end mt-10 w-32 px-5 py-3 rounded-full !text-lg !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
-            ref={(item) => (elementsRef.current[2] = item!)}
-          >
-            정복하기
-          </button>
+          <Link href="/chat">
+            <button
+              className={`self-center md:self-end mt-10 w-32 px-5 py-3 rounded-full !text-lg !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
+              ref={(item) => (elementsRef.current[2] = item!)}
+            >
+              정복하기
+            </button>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { ServiceVideo } from "./components";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -46,11 +47,13 @@ const Section3_2 = () => {
           </span>
           하고, 당신의 생산성을 높이기 위한 비전을 발전시키고 있습니다.
         </Paragraph>
+        <Link href="/chat">
         <button
           className={`self-center md:self-end mt-14 w-32 px-5 py-3 rounded-full !text-lg !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
         >
           시작하기
         </button>
+        </Link>
       </div>
     </div>
   );
