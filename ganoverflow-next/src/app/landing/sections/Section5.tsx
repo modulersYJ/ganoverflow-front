@@ -23,6 +23,11 @@ const Section5 = () => {
               세상에 큰 도움을 줄 수 있습니다.
             </p>
           </div>
+          <button
+            className={`self-center md:self-start mt-10 w-45 px-5 py-3 rounded-full !text-base !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
+          >
+            환경에 기여하기
+          </button>
         </div>
 
         <Lottie_NatureFriendly />

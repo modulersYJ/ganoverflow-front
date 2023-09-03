@@ -11,7 +11,14 @@ const RankPostDashboard = ({
   index: number;
 }) => {
   const colorValue = (index + 1) * 200;
-  const RankH1Color = `!text-zinc-${colorValue}`;
+  let RankH1Color = "";
+  if (index === 0) {
+    RankH1Color = "!text-zinc-200";
+  } else if (index === 1) {
+    RankH1Color = "!text-zinc-400";
+  } else if (index === 2) {
+    RankH1Color = "!text-zinc-500";
+  }
 
   return (
     <Link href={`/posts/${post.chatpost.chatPostId}`}>
