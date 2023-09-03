@@ -13,7 +13,9 @@ const Section1 = () => {
       </div>
 
       <Link href="/chat">
-        <button className="z-30 absolute left-1/2 transform -translate-x-1/2 mt-[10%] bg-secondary w-40 px-5 py-4 rounded-full !text-black !text-lg">
+        <button
+          className={`z-30 absolute left-1/2 transform -translate-x-1/2 mt-[10%] bg-secondary w-40 px-5 py-4 rounded-full !text-black !text-lg hover:bg-green-300 transition-colors duration-300 ease-in-out`}
+        >
           시작하기
         </button>
       </Link>

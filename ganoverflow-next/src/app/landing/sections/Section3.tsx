@@ -19,11 +19,9 @@ const Section3 = () => {
 const Section3_2 = () => {
   return (
     <div
-      className="sticky top-20 z-[45] h-[38%] mt-0 md:mt-40"
+      className="sticky top-20 z-[45] h-[38%] mt-0 md:mt-40 bg-black bg-opacity-75"
       style={{
         width: "100%",
-        opacity: "80%",
-        backgroundColor: "black",
       }}
     >
       <div className="sec-3-2 flex flex-col gap-10 mx-auto font-oswald w-full h-full py-[5%] sm:py-16 px-[0%] sm:px-[15%]">
@@ -48,6 +46,11 @@ const Section3_2 = () => {
           </span>
           하고, 당신의 생산성을 높이기 위한 비전을 발전시키고 있습니다.
         </Paragraph>
+        <button
+          className={`self-center md:self-end mt-14 w-32 px-5 py-3 rounded-full !text-lg !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
+        >
+          시작하기
+        </button>
       </div>
     </div>
   );
