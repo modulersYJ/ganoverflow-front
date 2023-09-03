@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Lottie_NatureFriendly } from "./components";
 
 const Section5 = () => {
@@ -23,11 +24,13 @@ const Section5 = () => {
               세상에 큰 도움을 줄 수 있습니다.
             </p>
           </div>
-          <button
-            className={`self-center md:self-start mt-10 w-45 px-5 py-3 rounded-full !text-base !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
-          >
-            환경에 기여하기
-          </button>
+          <Link href="/chat">
+            <button
+              className={`self-center md:self-start mt-10 w-45 px-5 py-3 rounded-full !text-base !font-bold border-2 hover:bg-zinc-700 transition-colors duration-300 ease-in-out`}
+            >
+              환경에 기여하기
+            </button>
+          </Link>
         </div>
 
         <Lottie_NatureFriendly />
