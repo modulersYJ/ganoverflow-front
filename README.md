@@ -3,10 +3,19 @@
 [![gof-thumbnail](https://github-production-user-asset-6210df.s3.amazonaws.com/65459616/262915829-edf725b8-089e-4591-9c1f-e083e092afb1.gif)](https://www.ganoverflow.com/)
 *클릭하여 GAN overflow를 시작하세요!*
 
+<br>
+
+**게스트 계정**
+가입이 번거롭거나 어려움이 있으시면 아래의 계정을 사용해주세요!
+```
+ID: guest
+PW: guest1234!
+```
+
 <br><br>
 
 
-https://github.com/modulersYJ/ganoverflow-front/assets/65459616/95c1f6b7-3c99-446e-8aba-4fa231fa97f2
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZF1MzXcmRYE?si=Pv_YLQ2c_S7gqiVn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 #### 1. 유용한 AI 대화내역. 기록하고, 관리하기 번거롭지 않으셨나요?
