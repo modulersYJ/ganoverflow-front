@@ -1,5 +1,3 @@
-# GAN overflow
-
 [![gof-thumbnail](https://github-production-user-asset-6210df.s3.amazonaws.com/65459616/262915829-edf725b8-089e-4591-9c1f-e083e092afb1.gif)](https://www.ganoverflow.com/)
 *클릭하여 GAN overflow를 시작하세요!*
 
@@ -14,8 +12,11 @@ PW: guest1234!
 
 <br><br>
 
+### GAN overflow 소개 영상
+[![GAN overflow](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/9702b3e5-d8bb-4fbc-ad0a-80503fe84df3)](https://www.youtube.com/embed/ZF1MzXcmRYE?si=Pv_YLQ2c_S7gqiVn) <br>
+클릭해서 재생하세요!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZF1MzXcmRYE?si=Pv_YLQ2c_S7gqiVn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<br><br>
 
 
 #### 1. 유용한 AI 대화내역. 기록하고, 관리하기 번거롭지 않으셨나요?
