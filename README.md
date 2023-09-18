@@ -13,7 +13,10 @@ PW: guest1234!
 <br><br>
 
 ### GAN overflow 소개 영상
-[![GAN overflow](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/9702b3e5-d8bb-4fbc-ad0a-80503fe84df3)](https://www.youtube.com/embed/ZF1MzXcmRYE?si=Pv_YLQ2c_S7gqiVn) <br>
+![GAN overflow](https://github.com/modulersYJ/ganoverflow-front/assets/65459616/979f5673-d515-4b05-90f8-6d4c61bb2d4d)
+
+[Watch Video on YouTube](https://www.youtube.com/watch?v=ZF1MzXcmRYE)
+<br>
 클릭해서 재생하세요!
 
 <br><br>
